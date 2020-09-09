@@ -7,6 +7,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding-bottom: 15%;
 }
 
 .landing-page-text-container {
@@ -53,6 +54,79 @@
     width: 100%;
     background: white;
     position: relative;
+}
+
+.tabs-container {
+    padding-top: 7.5%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.tabs .nav-link {
+    display: block;
+    padding: .5rem 2rem;
+}
+
+.tabs a {
+    color: rgba(1, 114, 71, 0.75);
+    text-decoration: none;
+    background-color: transparent;
+    font-size: 24px;
+}
+
+.tabs a:hover {
+    color: rgba(1, 114, 71);
+}
+
+.tabs a:after {
+    content: "";
+    display: block;
+    height: 2px;
+    background: rgba(1, 114, 71);
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+}
+
+.tabs a:hover:after {
+    width: 100%;
+}
+
+.tabs .nav-link {
+    border-bottom: 1px solid rgba(1, 114, 71, 0.75);
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    transition: all 0.25s smooth;
+}
+
+.tabs .nav-link.active {
+    color: rgba(1, 114, 71);
+    font-weight: bold;
+    border: 1px solid rgba(1, 114, 71, 0.75);
+    border-bottom: 1px solid transparent;
+}
+
+.tab-info-container {
+    display: block;
+    padding: 20px;
+}
+
+.tab-info {
+    color: rgba(1, 114, 71);
+    font-size: 20px;
+}
+
+.tab-pic-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Normal Waves */
@@ -129,6 +203,7 @@
 @media (max-width: 800px) {
     .landing-page-1 {
         padding: 5%;
+        padding-bottom: 40%;
     }
 
     .landing-page-img {
@@ -139,5 +214,17 @@
 
     .landing-page-text-container {
         padding-top: 0%;
+    }
+
+    .landing-page-2 {
+        padding-top: 12.5%;
+    }
+
+    .tabs a {
+        font-size: 16px;
+    }
+
+    .tab-info {
+        font-size: 14px;
     }
 }

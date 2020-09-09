@@ -21,3 +21,7 @@
     background: white;
     border-radius: 20px;
 }
+
+*:focus {
+    outline: 0;
+}
