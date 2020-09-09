@@ -1,0 +1,14 @@
+.navbar {
+    background:rgb(1, 114, 71);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.navbar-brandname {
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+}
+
