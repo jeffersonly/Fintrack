@@ -1,0 +1,95 @@
+.tab-title-btn {
+    background: transparent;
+    border: none;
+    margin-right: 30px;
+    outline: none;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    font-size: 22px;
+    color: rgb(1, 114, 71);
+    font-weight: normal;
+}
+
+.tab-title-btn:focus {
+    outline: none;
+}
+
+.tab-title-btn.selected {
+    font-weight: bold;
+}
+
+.tab-title-btn span:after {
+    content: "";
+    display: block;
+    height: 3px;
+    background: rgba(1, 114, 71);
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+}
+
+.tab-title-btn.selected span:after {
+    width: 100%;
+}
+
+.tab-title-btn span:hover:after {
+    width: 100%;
+}
+
+.modal-link-btn {
+    border: 1px solid rgb(1, 114, 71);
+    color: rgb(1, 114, 71);
+    font-size: 16px;
+    outline: none;
+    background: transparent;
+    padding: 7.5px 15px;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+}
+
+.modal-link-btn:hover {
+    background: rgb(1, 114, 71);
+    color: white;
+    box-shadow: 1px 1px 10px rgb(1, 114, 71);
+}
+
+.modal-link-btn:focus {
+    outline: none;
+}
+
+.modal-action-btn {
+    border: 1px solid rgb(1, 114, 71);
+    outline: none;
+    font-size: 16px;
+    background: rgb(1, 114, 71);
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+    padding: 7.5px 15px;
+}
+
+.modal-action-btn:hover {
+    box-shadow: 1px 1px 10px rgb(1, 114, 71);
+    text-shadow: 1px 1px 10px white;
+    text-decoration: underline;
+}
+
+.modal-action-btn:focus {
+    outline: none;
+}
+
+@media (max-width: 800px) {
+    .tab-title-btn {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+
+    .modal-link-btn {
+        font-size: 14px;
+    }
+
+    .modal-action-btn {
+        font-size: 14px;
+    }
+}

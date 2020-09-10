@@ -26,18 +26,18 @@ function LandingPage() {
                             <img src={WalletSVG} alt="landing page img" className="landing-page-img"/>
                         </Col>
                     </Row>
-                    <div class="wave wave1"></div>
-                    <div class="wave wave2"></div>
-                    <div class="wave wave3"></div>
-                    <div class="wave wave4"></div>
+                    <div className="wave wave1"></div>
+                    <div className="wave wave2"></div>
+                    <div className="wave wave3"></div>
+                    <div className="wave wave4"></div>
                 </Container>
             </div>
             
             <div className="landing-page-2" id="landing-page-2">
-                <div class="wave wave1"></div>
-                <div class="wave wave2"></div>
-                <div class="wave wave3"></div>
-                <div class="wave wave4"></div>
+                <div className="wave wave1"></div>
+                <div className="wave wave2"></div>
+                <div className="wave wave3"></div>
+                <div className="wave wave4"></div>
 
                 <div className="tabs-container">
                     <Tabs defaultActiveKey="FinTrack" id="landing-page-tabs" bsPrefix="tabs">
@@ -47,7 +47,7 @@ function LandingPage() {
                                     With credit cards and advancing technology, spending money becomes easier and easier. 
                                     When paying with cash, people can visually see how much they are spending; on the other hand, 
                                     when paying with credit cards and advancing technology, people are not as aware of their spendings. 
-                                    FinTrack is an application, providing users with the ability to track their expenses.
+                                    FinTrack is an application providing users with the ability to track their expenses.
                                 </p>
                             </div>
                             <div className="tab-pic-container">
