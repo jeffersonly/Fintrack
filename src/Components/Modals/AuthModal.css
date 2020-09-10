@@ -79,6 +79,10 @@
     outline: none;
 }
 
+.close:focus {
+    outline: none;
+}
+
 @media (max-width: 800px) {
     .tab-title-btn {
         margin-right: 10px;

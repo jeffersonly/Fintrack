@@ -24,6 +24,10 @@ function LoginRegisterModal(props) {
         props.onSelectConfirmAccountModal();
     }
 
+    function openForgotResetPwdModal() {
+        props.onOpenForgetResetPwdModal();
+    }
+
     useEffect(() => {
         setShow(props.openModal);
         setLoginTabSelected(props.loginModalShown);
@@ -31,12 +35,25 @@ function LoginRegisterModal(props) {
         setConfirmAcountTabSelected(props.confirmAccountModalShown);
     }, [props.openModal, props.loginModalShown, props.registerModalShown, props.confirmAccountModalShown]);
 
+    //Authentication Events (Login, Register, Confirm Account)
+    function handleLogin() {
+        console.log("Login Event");
+    }
+
+    function handleRegister() {
+        console.log("Register Account Event");
+    }
+
+    function handleConfirm() {
+        console.log("Confirm Account Event");
+    }
+
     function renderModalFooterBtns() {
         if(loginTabSelected) {
             return (
                 <>
-                    <button className="modal-link-btn" onClick={closeModal}>Forgot Password</button>
-                    <button className="modal-action-btn">Login</button>
+                    <button className="modal-link-btn" onClick={openForgotResetPwdModal}>Forgot Password</button>
+                    <button className="modal-action-btn" onClick={handleLogin}>Login</button>
                 </>
             )
         }
@@ -44,7 +61,7 @@ function LoginRegisterModal(props) {
         if(registerTabSelected) {
             return(
                 <>
-                    <button className="modal-action-btn">Register</button>
+                    <button className="modal-action-btn" onClick={handleRegister}>Register</button>
                 </>
             )
         }
@@ -52,7 +69,7 @@ function LoginRegisterModal(props) {
         if(confirmAccountTabSelected) {
             return(
                 <>
-                    <button className="modal-action-btn">Confirm</button>
+                    <button className="modal-action-btn" onClick={handleConfirm}>Confirm</button>
                 </>
             )
         }

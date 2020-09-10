@@ -2,6 +2,7 @@ import './NavBar.css';
 import React, { useState } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import LoginRegisterModal from '../Modals/LoginRegisterModal';
+import ForgotResetPwdModal from '../Modals/ForgotResetPwdModal';
 
 function NavBar() {
     const [showLoginRegisterModal, setShowLoginRegisterModal] = useState(false);
@@ -9,11 +10,19 @@ function NavBar() {
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const [showConfirmAccountModal, setConfirmAccountModal] = useState(false);
 
+    const [showForgotResetPwdModal, setShowForgetResetPwdModal] = useState(false);
+    const [showForgotPwdModal, setShowForgotPwdModal] = useState(false);
+    const [showResetPwdModal, setShowResetPwdModal] = useState(false);
+
     function handleShowLoginModal() {
         setShowLoginRegisterModal(true);
         setShowLoginModal(true);
         setShowRegisterModal(false);
         setConfirmAccountModal(false);
+
+        setShowForgetResetPwdModal(false);
+        setShowForgotPwdModal(false);
+        setShowResetPwdModal(false);
     }
 
     function handleShowRegisterModal() {
@@ -21,6 +30,10 @@ function NavBar() {
         setShowLoginModal(false);
         setShowRegisterModal(true);
         setConfirmAccountModal(false);
+
+        setShowForgetResetPwdModal(false);
+        setShowForgotPwdModal(false);
+        setShowResetPwdModal(false);
     }
 
     function handleShowConfirmAccountModal() {
@@ -28,6 +41,32 @@ function NavBar() {
         setShowLoginModal(false);
         setShowRegisterModal(false);
         setConfirmAccountModal(true);
+
+        setShowForgetResetPwdModal(false);
+        setShowForgotPwdModal(false);
+        setShowResetPwdModal(false);
+    }
+
+    function handleShowForgotPwdModal() {
+        setShowLoginRegisterModal(false);
+        setShowLoginModal(false);
+        setShowRegisterModal(false);
+        setConfirmAccountModal(false);
+
+        setShowForgetResetPwdModal(true);
+        setShowForgotPwdModal(true);
+        setShowResetPwdModal(false);
+    }
+
+    function handleShowResetPwdModal() {
+        setShowLoginRegisterModal(false);
+        setShowLoginModal(false);
+        setShowRegisterModal(false);
+        setConfirmAccountModal(false);
+
+        setShowForgetResetPwdModal(true);
+        setShowForgotPwdModal(false);
+        setShowResetPwdModal(true);
     }
 
     return (
@@ -55,6 +94,17 @@ function NavBar() {
                 onSelectRegisterModal={() => handleShowRegisterModal()}
                 confirmAccountModalShown={showConfirmAccountModal}
                 onSelectConfirmAccountModal={() => handleShowConfirmAccountModal()}
+                onOpenForgetResetPwdModal={() => handleShowForgotPwdModal()}
+            />
+
+            <ForgotResetPwdModal 
+                openModal={showForgotResetPwdModal}
+                onChangeModalState={() => setShowForgetResetPwdModal(!showForgotResetPwdModal)}
+                forgotPwdModalShown={showForgotPwdModal}
+                onSelectForgotPwdModal={() => handleShowForgotPwdModal()}
+                resetPwdModalShown={showResetPwdModal}
+                onSelectResetPwdModal={() => handleShowResetPwdModal()}
+                onOpenLoginRegisterModal={() => handleShowLoginModal()}
             />
         </Navbar>
     );
