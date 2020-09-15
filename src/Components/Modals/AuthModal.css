@@ -83,6 +83,12 @@
     outline: none;
 }
 
+.tab-informative-text {
+    font-size: 14px;
+    text-align: center;
+    color: rgb(1, 114, 71);
+}
+
 @media (max-width: 800px) {
     .tab-title-btn {
         margin-right: 10px;
@@ -95,5 +101,10 @@
 
     .modal-action-btn {
         font-size: 14px;
+    }
+
+    .tab-informative-text {
+        font-size: 12px;
+        text-align: initial;
     }
 }
