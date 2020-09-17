@@ -1,0 +1,52 @@
+/* Override DayPicker's style.css */
+
+.DayPicker {
+  font-size: 1.1rem;
+}
+
+.DayPicker-TodayButton {
+  margin-left: 100px;
+}
+
+.DayPicker-Day {
+  padding: 0.4em;
+  width: 40px;
+}
+
+.DayPicker-Weekday {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+}
+
+.DayPicker-Day--today {
+  background-color: rgb(1, 114, 71);
+  color: white;
+}
+
+.DayPicker-Day--today:hover {
+  background-color: rgb(1, 114, 71) !important;
+}
+
+/* Summary page CSS */
+
+.homepage {
+  margin-left: 35px;
+  margin-right: 35px;
+  margin-top: 80px;
+  font-family: Roboto;
+}
+
+.homepage-cal {
+  margin-left: -20px;
+  margin-bottom: 20px;
+}
+
+.homepage-welcome {
+  padding-bottom: 12px;
+}
+
+.homepage-todaydate {
+  padding-bottom: 15px;
+}

@@ -15,7 +15,7 @@ const Header = styled.div`
 
 const Title = styled.div`
   font-size: 30px;
-  padding-top: 25px;
+  padding-top: 20px;
 `;
 
 function TopHeader () {

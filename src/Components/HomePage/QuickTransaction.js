@@ -7,18 +7,11 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 //import AddIcon from '@material-ui/icons/Add';
 
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 const Container = styled.div`
   font-family: Roboto;
-`;
-
-const QuickDate = styled.div`
-  width: 100%;
 `;
 
 const theme = createMuiTheme ({

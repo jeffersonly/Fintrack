@@ -3,7 +3,7 @@ import React from 'react';
 //import NavBar from './NavBar/NavBar';
 //import LandingPage from '../Pages/LandingPage';
 import TopHeader from './HomePage/TopHeader';
-import NavBar from './HomePage/NavBar';
+import HomeNav from './HomePage/HomeNav';
 
 function App() {
 
@@ -12,7 +12,7 @@ function App() {
             {/*<NavBar/>
             <LandingPage/>*/}
             <TopHeader />
-            <NavBar />
+            <HomeNav />
         </div>
     );
 }
