@@ -18,13 +18,9 @@
   font-weight: bold;
 }
 
-.homepage-nav-bar-button {
-
-}
-
 .homepage-nav-bar-button:hover {
-  color: rgb(1, 114, 71);
-  background-color: white;  
+  color: rgb(1, 114, 71) !important;
+  background-color: white !important;  
 }
 
 .homepage-tab-container {
