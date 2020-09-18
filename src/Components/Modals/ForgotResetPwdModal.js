@@ -1,5 +1,6 @@
 import './AuthModal.css';
 import React, {useState, useEffect} from 'react';
+import { Auth } from 'aws-amplify';
 import { Modal } from 'react-bootstrap';
 import InputField from '../InputFields/InputField';
 
@@ -11,18 +12,22 @@ function ForgotResetPwdModal(props) {
 
     //Handle Modal Events 
     function closeModal() {
+        clearForm();
         props.onChangeModalState();
     }
 
     function openForgotPwdModal() {
+        clearForm();
         props.onSelectForgotPwdModal();
     }
 
     function openResetPwdModal() {
+        clearForm();
         props.onSelectResetPwdModal();
     }
 
     function openLoginRegisterModal() {
+        clearForm();
         props.onOpenLoginRegisterModal();
     }
 
@@ -33,7 +38,14 @@ function ForgotResetPwdModal(props) {
     }, [props.openModal, props.forgotPwdModalShown, props.resetPwdModalShown]);
 
     //Handle Input Data
-    const [data, setData] = React.useState({});
+    const [data, setData] = React.useState({
+        username: "",
+        confirmationcode: "",
+        newpassword: "",
+        confirmnewpassword: ""
+    });
+    const [passwordErrorShown, setPasswordErrorShown] = useState(false);
+    const [authError, setAuthError] = useState("");
 
     //generate react refs for input fields based on tab selected
     function generateReactRefs() {
@@ -50,6 +62,8 @@ function ForgotResetPwdModal(props) {
     //update data hook with input data
     const handleChange = (name, value) => {
         setData(prevData => ({...prevData, [name]: value}));
+        setPasswordErrorShown(false);
+        setAuthError("");
     }
 
     //submit form event, checks to see if form has errors
@@ -73,13 +87,33 @@ function ForgotResetPwdModal(props) {
 
         //if no errors => do actions on form submit based on what modal is active (Login, Register, Confirm)
         if(forgotPwdTabSelected) {
-            console.log("Forgot password Action");
+            Auth.forgotPassword(data.username)
+            .then(res => openResetPwdModal())
+            .catch(err => setAuthError(err.message));
         }
 
         if(resetPwdTabSelected) {
-            console.log("Reset Password Action");
+            //check if passwords match, if they don't show error message
+            if(data.newpassword !== data.confirmnewpassword) {
+                //display error
+                setPasswordErrorShown(true);
+                return;
+            }
+
+            Auth.forgotPasswordSubmit(data.username, data.confirmationcode, data.newpassword)
+            .then(res => openLoginRegisterModal())
+            .catch(err => setAuthError(err.message));
         }
-        console.log(data);
+    }
+
+    //clears data & values from forms
+    function clearForm() {
+        for(let i = 0; i < inputRefs.current.length; i++) {
+            if(inputRefs.current[i].current === null) { break; }
+            inputRefs.current[i].current.clearValue();
+        }
+        setData({});
+        setAuthError("");
     }
 
     //renders footer buttons that connect modals and do auth actions
@@ -141,28 +175,36 @@ function ForgotResetPwdModal(props) {
 
                     <InputField 
                         ref={inputRefs.current[1]}
-                        name="confirmation code"
+                        name="confirmationcode"
                         label="Enter Confirmation Code"
                         onChange={handleChange}
                     />
 
                     <InputField 
                         ref={inputRefs.current[2]}
-                        name="new-password"
+                        name="newpassword"
                         label="Enter New Password"
                         type="password"
                         onChange={handleChange}
                         validation={"required|min:8|max:99"}
                     />  
 
+                    {passwordErrorShown && (
+                        <p className="input-error-msg" style={{marginTop: '-30px'}}>Passwords do not match.</p>
+                    )}
+
                     <InputField 
                         ref={inputRefs.current[3]}
-                        name="confirm-new-password"
+                        name="confirmnewpassword"
                         label="Confirm New Password"
                         type="password"
                         onChange={handleChange}
                         validation={"required|min:8|max:99"}
                     />
+
+                    {passwordErrorShown && (
+                        <p className="input-error-msg" style={{marginTop: '-30px'}}>Passwords do not match.</p>
+                    )}
 
                     <p className="tab-informative-text">
                         Upon successfully reseting your password, you will be prompted to log in!
@@ -195,6 +237,9 @@ function ForgotResetPwdModal(props) {
 
                 <form onSubmit={submitForm}>
                     <Modal.Body>
+                        {authError && (
+                            <p className="error-msg">{authError}</p>
+                        )}
                         {renderInputFields()}
                     </Modal.Body>
                     <Modal.Footer>

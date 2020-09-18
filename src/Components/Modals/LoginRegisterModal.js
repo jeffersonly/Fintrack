@@ -1,5 +1,6 @@
 import './AuthModal.css';
 import React, {useState, useEffect} from 'react';
+import { Auth } from 'aws-amplify';
 import { Modal } from 'react-bootstrap';
 import InputField from '../InputFields/InputField';
 
@@ -9,10 +10,11 @@ function LoginRegisterModal(props) {
     const [loginTabSelected, setLoginTabSelected] = useState(props.loginModalShown);
     const [registerTabSelected, setRegisterTabSelected] = useState(props.registerModalShown);
     const [confirmAccountTabSelected, setConfirmAcountTabSelected] = useState(props.confirmAccountModalShown);
+    const [resetConfirmCodeTabSelected, setResetConfirmCodeTabSelected] = useState(props.resendConfirmCodeModalShown);
 
     //Handle Modal Events 
     function closeModal() {
-        clearForm()
+        clearForm();
         props.onChangeModalState();
     }
 
@@ -31,6 +33,11 @@ function LoginRegisterModal(props) {
         props.onSelectConfirmAccountModal();
     }
 
+    function openResendConfirmCodeModal() {
+        clearForm();
+        props.onSelectResendConfirmCodeModal();
+    }
+
     function openForgotResetPwdModal() {
         clearForm();
         props.onOpenForgetResetPwdModal();
@@ -41,16 +48,30 @@ function LoginRegisterModal(props) {
         setLoginTabSelected(props.loginModalShown);
         setRegisterTabSelected(props.registerModalShown)
         setConfirmAcountTabSelected(props.confirmAccountModalShown);
-    }, [props.openModal, props.loginModalShown, props.registerModalShown, props.confirmAccountModalShown]);
+        setResetConfirmCodeTabSelected(props.resendConfirmCodeModalShown);
+    }, [props.openModal, props.loginModalShown, props.registerModalShown, props.confirmAccountModalShown, props.resendConfirmCodeModalShown]);
 
     //Handle Input Data
-    const [data, setData] = React.useState({});
+    const [data, setData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmpassword: "",
+        confirmationcode: ""
+    });
+    const [passwordErrorShown, setPasswordErrorShown] = useState(false);
+    const [authError, setAuthError] = useState("");
 
     //generate react refs for input fields based on tab selected
     function generateReactRefs() {
         if(loginTabSelected || confirmAccountTabSelected) {
             return [React.createRef(), React.createRef()];
         }
+
+        if(resetConfirmCodeTabSelected) {
+            return [React.createRef()];
+        }
+
         return [React.createRef(), React.createRef(), React.createRef(), React.createRef()];
     }
 
@@ -60,6 +81,8 @@ function LoginRegisterModal(props) {
     //update data hook with input data
     const handleChange = (name, value) => {
         setData(prevData => ({...prevData, [name]: value}));
+        setPasswordErrorShown(false);
+        setAuthError("");
     }
 
     //submit form event, checks to see if form has errors
@@ -83,18 +106,39 @@ function LoginRegisterModal(props) {
 
         //if no errors => do actions on form submit based on what modal is active (Login, Register, Confirm)
         if(loginTabSelected) {
-            console.log("Login Activated");
+            //log in user
+            Auth.signIn(data.username, data.password)
+            .then(res => console.log("User Logged In", res))
+            .catch(err => setAuthError(err.message));
         }
 
         if(registerTabSelected) {
-            console.log("Register Activated");
+            //check if passwords match, if they don't show error message
+            if(data.password !== data.confirmpassword) {
+                //display error
+                setPasswordErrorShown(true);
+                return;
+            }
+
+            //sign up user
+            Auth.signUp(data.username, data.password, data.email)
+            .then(res => openConfirmAccountModal())
+            .catch(err => setAuthError(err.message));
         }
 
         if(confirmAccountTabSelected) {
-            console.log("Confirm Account Activated");
+            //confirm user registration
+            Auth.confirmSignUp(data.username, data.confirmationcode)
+            .then(res => openLoginModal())
+            .catch(err => setAuthError(err.message));
         }
 
-        console.log(data);
+        if(resetConfirmCodeTabSelected) {
+            //send new confirm code to user
+            Auth.resendSignUp(data.username)
+            .then(res => openConfirmAccountModal())
+            .catch(err => setAuthError(err.message));
+        }
     }
 
     //clears data & values from forms
@@ -104,6 +148,7 @@ function LoginRegisterModal(props) {
             inputRefs.current[i].current.clearValue();
         }
         setData({});
+        setAuthError("");
     }
 
     //renders footer buttons that connect modals and do auth actions
@@ -128,7 +173,17 @@ function LoginRegisterModal(props) {
         if(confirmAccountTabSelected) {
             return(
                 <>
+                    <button className="modal-link-btn" type="button" onClick={openResendConfirmCodeModal}>Resend Code</button>
                     <button className="modal-action-btn" type="submit">Confirm</button>
+                </>
+            )
+        }
+
+        if(resetConfirmCodeTabSelected) {
+            return(
+                <>
+                    <button className="modal-link-btn" type="button" onClick={openConfirmAccountModal}>Back</button>
+                    <button className="modal-action-btn" type="submit">Send</button>
                 </>
             )
         }
@@ -188,15 +243,21 @@ function LoginRegisterModal(props) {
                         onChange={handleChange}
                         validation={"required|min:8|max:99"}
                     />  
+                    {passwordErrorShown && (
+                        <p className="input-error-msg"  style={{marginTop: '-30px'}}>Passwords do not match.</p>
+                    )}
 
                     <InputField 
                         ref={inputRefs.current[3]}
-                        name="confirm-password"
+                        name="confirmpassword"
                         label="Confirm Password"
                         type="password"
                         onChange={handleChange}
                         validation={"required|min:8|max:99"}
                     />  
+                    {passwordErrorShown && (
+                        <p className="input-error-msg" style={{marginTop: '-30px'}}>Passwords do not match.</p>
+                    )}
 
                     <p className="tab-informative-text">
                         Upon registering a confirmation code will be sent to your email. 
@@ -222,7 +283,7 @@ function LoginRegisterModal(props) {
 
                     <InputField 
                         ref={inputRefs.current[1]}
-                        name="confirmation code"
+                        name="confirmationcode"
                         label="Enter Confirmation Code"
                         onChange={handleChange}
                         validation={"required"}
@@ -237,7 +298,70 @@ function LoginRegisterModal(props) {
             )
         }
 
+        if(resetConfirmCodeTabSelected) {
+            return(
+                <>
+                    <InputField 
+                        ref={inputRefs.current[0]}
+                        name="username"
+                        label="Enter Username"
+                        onChange={handleChange}
+                        validation={"required|min:1|max:128"}
+                    />
+
+                    <p className="tab-informative-text">
+                        Send a new confirmation code to the email that you registered with!
+                        <br/>
+                        A new confirmation code will be sent to your email.
+                        <br/>
+                        You can use the new code to confirm your account.
+                    </p>
+                </>
+            )
+        }
+
         return null;
+    }
+
+    //renders header button tabs
+    function renderHeaderButtons() {
+        if(resetConfirmCodeTabSelected) {
+            return (
+                <>
+                    <button 
+                        className={`tab-title-btn ${resetConfirmCodeTabSelected ? 'selected':'notSelected'}`}
+                        onClick={openResendConfirmCodeModal}
+                    >
+                        <span>Resend Confirmation Code</span>
+                    </button>
+                </>
+            )
+        }
+
+        return (
+            <>
+                <button 
+                    className={`tab-title-btn ${loginTabSelected ? 'selected':'notSelected'}`}
+                    onClick={openLoginModal}
+                >
+                    <span>Login</span>
+                </button>
+
+                <button 
+                    className={`tab-title-btn ${registerTabSelected ? 'selected':'notSelected'}`}
+                    onClick={openRegisterModal}
+                >
+                    <span>Register</span>
+                </button>
+
+                <button 
+                    className={`tab-title-btn ${confirmAccountTabSelected ? 'selected':'notSelected'}`}
+                    onClick={openConfirmAccountModal}
+                >
+                    <span>Confirm Account</span>
+                </button>
+            </>
+        )
     }
 
     return (
@@ -245,30 +369,14 @@ function LoginRegisterModal(props) {
             <Modal show={show} onHide={closeModal}>
                 
                 <Modal.Header closeButton className="auth-modal-header">
-                    <button 
-                        className={`tab-title-btn ${loginTabSelected ? 'selected':'notSelected'}`}
-                        onClick={openLoginModal}
-                    >
-                        <span>Login</span>
-                    </button>
-
-                    <button 
-                        className={`tab-title-btn ${registerTabSelected ? 'selected':'notSelected'}`}
-                        onClick={openRegisterModal}
-                    >
-                        <span>Register</span>
-                    </button>
-
-                    <button 
-                        className={`tab-title-btn ${confirmAccountTabSelected ? 'selected':'notSelected'}`}
-                        onClick={openConfirmAccountModal}
-                    >
-                        <span>Confirm Account</span>
-                    </button>
+                    {renderHeaderButtons()}
                 </Modal.Header>
 
                 <form id="auth-form" onSubmit={submitForm}>
                     <Modal.Body>
+                        {authError && (
+                            <p className="error-msg">{authError}</p>
+                        )}
                         {renderInputFields()}
                     </Modal.Body>
                     <Modal.Footer>

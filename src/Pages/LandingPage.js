@@ -2,7 +2,6 @@ import './LandingPage.css';
 import React from 'react';
 import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap';
 import WalletSVG from '../Images/wallet.svg';
-
 import FillFormsSVG from '../Images/fillforms.svg';
 import FinanceSVG from '../Images/finance.svg';
 import InvestSVG from '../Images/invest.svg';

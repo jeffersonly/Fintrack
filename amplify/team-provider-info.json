@@ -10,6 +10,11 @@
       "StackName": "amplify-fintrack-dev-141609",
       "StackId": "arn:aws:cloudformation:us-west-2:162045688266:stack/amplify-fintrack-dev-141609/84dfae50-f218-11ea-9265-02cb7c2cea95",
       "AmplifyAppId": "d191rl4e83chd"
+    },
+    "categories": {
+      "auth": {
+        "fintrackbd6fd57a": {}
+      }
     }
   }
 }

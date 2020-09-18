@@ -20,7 +20,6 @@ const InputField = forwardRef((props, ref) => {
         //return true if is valid
         //else return false
         if(props.validation) {
-            console.log(props.validation);
             const rules = props.validation.split("|");
 
             for(let i = 0; i < rules.length; i++) {
