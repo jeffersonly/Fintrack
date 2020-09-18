@@ -6,6 +6,9 @@ import { ThemeProvider } from '@material-ui/styles';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import Summary from '../../Pages/Summary';
 import Spendings from '../../Pages/Spendings';
+import Expenses from '../../Pages/Expenses';
+import Transactions from '../../Pages/Transactions';
+import Savings from '../../Pages/Savings';
 
 const TabContainer = styled.div`
   display: flex;
@@ -43,7 +46,7 @@ top: 0;
 width: 100%;
 `;
 
-export const theme = createMuiTheme ({
+export const theme = createMuiTheme({
   palette: {
     primary: {
       main: "rgb(1, 114, 71)",
@@ -60,9 +63,9 @@ const styles = ({ theme }) => ({
   },
 });
 
-function NavBar ({ classes, ...props }) {
+function NavBar({ classes, ...props }) {
 
-  const [color, setColor] = useState({sum: "rgb(1, 114, 71)", spend: "black", save: "black", split: "black", acc: "black"});
+  const [color, setColor] = useState({ sum: "rgb(1, 114, 71)", spend: "black", save: "black", split: "black", acc: "black" });
 
   //doesn't work when you use browser to navigate back and forth
   //also need to fix hover
@@ -81,7 +84,7 @@ function NavBar ({ classes, ...props }) {
     }
     setColor(obj);
   }
-  
+
   return (
     <div>
       <Router>
@@ -89,52 +92,52 @@ function NavBar ({ classes, ...props }) {
           <ThemeProvider theme={theme}>
             <NavTab>
               <TabContainer>
-                <Button 
+                <Button
                   className={classes.default}
                   component={Link}
                   to={"/summary"}
                   onClick={() => handleClick("sum")}
-                  style={{color: color["sum"]}}
+                  style={{ color: color["sum"] }}
                   size="large"
                 >
                   Summary
                 </Button>
-                <Button 
+                <Button
                   className={classes.default}
                   component={Link}
                   to={"/spendings"}
                   onClick={() => handleClick("spend")}
-                  style={{color: color["spend"]}}
+                  style={{ color: color["spend"] }}
                   size="large"
                 >
                   Spendings
                 </Button>
-                <Button 
+                <Button
                   className={classes.default}
                   component={Link}
                   to={"/savings"}
                   onClick={() => handleClick("save")}
-                  style={{color: color["save"]}}
+                  style={{ color: color["save"] }}
                   size="large"
                 >
                   Savings
                 </Button>
-                <Button 
+                <Button
                   className={classes.default}
                   component={Link}
                   to={"/split"}
                   onClick={() => handleClick("split")}
-                  style={{color: color["split"]}}
+                  style={{ color: color["split"] }}
                   size="large"
                 >
                   Split the Bill
                 </Button>
-                <Button 
+                <Button
                   className={classes.default}
                   component={Link}
                   to={"/account"}
                   onClick={() => handleClick("acc")}
-                  style={{color: color["acc"]}}
+                  style={{ color: color["acc"] }}
                   size="large"
                 >
                   Account
@@ -147,8 +150,17 @@ function NavBar ({ classes, ...props }) {
             <Route exact path="/summary">
               <Summary />
             </Route>
+            <Route path="/transactions">
+              <Transactions />
+            </Route>
+            <Route path="/expenses">
+              <Expenses />
+            </Route>
             <Route path="/spendings">
               <Spendings />
+            </Route>
+            <Route path="/savings">
+              <Savings />
             </Route>
           </Switch>
         </div>
