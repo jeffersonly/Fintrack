@@ -5,6 +5,7 @@ import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import QuickTransaction from '../Components/HomePage/QuickTransaction';
 import TransactionTable from '../Components/HomePage/TransactionTable'; 
+import MonthlyExpenses from '../Components/HomePage/MonthlyExpenses'; 
 import './Summary.css';
 
 function Summary () {
@@ -35,6 +36,7 @@ function Summary () {
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>
+          <MonthlyExpenses />
         </Grid>
       </Grid>
       <Grid container spacing={3}>
