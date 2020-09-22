@@ -3,6 +3,9 @@ import { Button } from '@material-ui/core';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import Summary from '../../Pages/Summary';
 import Spendings from '../../Pages/Spendings';
+import Expenses from '../../Pages/Expenses';
+import Transactions from '../../Pages/Transactions';
+import Savings from '../../Pages/Savings';
 import './HomeNav.css';
 
 function HomeNav () {
@@ -85,12 +88,21 @@ function HomeNav () {
         </div>
         <hr className="homepage-divider" />
         <Switch>
-          <Route exact path="/summary">
-            <Summary />
-          </Route>
-          <Route path="/spendings">
-            <Spendings />
-          </Route>
+            <Route exact path="/summary">
+              <Summary />
+            </Route>
+            <Route path="/transactions">
+              <Transactions />
+            </Route>
+            <Route path="/expenses">
+              <Expenses />
+            </Route>
+            <Route path="/spendings">
+              <Spendings />
+            </Route>
+            <Route path="/savings">
+              <Savings />
+            </Route>
         </Switch>
       </Router>
     </div>
