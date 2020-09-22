@@ -9,6 +9,7 @@ function NavBar() {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const [showConfirmAccountModal, setConfirmAccountModal] = useState(false);
+    const [showResendConfirmCodeModal, setResendConfirmCodeModal] = useState(false);
 
     const [showForgotResetPwdModal, setShowForgetResetPwdModal] = useState(false);
     const [showForgotPwdModal, setShowForgotPwdModal] = useState(false);
@@ -19,6 +20,7 @@ function NavBar() {
         setShowLoginModal(true);
         setShowRegisterModal(false);
         setConfirmAccountModal(false);
+        setResendConfirmCodeModal(false);
 
         setShowForgetResetPwdModal(false);
         setShowForgotPwdModal(false);
@@ -30,6 +32,7 @@ function NavBar() {
         setShowLoginModal(false);
         setShowRegisterModal(true);
         setConfirmAccountModal(false);
+        setResendConfirmCodeModal(false);
 
         setShowForgetResetPwdModal(false);
         setShowForgotPwdModal(false);
@@ -41,6 +44,19 @@ function NavBar() {
         setShowLoginModal(false);
         setShowRegisterModal(false);
         setConfirmAccountModal(true);
+        setResendConfirmCodeModal(false);
+
+        setShowForgetResetPwdModal(false);
+        setShowForgotPwdModal(false);
+        setShowResetPwdModal(false);
+    }
+
+    function handleShowResendConfirmCodeModal() {
+        setShowLoginRegisterModal(true);
+        setShowLoginModal(false);
+        setShowRegisterModal(false);
+        setConfirmAccountModal(false);
+        setResendConfirmCodeModal(true);
 
         setShowForgetResetPwdModal(false);
         setShowForgotPwdModal(false);
@@ -52,6 +68,7 @@ function NavBar() {
         setShowLoginModal(false);
         setShowRegisterModal(false);
         setConfirmAccountModal(false);
+        setResendConfirmCodeModal(false);
 
         setShowForgetResetPwdModal(true);
         setShowForgotPwdModal(true);
@@ -63,6 +80,7 @@ function NavBar() {
         setShowLoginModal(false);
         setShowRegisterModal(false);
         setConfirmAccountModal(false);
+        setResendConfirmCodeModal(false);
 
         setShowForgetResetPwdModal(true);
         setShowForgotPwdModal(false);
@@ -94,6 +112,8 @@ function NavBar() {
                 onSelectRegisterModal={() => handleShowRegisterModal()}
                 confirmAccountModalShown={showConfirmAccountModal}
                 onSelectConfirmAccountModal={() => handleShowConfirmAccountModal()}
+                resendConfirmCodeModalShown={showResendConfirmCodeModal}
+                onSelectResendConfirmCodeModal={() => handleShowResendConfirmCodeModal()}
                 onOpenForgetResetPwdModal={() => handleShowForgotPwdModal()}
             />
 

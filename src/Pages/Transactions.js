@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import CreateTransaction from '../Components/Spending/CreateTransaction';
 import {
-  Button, makeStyles, TextField, Card, CardContent, Typography, Divider, InputAdornment
+  Button, makeStyles, TextField
 } from '@material-ui/core';
-import { BrowserRouter as Router, Link, Route, Switch, withRouter, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, withRouter, useHistory } from 'react-router-dom';
 import InputBase from '@material-ui/core/InputBase';
 import { createMuiTheme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
