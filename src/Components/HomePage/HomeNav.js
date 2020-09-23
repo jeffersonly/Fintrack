@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import Summary from '../../Pages/Summary';
-import Spendings from '../../Pages/Spendings';
-import Expenses from '../../Pages/Expenses';
-import Transactions from '../../Pages/Transactions';
-import Savings from '../../Pages/Savings';
+import { Link } from 'react-router-dom';
 import './HomeNav.css';
 
 function HomeNav () {
@@ -31,80 +26,61 @@ function HomeNav () {
   
   return (
     <div>
-      <Router>
-        <div className="homepage-nav-bar">
-          <div className="homepage-tab-container">
-            <Button 
-              className="homepage-nav-bar-button"
-              component={Link}
-              to={"/summary"}
-              onClick={() => handleClick("sum")}
-              style={{color: color["sum"]}}
-              size="large"
-            >
-              Summary
-            </Button>
-            <Button 
-              className="homepage-nav-bar-button"
-              component={Link}
-              to={"/spendings"}
-              onClick={() => handleClick("spend")}
-              style={{color: color["spend"]}}
-              size="large"
-            >
-              Spendings
-            </Button>
-            <Button 
-              className="homepage-nav-bar-button"
-              component={Link}
-              to={"/savings"}
-              onClick={() => handleClick("save")}
-              style={{color: color["save"]}}
-              size="large"
-            >
-              Savings
-            </Button>
-            <Button 
-              className="homepage-nav-bar-button"
-              component={Link}
-              to={"/split"}
-              onClick={() => handleClick("split")}
-              style={{color: color["split"]}}
-              size="large"
-            >
-              Split the Bill
-            </Button>
-            <Button 
-              className="homepage-nav-bar-button"
-              component={Link}
-              to={"/account"}
-              onClick={() => handleClick("acc")}
-              style={{color: color["acc"]}}
-              size="large"
-            >
-              Account
-            </Button>
-          </div>
+      <div className="homepage-nav-bar">
+        <div className="homepage-tab-container">
+          <Button 
+            className="homepage-nav-bar-button"
+            component={Link}
+            to={"/summary"}
+            onClick={() => handleClick("sum")}
+            style={{color: color["sum"]}}
+            size="large"
+          >
+            Summary
+          </Button>
+          <Button 
+            className="homepage-nav-bar-button"
+            component={Link}
+            to={"/spendings"}
+            onClick={() => handleClick("spend")}
+            style={{color: color["spend"]}}
+            size="large"
+          >
+            Spendings
+          </Button>
+          <Button 
+            className="homepage-nav-bar-button"
+            component={Link}
+            to={"/savings"}
+            onClick={() => handleClick("save")}
+            style={{color: color["save"]}}
+            size="large"
+          >
+            Savings
+          </Button>
+          <Button 
+            className="homepage-nav-bar-button"
+            component={Link}
+            to={"/split"}
+            onClick={() => handleClick("split")}
+            style={{color: color["split"]}}
+            size="large"
+          >
+            Split the Bill
+          </Button>
+          <Button 
+            className="homepage-nav-bar-button"
+            component={Link}
+            to={"/account"}
+            onClick={() => handleClick("acc")}
+            style={{color: color["acc"]}}
+            size="large"
+          >
+            Account
+          </Button>
         </div>
-        <hr className="homepage-divider" />
-        <Switch>
-            <Route exact path="/summary">
-              <Summary />
-            </Route>
-            <Route path="/transactions">
-              <Transactions />
-            </Route>
-            <Route path="/expenses">
-              <Expenses />
-            </Route>
-            <Route path="/spendings">
-              <Spendings />
-            </Route>
-            <Route path="/savings">
-              <Savings />
-            </Route>
-        </Switch>
-      </Router>
+      </div>
+      <hr className="homepage-divider" />
     </div>
   );
 }

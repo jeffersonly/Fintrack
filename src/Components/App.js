@@ -4,6 +4,13 @@ import React from 'react';
 //import LandingPage from '../Pages/LandingPage';
 import TopHeader from './HomePage/TopHeader';
 import HomeNav from './HomePage/HomeNav';
+import Summary from '../Pages/Summary';
+import Spendings from '../Pages/Spendings';
+import Savings from '../Pages/Savings';
+import Expenses from '../Pages/Expenses';
+import Transactions from '../Pages/Transactions';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 
 function App() {
 
@@ -12,7 +19,26 @@ function App() {
             {/*<NavBar/>
             <LandingPage/>*/}
             <TopHeader />
-            <HomeNav />
+            <Router>
+                <HomeNav />
+                <Switch>
+                    <Route exact path="/summary">
+                        <Summary />
+                    </Route>
+                    <Route path="/spendings">
+                        <Spendings />
+                    </Route>
+                    <Route path="/transactions">
+                        <Transactions />
+                    </Route>
+                    <Route path="/expenses">
+                        <Expenses />
+                    </Route>
+                    <Route path="/savings">
+                        <Savings />
+                    </Route>
+                </Switch>
+            </Router>
         </div>
     );
 }
