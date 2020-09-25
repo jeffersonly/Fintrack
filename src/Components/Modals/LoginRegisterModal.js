@@ -108,7 +108,7 @@ function LoginRegisterModal(props) {
         if(loginTabSelected) {
             //log in user
             Auth.signIn(data.username, data.password)
-            .then(res => console.log("User Logged In", res))
+            .then(res => window.location = "/summary")
             .catch(err => setAuthError(err.message));
         }
 

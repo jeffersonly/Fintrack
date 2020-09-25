@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import CreateSaving from '../Components/Saving/CreateSaving';
 import {
-  Button, makeStyles, TextField, Card, CardContent, Typography, Divider, InputAdornment
+  Button, makeStyles, TextField 
 } from '@material-ui/core';
-import { BrowserRouter as Router, Link, Route, Switch, withRouter, useHistory } from 'react-router-dom';
-import InputBase from '@material-ui/core/InputBase';
+import { withRouter } from 'react-router-dom';
 import { createMuiTheme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import SavingTableS from '../Components/Saving/SavingTableS'; 
@@ -51,7 +50,7 @@ const useStyles = makeStyles({
 
 function Savings() {
   const classes = useStyles();
-  const history = useHistory();
+
   let searchIcon=<SearchIcon />;
   let submitIcon=<Button
                   className={classes.create}
