@@ -17,10 +17,6 @@ const Container = styled.div`
   font-family: Roboto;
 `;
 
-const QuickDate = styled.div`
-  width: 100%;
-`;
-
 const theme = createMuiTheme({
   palette: {
     primary: {

@@ -5,8 +5,7 @@ import CreateTransaction from '../Components/Spending/CreateTransaction';
 import {
   Button, makeStyles, TextField
 } from '@material-ui/core';
-import { BrowserRouter as Router, withRouter, useHistory } from 'react-router-dom';
-import InputBase from '@material-ui/core/InputBase';
+import { withRouter, useHistory } from 'react-router-dom';
 import { createMuiTheme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import TransactionTableS from '../Components/Spending/TransactionTableS'; 

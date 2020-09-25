@@ -5,7 +5,6 @@ import LoginRegisterModal from '../Modals/LoginRegisterModal';
 import ForgotResetPwdModal from '../Modals/ForgotResetPwdModal';
 
 function NavBar(props) {
-    console.log(props);
     const [showLoginRegisterModal, setShowLoginRegisterModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
