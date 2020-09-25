@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import { generate } from 'shortid';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
-import QuickTransaction from '../Components/HomePage/QuickTransaction';
-import TransactionTable from '../Components/HomePage/TransactionTable'; 
-import MonthlyExpenses from '../Components/HomePage/MonthlyExpenses'; 
+import QuickTransaction from '../Components/Cards/QuickTransaction';
+import TransactionTable from '../Components/Tables/TransactionTable'; 
+import MonthlyExpenses from '../Components/Tables/MonthlyExpenses'; 
 import './Summary.css';
 
 function Summary () {
@@ -17,6 +18,33 @@ function Summary () {
     const date = monthNames[(today.getMonth())] + " " + today.getDate() + ", " + today.getFullYear();
     return date;
   }
+
+  const [rows, setRows] = useState([
+    {
+      id: "1",
+      date: "9/24/2020",
+      transaction: "birthday gift",
+      amount: "30"
+    },
+    {
+      id: "2",
+      date: "10/23/2020",
+      transaction: "test",
+      amount: "5"
+    },
+    {
+      id: "3",
+      date: "11/10/2020",
+      transaction: "test2",
+      amount: "10"
+    },
+    {
+      id: "4",
+      date: "1/15/2021",
+      transaction: "test3",
+      amount: "20"
+    }
+  ]);
 
   return (
     <div className="homepage">
@@ -36,16 +64,33 @@ function Summary () {
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>
-          <MonthlyExpenses />
+          <MonthlyExpenses rows={[{
+            id: generate(),
+            date: "9/30/20",
+            expense: "Rent",
+            value: "$600"
+          }]}/>
         </Grid>
       </Grid>
       <Grid container spacing={3}>
         <Grid item xs={3}>
-          <QuickTransaction />
+          <QuickTransaction 
+            onSubmit={data => {
+              setRows(currentRows => [
+                {
+                  id: generate(),
+                  date: data[0],
+                  transaction: data[1],
+                  amount: data[2]
+                },
+                ...currentRows
+              ]);
+            }}
+          />
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={8}>
-          <TransactionTable />
+          <TransactionTable rows={rows}/>
         </Grid>
       </Grid>
     </div>

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { 
-  TableContainer, Table, TableRow, TableCell, TableHead, TableBody 
+  Table, TableBody, TableCell, TableContainer, TableRow, Typography 
 } from '@material-ui/core';
+import TableHeader from './TableHeader';
+
+//sorting doesn't completely work yet
 
 const useStyles = makeStyles({
   container: {
@@ -11,42 +14,98 @@ const useStyles = makeStyles({
   tableTitle: {
     fontWeight: "bold",
     fontSize: "20px",
+    paddingBottom: "15px"
   },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: -1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1,
+  }
 })
 
-const columns = [
-  { id: "date", label: "Date", align: "center", minWidth: 170 },
-  { id: "desc", label: "Transaction", align: "center", minWidth: 370 },
-  { id: "value", label: "Value", align: "center", minWidth: 170 },
+const columnTitles = [
+  { id: "id", label: "ID", align: "center", size: "small" },
+  { id: "date", label: "Date", align: "center", size: "small" },
+  { id: "transaction", label: "Transaction", align: "center" },
+  { id: "amount", label: "Value ($)", align: "center", size: "small" },
 ];
 
-function TransactionTable () {
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
+function TransactionTable ({rows}) {
+  
   const classes = useStyles();
+
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('date');
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+  
   return (
-    <TableContainer className={classes.container}>
-      <Table>
-        <TableHead>
-          <TableRow className={classes.tableTitle}>
-            Recent Transactions
-          </TableRow>
-          <TableRow>
-            {columns.map((column) => (
-              <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                {column.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            transaction1
-          </TableRow>
-          <TableRow>
-            transaction2
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <Typography className={classes.tableTitle} align="center">
+        Recent Transactions
+      </Typography>
+      <TableContainer className={classes.container}>
+        <Table stickyHeader>
+          <TableHeader
+              classes={classes}
+              headCells={columnTitles}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(rows, getComparator(order, orderBy))
+              .map((row) => {
+                return (
+                  <TableRow hover key={row.id}>
+                    <TableCell align="center">{row.id}</TableCell>
+                    <TableCell align="center">{row.date}</TableCell>
+                    <TableCell align="center">{row.transaction}</TableCell>
+                    <TableCell align="center">{row.amount}</TableCell>
+                  </TableRow>
+                );
+              })
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }
 
