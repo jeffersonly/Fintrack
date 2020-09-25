@@ -131,7 +131,7 @@ function QuickTransaction ({ onSubmit }) {
                     placeholder="Bob's Birthday Gift"
                   />
                   <TableField
-                    inputprops={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
+                    InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
                     label="Value"
                     name="amount"
                     placeholder="30"

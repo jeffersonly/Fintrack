@@ -23,7 +23,7 @@ function TableField(props) {
         fullWidth
         helperText={errorText}
         InputLabelProps={{shrink: true}}
-        InputProps={props.inputprops}
+        InputProps={props.InputProps}
         label={props.label}
         placeholder={props.placeholder}
         required={props.required}
