@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Auth } from 'aws-amplify';
 
 const Header = styled.div`
   background-color: rgb(1, 114, 71);
@@ -18,10 +19,17 @@ const Title = styled.div`
   padding-top: 20px;
 `;
 
+function signOut() {
+  Auth.signOut()
+  .then(window.location = '/')
+  .catch(err => console.log("Error signing out: ", err));
+}
+
 function TopHeader () {
   return (
     <Header>
       <Title>FinTrack</Title>
+      <button onClick={signOut}>Log Out</button>
     </Header>
   );
 }

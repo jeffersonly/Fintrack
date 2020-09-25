@@ -3,11 +3,8 @@ import React, {useState, useEffect} from 'react';
 import { Auth } from 'aws-amplify';
 import { Modal } from 'react-bootstrap';
 import InputField from '../InputFields/InputField';
-import { useHistory } from "react-router-dom";
 
 function LoginRegisterModal(props) {
-    let history = useHistory();
-
     //modal related states
     const [show, setShow] = useState(props.openModal);
     const [loginTabSelected, setLoginTabSelected] = useState(props.loginModalShown);
@@ -111,7 +108,7 @@ function LoginRegisterModal(props) {
         if(loginTabSelected) {
             //log in user
             Auth.signIn(data.username, data.password)
-            .then(res => history.push('/summary'))
+            .then(res => window.location = "/summary")
             .catch(err => setAuthError(err.message));
         }
 

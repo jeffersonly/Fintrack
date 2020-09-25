@@ -6,7 +6,7 @@ export default function AuthenticatedRoute({component: C, appProps, ...rest}) {
         <Route 
             {...rest}
             render={ props => 
-                appProps.userAuthenticated ? <C {...props} {...appProps} /> : <Redirect to="/" />
+                appProps.userAuthenticated ? <C {...props} {...appProps} /> : <Redirect to="/login" />
             }
         />
     );
