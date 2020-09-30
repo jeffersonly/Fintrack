@@ -9,7 +9,7 @@ import TableHeader from './TableHeader';
 
 const useStyles = makeStyles({
   container: {
-    maxHeight: 440,
+    maxHeight: 400,
   },
   tableTitle: {
     fontWeight: "bold",
@@ -33,6 +33,7 @@ const columnTitles = [
   { id: "id", label: "ID", align: "center", size: "small" },
   { id: "date", label: "Date", align: "center", size: "small" },
   { id: "transaction", label: "Transaction", align: "center" },
+  { id: "pay", label: "Form of Payment", align: "center", size: "small" },
   { id: "amount", label: "Value ($)", align: "center", size: "small" },
 ];
 
@@ -97,6 +98,7 @@ function TransactionTable ({rows}) {
                     <TableCell align="center">{row.id}</TableCell>
                     <TableCell align="center">{row.date}</TableCell>
                     <TableCell align="center">{row.transaction}</TableCell>
+                    <TableCell align="center">{row.pay}</TableCell>
                     <TableCell align="center">{row.amount}</TableCell>
                   </TableRow>
                 );

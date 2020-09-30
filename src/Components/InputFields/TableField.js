@@ -1,12 +1,12 @@
-import React from 'react';
-import { TextField, makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import { makeStyles, MenuItem, TextField } from '@material-ui/core';
 import { useField } from 'formik';
 
 const useStyles = makeStyles({
   textfield: {
     marginBottom: "20px"
   }
-})
+});
 
 function TableField(props) {
   
@@ -14,7 +14,7 @@ function TableField(props) {
 
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : "";
-  
+
   return (
     <div className={classes.textfield}>
       <TextField
@@ -27,9 +27,19 @@ function TableField(props) {
         label={props.label}
         placeholder={props.placeholder}
         required={props.required}
+        select={props.select}
         type={props.type}
         variant="outlined"
-      />
+      >
+      {props.select 
+        ? props.options.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+            {option.label}
+            </MenuItem>
+          ))
+        : ""
+      }
+    </TextField>
     </div>
   )
 }
@@ -39,6 +49,7 @@ TableField.defaultProps = {
   label: "",
   placeholder: "",
   required: true,
+  select: false,
   type: ""
 }
 
