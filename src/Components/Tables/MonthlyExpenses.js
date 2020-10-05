@@ -7,8 +7,8 @@ import {
 const useStyles = makeStyles({
   container: {
     maxHeight: 380,
-    paddingLeft: "80px",
-    paddingRight: "70px",
+    paddingLeft: "5.5vw",
+    paddingRight: "4.861vw",
     paddingBottom: "30px"
   },
   tableTitle: {
