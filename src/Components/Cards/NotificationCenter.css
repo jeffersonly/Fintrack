@@ -1,0 +1,25 @@
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  filter: invert(0.3);
+}
+
+.carousel-indicators {
+  filter: invert(0.3);
+  padding-bottom: 15px;
+}
+
+.notifcenter-card {
+  border: 2px solid gainsboro !important;
+  height: 375px;
+  margin-bottom: 20px;
+}
+
+.notifcenter-container {
+  font-family: Roboto;
+}
+
+.notifcenter-table-title {
+  font-size: 20px !important;
+  font-weight: bold !important;
+  padding-bottom: 15px;
+}
