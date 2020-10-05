@@ -12,8 +12,8 @@ const useStyles = makeStyles({
     maxHeight: 400,
   },
   tableTitle: {
-    fontWeight: "bold",
     fontSize: "20px",
+    fontWeight: "bold",
     paddingBottom: "15px"
   },
   visuallyHidden: {

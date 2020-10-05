@@ -1,16 +1,19 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { 
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography 
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
   container: {
-    maxHeight: 440,
+    maxHeight: 380,
+    paddingLeft: "80px",
+    paddingRight: "70px",
+    paddingBottom: "30px"
   },
   tableTitle: {
     fontWeight: "bold",
-    fontSize: "20px",
+    fontSize: "16px",
     paddingBottom: "15px"
   },
 })
@@ -19,7 +22,7 @@ const columnTitles = [
   //{ id: "id", label: "ID", align: "center", size: "small" },
   { id: "date", label: "Due", align: "center", size: "small"},
   { id: "expense", label: "Expense", align: "center"},
-  { id: "value", label: "Value", align: "center", size: "small" },
+  { id: "value", label: "Value ($)", align: "center", size: "small" },
 ];
 
 function MonthlyExpenses ({rows}) {

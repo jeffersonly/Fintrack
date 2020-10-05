@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
 import { generate } from 'shortid';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import QuickTransaction from '../Components/Cards/QuickTransaction';
+import NotificationCenter from '../Components/Cards/NotificationCenter';
 import TransactionTable from '../Components/Tables/TransactionTable'; 
-import MonthlyExpenses from '../Components/Tables/MonthlyExpenses'; 
 import './Summary.css';
+import { Row, Col } from 'react-bootstrap';
 
 function Summary () {
 
@@ -52,8 +52,8 @@ function Summary () {
 
   return (
     <div className="homepage">
-      <Grid container spacing={3}>
-        <Grid item xs={4}>
+      <Row>
+        <Col xs={12} md={4}>
           <h2 className="homepage-welcome">Welcome User!</h2>
           <h5 className="homepage-todaydate">Today: {getTodayDate()}</h5>
           <div className="homepage-cal DayPicker">
@@ -62,24 +62,13 @@ function Summary () {
               todayButton="Go to Today"
             />
           </div>
-        </Grid>
-        <Grid item xs={1} />
-        <Grid item xs= {3}>
-        </Grid>
-        <Grid item xs={1} />
-        <Grid item xs={3}>
-          <MonthlyExpenses rows={[
-            {
-              id: generate(),
-              date: "9/30/20",
-              expense: "Rent",
-              value: "600"
-            },
-          ]}/>
-        </Grid>
-      </Grid>
-      <Grid container spacing={3}>
-        <Grid item xs={3}>
+        </Col>
+        <Col xs={12} md={8} className="notif-center">
+          <NotificationCenter />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs md={3}>
           <QuickTransaction 
             onSubmit={data => {
               setRows(currentRows => [
@@ -94,12 +83,11 @@ function Summary () {
               ]);
             }}
           />
-        </Grid>
-        <Grid item xs={1} />
-        <Grid item xs={8}>
+        </Col>
+        <Col xs md={{span: 8, offset: 1}} className="homepage-table">
           <TransactionTable rows={rows}/>
-        </Grid>
-      </Grid>
+        </Col>
+      </Row>
     </div>
   );
 }

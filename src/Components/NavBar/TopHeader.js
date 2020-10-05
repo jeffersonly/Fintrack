@@ -4,14 +4,14 @@ import { Auth } from 'aws-amplify';
 
 const Header = styled.div`
   background-color: rgb(1, 114, 71);
-  position: fixed;
-  width: 100%;
-  height: 90px;
-  text-align: center;
   color: white;
   font-family: Roboto;
+  height: 90px;
+  position: fixed;
+  text-align: center;
   top: 0;
-  z-index: 1;
+  width: 100%;
+  z-index: 100;
 `;
 
 const Title = styled.div`
