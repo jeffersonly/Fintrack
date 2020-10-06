@@ -8,6 +8,7 @@ import NotificationCenter from '../Components/Cards/NotificationCenter';
 import TransactionTable from '../Components/Tables/TransactionTable'; 
 import './Summary.css';
 import { Row, Col } from 'react-bootstrap';
+import { Auth } from 'aws-amplify';
 
 function Summary () {
 
@@ -49,12 +50,20 @@ function Summary () {
       amount: "20"
     }
   ]);
+  const [user, setUser] = useState("");
+
+  const getUser = () => {
+    Auth.currentSession()
+    .then(data => setUser(data.accessToken.payload.username))
+    .catch(err => console.log(err));
+  };
 
   return (
     <div className="homepage">
+      {getUser()}
       <Row>
         <Col xs={12} md={4}>
-          <h2 className="homepage-welcome">Welcome User!</h2>
+          <h2 className="homepage-welcome">Welcome {user}!</h2>
           <h5 className="homepage-todaydate">Today: {getTodayDate()}</h5>
           <div className="homepage-cal DayPicker">
             <DayPicker
