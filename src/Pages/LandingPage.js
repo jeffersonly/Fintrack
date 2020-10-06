@@ -1,15 +1,17 @@
 import './LandingPage.css';
 import React from 'react';
 import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap';
+import NavBar from '../Components/NavBar/NavBar';
 import WalletSVG from '../Images/wallet.svg';
 import FillFormsSVG from '../Images/fillforms.svg';
 import FinanceSVG from '../Images/finance.svg';
 import InvestSVG from '../Images/invest.svg';
 import InvestingSVG from '../Images/investing.svg';
 
-function LandingPage() {
+function LandingPage(props) {
     return (
         <>
+            <NavBar openLoginModal={props.loginModalOpen} />
             <div className="landing-page-1">
                 <Container >
                     <Row>

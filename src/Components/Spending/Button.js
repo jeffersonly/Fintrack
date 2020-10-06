@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {
-  Button, makeStyles, TextField, Card, CardContent, Typography, Divider, InputAdornment
+  Button, makeStyles, Card, CardContent 
 } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { BrowserRouter as Router, Link, Route, Switch, withRouter, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
 const Container = styled.div`

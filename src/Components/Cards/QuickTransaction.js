@@ -58,6 +58,21 @@ function QuickTransaction ({ onSubmit }) {
     setSelectedDate(new Date());
   };
 
+  const options = [
+    {
+      value: 'cash',
+      label: 'Cash',
+    },
+    {
+      value: 'credit',
+      label: 'Credit',
+    },
+    {
+      value: 'debit',
+      label: 'Debit',
+    }
+  ];
+
   return (
     <div className={classes.container}>
       <Card className={classes.card} variant="outlined">
@@ -85,7 +100,8 @@ function QuickTransaction ({ onSubmit }) {
             <Formik
               initialValues={{
                 transaction: "",
-                amount: ""
+                amount: "",
+                pay: "cash"
               }}
               validate={values => {
                 const errors = {};
@@ -93,7 +109,6 @@ function QuickTransaction ({ onSubmit }) {
                 if (!values.transaction) {
                   errors.transaction = "Required";
                 }
-          
                 if (!values.amount) {
                   errors.amount = "Required";
                 }
@@ -102,7 +117,7 @@ function QuickTransaction ({ onSubmit }) {
               }}
               onSubmit={(data, { resetForm }) => {
                 console.log(data, selectedDate.toLocaleDateString());
-                const array = [selectedDate.toLocaleDateString(), data.transaction, data.amount];
+                const array = [selectedDate.toLocaleDateString(), data.transaction, data.amount, data.pay];
                 onSubmit(array);
                 resetDate();
                 resetForm();
@@ -129,6 +144,12 @@ function QuickTransaction ({ onSubmit }) {
                     label="Transaction"
                     name="transaction"
                     placeholder="Bob's Birthday Gift"
+                  />
+                  <TableField
+                    label="Form of Payment"
+                    name="pay"
+                    options={options}
+                    select={true}
                   />
                   <TableField
                     InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}

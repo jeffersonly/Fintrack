@@ -6,11 +6,14 @@ import {
 
 const useStyles = makeStyles({
   container: {
-    maxHeight: 440,
+    maxHeight: 380,
+    paddingLeft: "5.5vw",
+    paddingRight: "4.861vw",
+    paddingBottom: "30px"
   },
   tableTitle: {
     fontWeight: "bold",
-    fontSize: "20px",
+    fontSize: "16px",
     paddingBottom: "15px"
   },
 })
@@ -19,7 +22,7 @@ const columnTitles = [
   //{ id: "id", label: "ID", align: "center", size: "small" },
   { id: "date", label: "Due", align: "center", size: "small"},
   { id: "expense", label: "Expense", align: "center"},
-  { id: "value", label: "Value", align: "center", size: "small" },
+  { id: "value", label: "Value ($)", align: "center", size: "small" },
 ];
 
 function MonthlyExpenses ({rows}) {

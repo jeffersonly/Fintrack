@@ -1,10 +1,10 @@
 import './NavBar.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import LoginRegisterModal from '../Modals/LoginRegisterModal';
 import ForgotResetPwdModal from '../Modals/ForgotResetPwdModal';
 
-function NavBar() {
+function NavBar(props) {
     const [showLoginRegisterModal, setShowLoginRegisterModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -86,6 +86,12 @@ function NavBar() {
         setShowForgotPwdModal(false);
         setShowResetPwdModal(true);
     }
+
+    useEffect(() => {
+        if(props.openLoginModal) {
+            handleShowLoginModal();
+        }
+    }, [props.openLoginModal])
 
     return (
         <Navbar sticky="top" collapseOnSelect expand="lg" variant="dark" className="navbar">
