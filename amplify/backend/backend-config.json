@@ -6,5 +6,13 @@
       "dependsOn": [],
       "customAuth": false
     }
+  },
+  "predictions": {
+    "fintrackidentifyreceipt": {
+      "providerPlugin": "awscloudformation",
+      "service": "RekognitionAndTextract",
+      "dependsOn": [],
+      "identifyType": "identifyText"
+    }
   }
 }

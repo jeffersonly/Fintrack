@@ -12,6 +12,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import AuthenticatedRoute from '../Components/Routes/AuthenticatedRoute';
 
+import Dropzone from '../Components/Dropzone/Dropzone';
+
 function App() {
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [userAuthenticated, setUserAuthenticated] = useState(false);
@@ -49,6 +51,7 @@ function App() {
     return (
         !isAuthenticating &&
         <div className="App">
+            {/* <Dropzone/> */}
             <Router>
                 {renderHomeNav()}
                 <Switch>
@@ -58,7 +61,6 @@ function App() {
                     {!userAuthenticated ? <Route exact path="/login" render={(props) => (<LandingPage {...props} loginModalOpen={true}/>)}/> 
                     : <AuthenticatedRoute exact path="/" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />}}
                     
-
                     <AuthenticatedRoute exact path="/summary" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/spendings" component={Spendings} appProps={{userAuthenticated, setUserAuthenticated}} /> 
                     <AuthenticatedRoute exact path="/transactions" component={Transactions} appProps={{userAuthenticated, setUserAuthenticated}} />
