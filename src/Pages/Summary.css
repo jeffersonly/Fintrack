@@ -43,6 +43,11 @@
   margin-bottom: 20px;
 }
 
+.homepage-error {
+  font-size: 14px;
+  color: red;
+}
+
 .homepage-todaydate {
   padding-bottom: 15px;
 }

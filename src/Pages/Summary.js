@@ -51,11 +51,12 @@ function Summary () {
     }
   ]);
   const [user, setUser] = useState("");
+  const [authError, setAuthError] = useState("");
 
   const getUser = () => {
     Auth.currentSession()
     .then(data => setUser(data.accessToken.payload.username))
-    .catch(err => console.log(err));
+    .catch(err => setAuthError(err.message));
   };
 
   return (
@@ -63,6 +64,7 @@ function Summary () {
       {getUser()}
       <Row>
         <Col xs={12} md={4}>
+          {authError && (<p className="homepage-error">{authError}</p>)}
           <h2 className="homepage-welcome">Welcome {user}!</h2>
           <h5 className="homepage-todaydate">Today: {getTodayDate()}</h5>
           <div className="homepage-cal DayPicker">
