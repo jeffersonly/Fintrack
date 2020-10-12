@@ -1,0 +1,29 @@
+.profile {
+  font-family: Roboto;
+}
+
+.profile-card {
+  margin-right: 30px;
+  margin-top: 30px;
+}
+
+.profile-picture {
+  width: 125%;
+  height: 100%;
+  padding-left: 20px;
+  margin-top: 25px;
+}
+
+.profile-subtitle {
+  font-size: 15px;
+  color: #202020;
+}
+
+.profile-text {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.profile-title {
+  margin-top: 25px;
+}
