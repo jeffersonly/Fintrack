@@ -134,7 +134,6 @@
                                 "textract:AnalyzeDocument",
                                 "textract:DetectDocumentText",
                                 "textract:GetDocumentAnalysis",
-                                "textract:StartDocumentAnalysis",
                                 "textract:StartDocumentTextDetection"
                             ],
                             "Resource": "*"

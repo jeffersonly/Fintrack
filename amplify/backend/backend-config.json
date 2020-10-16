@@ -14,5 +14,22 @@
       "dependsOn": [],
       "identifyType": "identifyText"
     }
+  },
+  "api": {
+    "fintrackDB": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authfintrackbd6fd57a"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
+    }
   }
 }

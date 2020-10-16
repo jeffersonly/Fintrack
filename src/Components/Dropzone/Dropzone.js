@@ -5,8 +5,10 @@ import Predictions from '@aws-amplify/predictions';
 
 function Dropzone(props) {
     const [files, setFiles] = useState([]);
+    const [filesWithCost, setFilesWithCost] = useState([]);
 
     async function identifyText(acceptedFiles) {
+        let arrayOfObjs = []; 
         acceptedFiles.forEach(async file => {
             await Predictions.identify({
                 text: {
@@ -15,9 +17,36 @@ function Dropzone(props) {
                     }
                 }
             })
-            .then(res => console.log(res))
+            .then(res => {
+                const totalCost = parseText(res);
+                let costAndImgObj = {
+                    totalCost: totalCost,
+                    image: file
+                };
+                arrayOfObjs.push(costAndImgObj);
+            })
             .catch(err => console.log(err));
-        })
+        });
+        setFilesWithCost(arrayOfObjs);
+    }
+
+    //function to parse text recognized by rekognition to find total cost
+    function parseText(data) {
+        const textArr = data.text.words;
+        var maxCost = 0;
+        textArr.map(textObj => {
+            var text = textObj.text;
+            if(text.includes("$")) {
+                text = text.replace(/\s/g, ''); //remove white space
+                text = text.replace("$", ""); //remove $ sign
+                text = parseFloat(text); //convert from string to fp number
+                if(text > maxCost) {
+                    maxCost = text;
+                }
+            }
+        });
+        maxCost = maxCost.toFixed(2); //converts number to string, rounding to keep two decimals
+        return maxCost;
     }
 
     const {getRootProps, getInputProps} = useDropzone({
@@ -37,6 +66,7 @@ function Dropzone(props) {
                 <img
                     src={file.preview}
                     className="thumbnail-image"
+                    alt="receipt"
                 />
             </div>
         </div>
@@ -45,7 +75,8 @@ function Dropzone(props) {
     useEffect(() => () => {
         // Make sure to revoke the data uris to avoid memory leaks
         files.forEach(file => URL.revokeObjectURL(file.preview));
-    }, [files]);
+        console.log(filesWithCost);
+    }, [files, filesWithCost]);
 
     return (
         <section className="container">

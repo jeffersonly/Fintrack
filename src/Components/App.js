@@ -51,7 +51,7 @@ function App() {
     return (
         !isAuthenticating &&
         <div className="App">
-            {/* <Dropzone/> */}
+            <Dropzone/>
             <Router>
                 {renderHomeNav()}
                 <Switch>
