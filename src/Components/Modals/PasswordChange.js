@@ -1,67 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Divider, makeStyles } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { Button, Divider } from '@material-ui/core';
 import { Modal } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import TableField from '../InputFields/TableField';
+import { Auth} from 'aws-amplify';
 
-const theme = createMuiTheme ({
-  palette: {
-    primary: {
-      main: "rgb(1, 114, 71)",
-    },
-  }
-})
-
-const useStyles = makeStyles({
-  button: {
-    backgroundColor: "#ace1af",
-    '&:hover': {
-      backgroundColor: "#ace1af",
-      opacity: 0.8
-    },
-    '&:focus': {
-      outline: "none"
-    },
-  },
-  cancelbutton: {
-    marginRight: "10px"
-  },
-  divider: {
-    marginBottom: "20px"
-  },
+/*const useStyles = makeStyles({
   error: {
-    fontSize: "14px",
-    color: "red"
+    fontSize: "12px",
+    color: "red",
+    marginTop: "-16px",
+    marginLeft: "15px",
+    paddingBottom: "5px"
   },
-  modal: {
-    fontFamily: "Roboto"
-  },
-  textfield: {
-    paddingTop: "10px",
-    paddingBottom: "10px"
-  }
-})
+})*/
 
 function PasswordChange(props) {
 
-  const classes = useStyles();
+  //const classes = useStyles();
 
   const [show, setShow] = useState(props.openPassword);
-
-  const handleClose = () => setShow(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setShow(props.openPassword);
   }, [props.openPassword]);
 
+  const handleChangePassword = (oldPass, newPass) => {
+    Auth.currentAuthenticatedUser()
+      .then(user => {
+        //runs every time
+        return Auth.changePassword(user, oldPass, newPass);
+      })
+      .then(data => {
+        props.closePassword();
+        props.alert();
+      }) //happens if no errors whatsoever
+      .catch(err => setError("Incorrect password."))
+  };
+
   return (
     <div>
       <Modal
-        className={classes.modal}
+        className="profile"
         show={show}
-        onHide={handleClose}
+        onHide={props.closePassword}
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
@@ -71,80 +54,83 @@ function PasswordChange(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className={classes.textfield}>
-            <ThemeProvider theme={theme}>
-              <Formik
-                initialValues={{
-                  currentpass: "",
-                  newpass: "",
-                  confirmnew: ""
-                }}
-                validate={values => {
+          <div className="editprofile-textfield">
+            <Formik
+              initialValues={{
+                currentPass: "",
+                newPass: "",
+                confirmNew: ""
+              }}
+              validate={values => {
 
-                  const errors = {};
+                const errors = {};
 
-                  if (!values.currentpass) {
-                    errors.currentpass = "Required";
-                  }
-                  //need to check currentpass matches current one
-                  if (!values.newpass) {
-                    errors.newpass = "Required";
-                  }
-                  if (!values.confirmnew) {
-                    errors.confirmnew = "Required";
-                  }
-                  if (values.newpass !== values.confirmnew) {
-                    errors.confirmnew = "Passwords do not match!";
-                  }
-                  
-                  return errors;
-                }}
-                onSubmit={(data) => {
-                  console.log(data);
-                }}
-              >
-                {({ values, errors }) => (
-                  <Form>
-                    <TableField
-                      label="Current Password"
-                      name="currentpass"
-                      type="password"
-                    />
-                    <TableField
-                      label="New Password"
-                      name="newpass"
-                      type="password"
-                    />
-                    <TableField
-                      label="Confirm Password"
-                      name="confirmnew"
-                      type="password"
-                    />
-                    <Divider className={classes.divider}/>
-                    <div align="right">
-                      <Button
-                        className={classes.cancelbutton}
-                        disableElevation
-                        onClick={handleClose}
-                        variant="contained"
-                      >
-                        Cancel
-                      </Button>
-                      <Button 
-                        className={classes.button}
-                        disableElevation
-                        disabled={!values.currentpass || !values.newpass || !values.confirmnew || errors.confirmnew !== undefined}
-                        onClick={handleClose} 
-                        type="submit"
-                        variant="contained"
-                      >
-                        Reset
-                      </Button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            </ThemeProvider>
+                if (!values.currentPass) {
+                  errors.currentPass = "Required";
+                }
+                /*if (error) {
+                  errors.currentPass = "Does not match current password.";
+                }*/
+                if (!values.newPass) {
+                  errors.newPass = "Required";
+                }
+                if (values.newPass.length < 8) {
+                  errors.newPass = "This field must be at least 8 characters long."
+                }
+                if (!values.confirmNew) {
+                  errors.confirmNew = "Required";
+                }
+                if (values.newPass !== values.confirmNew) {
+                  errors.confirmNew = "Passwords do not match!";
+                }
+                
+                return errors;
+              }}
+              onSubmit={(data) => {
+                handleChangePassword(data.currentPass, data.newPass);
+              }}
+            >
+              {({ values, errors }) => (
+                <Form>
+                  <TableField
+                    helperText={error ? error : null}
+                    label="Current Password"
+                    name="currentPass"
+                    type="password"
+                  />
+                  <TableField
+                    label="New Password"
+                    name="newPass"
+                    type="password"
+                  />
+                  <TableField
+                    label="Confirm Password"
+                    name="confirmNew"
+                    type="password"
+                  />
+                  <Divider className="editprofile-divider"/>
+                  <div align="right">
+                    <Button
+                      className="editprofile-cancelbutton"
+                      disableElevation
+                      onClick={props.closePassword}
+                      variant="contained"
+                    >
+                      Cancel
+                    </Button>
+                    <Button 
+                      className="profile-button"
+                      disableElevation
+                      disabled={!values.currentPass || !values.newPass || !values.confirmNew || errors.confirmNew !== undefined || errors.currentPass !== undefined}
+                      type="submit"
+                      variant="contained"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </div>
         </Modal.Body>
       </Modal>
@@ -153,3 +139,5 @@ function PasswordChange(props) {
 }
 
 export default PasswordChange;
+
+//table sort

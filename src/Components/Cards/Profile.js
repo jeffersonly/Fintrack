@@ -1,90 +1,176 @@
-import React, { useState } from 'react';
-import { Button, Card, CardContent, makeStyles } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Button, Card, CardContent, Link } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import { Row, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 import EditProfile from '../Modals/EditProfile';
 import PasswordChange from '../Modals/PasswordChange';
+import ConfirmProfile from '../Modals/ConfirmProfile';
+import SnackbarNotification from '../Modals/SnackbarNotification';
 import ProfileSVG from '../../Images/profile.svg';
 import './Profile.css';
 
-const useStyles = makeStyles({
-  button: {
-    backgroundColor: "#ace1af",
-    '&:hover': {
-      backgroundColor: "#ace1af",
-      opacity: 0.8
-    },
-    '&:focus': {
-      outline: "none"
+const theme = createMuiTheme ({
+  palette: {
+    primary: {
+      main: "rgb(1, 114, 71)",
     },
   }
 })
 
 function Profile() {
 
-  const classes = useStyles();
-  
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [showEditProfile, setEditProfile] = useState(false);
   const [showPassword, setPassword] = useState(false);
+  const [showConfirmProfile, setConfirmProfile] = useState(false);
+  const [confirmed, setConfirmed] = useState(true);
+  const [showProfileAlert, setProfileAlert] = useState(false);
+  const [showPasswordAlert, setPasswordAlert] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    getUser();
+  }, [])
 
   const getUser = () => {
-    Auth.currentSession()
-    .then(data => {
-      setUsername(data.accessToken.payload.username);
-      setEmail(data.idToken.payload.email);
-    })
-    .catch(err => console.log(err));
+    Auth.currentUserInfo()
+      .then(data => {
+        setUsername(data.username);
+        setEmail(data.attributes.email);
+        setConfirmed(data.attributes.email_verified);
+        console.log(data)
+      })
+      .catch(err => setError(err));
   };
 
-  /*async function update (em) {
+  async function update (em) {
     try {
       const user = await Auth.currentAuthenticatedUser();
       await Auth.updateUserAttributes(user, { 'email': em });
-    } catch (error) {
-      console.log(error.message);
+      setEmail(em);
+    } catch (err) {
+      setError(err);
     }
-  }*/
+  }
 
   function handleShowEditProfile() {
     setEditProfile(true);
+    setConfirmProfile(false);
     setPassword(false);
+    setProfileAlert(false);
+    setPasswordAlert(false);
+  }
+
+  function handleShowConfirmProfile() {
+    setEditProfile(false);
+    setConfirmProfile(true);
+    setPassword(false);
+    setProfileAlert(false);
+    setPasswordAlert(false);
   }
 
   function handleShowPassword() {
     setEditProfile(false);
+    setConfirmProfile(false);
     setPassword(true);
+    setProfileAlert(false);
+    setPasswordAlert(false);
   }
+
+  function handleShowProfileAlert() {
+    setEditProfile(false);
+    setConfirmProfile(false);
+    setPassword(false);
+    setProfileAlert(true);
+    setPasswordAlert(false);
+  }
+
+  function handleShowPasswordAlert() {
+    setEditProfile(false);
+    setConfirmProfile(false);
+    setPassword(false);
+    setProfileAlert(false);
+    setPasswordAlert(true);
+  }
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setProfileAlert(false);
+    setPasswordAlert(false);
+  };
 
   return (
     <div className="profile">
-      {getUser()}
       <h4 className="profile-title">Profile</h4>
       <Row>
         <Col xs={7} md={7}>
           <Card variant="outlined" className="profile-card">
             <CardContent>
-              <div>
-                <b className="profile-subtitle">USERNAME</b>
-                <p>{username}</p>
-              </div>
-              <div>
-                <b className="profile-subtitle">EMAIL</b>
-                <p>{email}</p>
-              </div>
-              <div align="right">
-                <Button 
-                  className={classes.button}
-                  disableElevation
-                  onClick={handleShowEditProfile}
-                  variant="contained"
-                >
-                  Edit
-                </Button>
-                <EditProfile email={email} openEdit={showEditProfile} selectPassword={() => handleShowPassword()}/>
-                <PasswordChange openPassword={showPassword}/>
-              </div>
+              <ThemeProvider theme={theme}>      
+                {error && (<p className="profile-error">{error}</p>)}
+                <div>
+                  <b className="profile-subtitle">USERNAME</b>
+                  <p>{username}</p>
+                </div>
+                <div>
+                  <b className="profile-subtitle">EMAIL</b>
+                  <p>{email}</p>
+                  {!confirmed && 
+                    <Link 
+                      className="editprofile-passwordLink"
+                      component="button" 
+                      onClick={() => handleShowConfirmProfile()}
+                    >
+                      **Click to verify email
+                    </Link>}
+                </div>
+                <div align="right">
+                  <Button 
+                    className="profile-button"
+                    disableElevation
+                    onClick={handleShowEditProfile}
+                    variant="contained"
+                  >
+                    Edit
+                  </Button>
+                  <EditProfile 
+                    email={email}
+                    confirm={() => handleShowConfirmProfile()}
+                    closeEdit={() => setEditProfile(!showEditProfile)}
+                    openEdit={showEditProfile}
+                    selectPassword={() => handleShowPassword()}
+                    updateEmail={(email) => update(email)}
+                  />
+                  <ConfirmProfile
+                    alert={() => handleShowProfileAlert()}
+                    closeConfirm={() => setConfirmProfile(!showConfirmProfile)}
+                    openConfirm={showConfirmProfile}
+                    username={username}
+                    verified={(data) => setConfirmed(data)}
+                  />
+                  <PasswordChange
+                    alert={() => handleShowPasswordAlert()} 
+                    closePassword={() => setPassword(!showPassword)}
+                    openPassword={showPassword}
+                  />
+                  <SnackbarNotification
+                    message="Email has been verified!"
+                    onClose={handleCloseAlert}
+                    open={showProfileAlert}
+                  />
+                  <SnackbarNotification
+                    message="Password successfully changed!"
+                    onClose={handleCloseAlert}
+                    open={showPasswordAlert}
+                  />
+                </div>
+              </ThemeProvider>
             </CardContent>
           </Card>
         </Col>

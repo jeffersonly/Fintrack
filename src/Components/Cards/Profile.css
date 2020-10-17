@@ -1,5 +1,42 @@
+.editprofile-cancelbutton {
+  margin-right: 10px !important;
+}
+
+.editprofile-cancelbutton:focus {
+  outline: none;
+}
+
+.editprofile-divider {
+  margin-bottom: 20px !important;
+}
+
+.editprofile-passwordLink {
+  font-size: 13px;
+  padding-bottom: 15px !important;
+}
+
+.editprofile-passwordLink:focus {
+  outline: none;
+}
+
+.editprofile-textfield {
+  padding-top: 10px;
+}
+
 .profile {
   font-family: Roboto;
+}
+
+.profile-button {
+  background-color: #ace1af !important;
+}
+
+.profile-button:hover {
+  opacity: 0.8;
+}
+
+.profile-button:focus {
+  outline: none;
 }
 
 .profile-card {
@@ -7,11 +44,27 @@
   margin-top: 30px;
 }
 
+.profile-error {
+  color: red;
+  font-size: 14px;
+}
+
+.profile-informative-text {
+  font-size: 14px;
+  text-align: center;
+  color: rgb(1, 114, 71);
+  padding-bottom: 10px;
+}
+
 .profile-picture {
   width: 125%;
   height: 100%;
   padding-left: 20px;
   margin-top: 25px;
+}
+
+.profile-snackbar {
+  background-color: rgb(1, 114, 71) !important;
 }
 
 .profile-subtitle {
