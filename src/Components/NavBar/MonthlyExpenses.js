@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { 
   TableContainer, Table, TableRow, TableCell, TableHead, TableBody 
@@ -15,19 +16,19 @@ const useStyles = makeStyles({
 })
 
 const columns = [
-  { id: "date", label: "Date", align: "center", minWidth: 170 },
-  { id: "desc", label: "Transaction", align: "center", minWidth: 370 },
-  { id: "value", label: "Value", align: "center", minWidth: 170 },
+  { id: "date", label: "Due", align: "center", minWidth: 10 },
+  { id: "desc", label: "Expense", align: "center", minWidth: 70 },
+  { id: "value", label: "Value", align: "center", minWidth: 10 },
 ];
 
-function TransactionTable () {
+function MonthlyExpenses () {
   const classes = useStyles();
   return (
     <TableContainer className={classes.container}>
       <Table>
         <TableHead>
           <TableRow className={classes.tableTitle}>
-            Recent Transactions
+            Monthly Expenses
           </TableRow>
           <TableRow>
             {columns.map((column) => (
@@ -38,16 +39,10 @@ function TransactionTable () {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            transaction1
-          </TableRow>
-          <TableRow>
-            transaction2
-          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
   );
 }
 
-export default TransactionTable;
+export default MonthlyExpenses;

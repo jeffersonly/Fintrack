@@ -50,7 +50,6 @@ const useStyles = makeStyles({
     marginBottom: "30px",
   },
   errormessage: {
-    marginTop: "2px",
     color: "red",
     fontSize: "12px",
   },

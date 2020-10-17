@@ -29,7 +29,7 @@ function HomeNav () {
       <div className="homepage-nav-bar">
         <div className="homepage-tab-container">
           <Button 
-            className="homepage-nav-bar-button"
+            className="homepage-nav-bar-button homepage-nav-bar-button-top"
             component={Link}
             to={"/summary"}
             onClick={() => handleClick("sum")}
@@ -39,7 +39,7 @@ function HomeNav () {
             Summary
           </Button>
           <Button 
-            className="homepage-nav-bar-button"
+            className="homepage-nav-bar-button homepage-nav-bar-button-top"
             component={Link}
             to={"/spendings"}
             onClick={() => handleClick("spend")}
@@ -49,7 +49,7 @@ function HomeNav () {
             Spendings
           </Button>
           <Button 
-            className="homepage-nav-bar-button"
+            className="homepage-nav-bar-button homepage-nav-bar-button-top"
             component={Link}
             to={"/savings"}
             onClick={() => handleClick("save")}
@@ -59,7 +59,7 @@ function HomeNav () {
             Savings
           </Button>
           <Button 
-            className="homepage-nav-bar-button"
+            className="homepage-nav-bar-button homepage-nav-bar-button-bottom"
             component={Link}
             to={"/split"}
             onClick={() => handleClick("split")}
@@ -69,7 +69,7 @@ function HomeNav () {
             Split the Bill
           </Button>
           <Button 
-            className="homepage-nav-bar-button"
+            className="homepage-nav-bar-button homepage-nav-bar-button-bottom"
             component={Link}
             to={"/account"}
             onClick={() => handleClick("acc")}

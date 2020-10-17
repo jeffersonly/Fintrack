@@ -1,8 +1,8 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
 import LandingPage from '../Pages/LandingPage';
-import TopHeader from './HomePage/TopHeader';
-import HomeNav from './HomePage/HomeNav';
+import TopHeader from './NavBar/TopHeader';
+import HomeNav from './NavBar/HomeNav';
 import Summary from '../Pages/Summary';
 import Spendings from '../Pages/Spendings';
 import Savings from '../Pages/Savings';
@@ -56,7 +56,7 @@ function App() {
                     : <AuthenticatedRoute exact path="/" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />}
                     
                     {!userAuthenticated ? <Route exact path="/login" render={(props) => (<LandingPage {...props} loginModalOpen={true}/>)}/> 
-                    : <AuthenticatedRoute exact path="/" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />}}
+                    : <AuthenticatedRoute exact path="/" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />}
                     
 
                     <AuthenticatedRoute exact path="/summary" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />
