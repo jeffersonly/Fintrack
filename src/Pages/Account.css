@@ -1,14 +1,14 @@
 .account {
-  margin-left: 150px;
+  margin-left: 80px;
   margin-right: 35px;
-}
-
-.account-button-top {
-  margin-top: 5px !important;
 }
 
 .account-button-bottom {
   margin-bottom: 15px !important;
+}
+
+.account-button-top {
+  margin-top: 5px !important;
 }
 
 .account-left-panel {
@@ -20,6 +20,7 @@
 }
 
 .account-right-panel {
+  margin-left: -30px;
   margin-top: 10vh;
 }
 
@@ -34,4 +35,39 @@
 
 .account-subcontainer {
   margin-top: 20px;
+}
+
+@media (max-width: 800px) {
+  .account {
+    margin-top: 30px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .account {
+    margin-left: 10px;
+  }
+
+  .account-divider {
+    display: none;
+  }
+
+  .account-left-panel {
+    margin-top: 21vh;
+  }
+
+  .account-nav {
+    background-color: white;
+    outline: gainsboro solid 1px;
+    padding-top: 15px;
+    padding-left: 10px !important;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    width: 200px;
+  }
+
+  .account-navbar {
+    margin-top: -55px;
+    z-index: 50;
+  }
 }

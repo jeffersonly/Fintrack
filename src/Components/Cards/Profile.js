@@ -109,7 +109,7 @@ function Profile() {
     <div className="profile">
       <h4 className="profile-title">Profile</h4>
       <Row>
-        <Col xs={7} md={7}>
+        <Col xs={12} md={7}>
           <Card variant="outlined" className="profile-card">
             <CardContent>
               <ThemeProvider theme={theme}>      
@@ -174,7 +174,7 @@ function Profile() {
             </CardContent>
           </Card>
         </Col>
-        <Col xs={4} md={4}>
+        <Col xs={12} md={4}>
           <img src={ProfileSVG} align="center" alt="profile img" className="profile-picture"/>
         </Col>
       </Row>
