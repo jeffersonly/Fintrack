@@ -14,13 +14,15 @@ function TableField(props) {
 
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : "";
+  const customText = props.helperText && meta.touched;
+
   return (
     <div className={classes.textfield}>
       <TextField
         {...field}
-        error={!!errorText}
+        error={customText ? !!props.helperText : !!errorText}
         fullWidth
-        helperText={errorText}
+        helperText={customText ? props.helperText : errorText}
         InputLabelProps={{shrink: true}}
         InputProps={props.InputProps}
         label={props.label}
