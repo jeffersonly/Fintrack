@@ -109,7 +109,6 @@ function QuickTransaction ({ onSubmit }) {
                 if (!values.transaction) {
                   errors.transaction = "Required";
                 }
-
                 if (!values.amount) {
                   errors.amount = "Required";
                 }
