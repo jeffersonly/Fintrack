@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import CreateSaving from '../Components/Saving/CreateSaving';
 import {
-  Button, makeStyles, TextField, Card, CardContent, Typography, Divider, InputAdornment
+  Button, makeStyles, TextField
 } from '@material-ui/core';
-import { BrowserRouter as Router, Link, Route, Switch, withRouter, useHistory } from 'react-router-dom';
-import InputBase from '@material-ui/core/InputBase';
+import {withRouter} from 'react-router-dom';
 import { createMuiTheme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import SavingTableS from '../Components/Saving/SavingTableS'; 
@@ -49,9 +48,9 @@ const useStyles = makeStyles({
 });
 
 
+
 function Savings() {
   const classes = useStyles();
-  const history = useHistory();
   let searchIcon=<SearchIcon />;
   let submitIcon=<Button
                   className={classes.create}
@@ -62,6 +61,20 @@ function Savings() {
                 >
                   SEARCH
                 </Button>
+  const [rows, setRows] = useState([
+    {
+      date: "8/15/2020",
+      saving: "Birthday money",
+      value: "200"
+    },
+    {
+      date: "9/15/2020",
+      saving: "Paycheck",
+      value: "800"
+    }
+  ]);
+
+
   return (
     <Container>
       <Grid container spacing={3}>
@@ -76,10 +89,22 @@ function Savings() {
               InputLabelProps={{shrink: true,}}
               InputProps={{startAdornment: searchIcon, endAdornment: submitIcon}}
             />
-            <SavingTableS />
+            <SavingTableS rows={rows} />
         </Grid>
         <Grid item xs>
-          <CreateSaving />
+          <CreateSaving 
+           onSubmit={data => {
+            setRows(currentRows => [
+              {
+                date: data[0],
+                saving: data[1],
+                value: data[2]
+              },
+              ...currentRows
+            ]);
+          }}
+          
+          />
         </Grid>
       </Grid>
     </Container>
