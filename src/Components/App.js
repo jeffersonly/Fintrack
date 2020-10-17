@@ -8,6 +8,7 @@ import Spendings from '../Pages/Spendings';
 import Savings from '../Pages/Savings';
 import Expenses from '../Pages/Expenses';
 import Transactions from '../Pages/Transactions';
+import Account from '../Pages/Account';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import AuthenticatedRoute from '../Components/Routes/AuthenticatedRoute';
@@ -64,6 +65,7 @@ function App() {
                     <AuthenticatedRoute exact path="/transactions" component={Transactions} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/expenses" component={Expenses} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/savings" component={Savings} appProps={{userAuthenticated, setUserAuthenticated}} />
+                    <AuthenticatedRoute exact path="/account" component={Account} appProps={{userAuthenticated, setUserAuthenticated}} />
                 </Switch>
             </Router>
         </div>
