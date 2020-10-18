@@ -50,7 +50,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function SavingTableS ({rows}) {
+function SavingTableS () {
   const [savings, setSaving] = useState([]);
   useEffect(() => {
     fetchSaving();

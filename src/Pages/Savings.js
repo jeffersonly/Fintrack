@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import CreateSaving from '../Components/Saving/CreateSaving';
@@ -61,19 +61,6 @@ function Savings() {
                 >
                   SEARCH
                 </Button>
-  const [rows, setRows] = useState([
-    {
-      date: "8/15/2020",
-      saving: "Birthday money",
-      value: "200"
-    },
-    {
-      date: "9/15/2020",
-      saving: "Paycheck",
-      value: "800"
-    }
-  ]);
-
 
   return (
     <Container>
@@ -89,22 +76,10 @@ function Savings() {
               InputLabelProps={{shrink: true,}}
               InputProps={{startAdornment: searchIcon, endAdornment: submitIcon}}
             />
-            <SavingTableS rows={rows} />
+            <SavingTableS />
         </Grid>
         <Grid item xs>
-          <CreateSaving 
-           onSubmit={data => {
-            setRows(currentRows => [
-              {
-                date: data[0],
-                saving: data[1],
-                value: data[2]
-              },
-              ...currentRows
-            ]);
-          }}
-          
-          />
+          <CreateSaving />
         </Grid>
       </Grid>
     </Container>
