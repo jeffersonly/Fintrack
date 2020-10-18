@@ -10,6 +10,7 @@ import { Formik, Form } from 'formik';
 
 import TableField from "../InputFields/TableField";
 import CardTitle from "./CardTitle";
+import Dropzone from '../Dropzone/Dropzone';
 
 const theme = createMuiTheme ({
   palette: {
@@ -158,6 +159,7 @@ function QuickTransaction ({ onSubmit }) {
                     placeholder="30"
                     type="number"
                   />
+                  <Dropzone />
                   <Button
                     className={classes.createbutton}
                     disableElevation
