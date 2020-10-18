@@ -13,8 +13,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import AuthenticatedRoute from '../Components/Routes/AuthenticatedRoute';
 
-import Dropzone from '../Components/Dropzone/Dropzone';
-
 function App() {
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [userAuthenticated, setUserAuthenticated] = useState(false);
@@ -52,7 +50,6 @@ function App() {
     return (
         !isAuthenticating &&
         <div className="App">
-            <Dropzone/>
             <Router>
                 {renderHomeNav()}
                 <Switch>

@@ -3,8 +3,7 @@
     text-align: center;
     color: rgba(1, 114, 71);
     font-weight: bold;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 15px;
     transition: all 0.3s ease;
 }
 

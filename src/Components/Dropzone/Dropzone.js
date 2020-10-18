@@ -82,8 +82,8 @@ function Dropzone(props) {
         <section className="container">
             <div {...getRootProps({className: 'dropzone'})}>
                 <input {...getInputProps()} />
-                <p className="dropbox-text">Drag 'n' Drop Images Here <br/> or <br/> Click to Select</p>
-                <p className="dropbox-disclaimer-text">Only *.jpeg and *.png images are accepted!</p>
+                <p className="dropbox-text"> Drag 'n' Drop Images Here <br/> or <br/> Click to Select</p>
+                <p className="dropbox-disclaimer-text">Only *.jpeg and *.png images are accepted! <br/> Images must have a $ indicator! </p>
             </div>
             <aside className="thumbs-imgs-container">
                 {thumbs}
