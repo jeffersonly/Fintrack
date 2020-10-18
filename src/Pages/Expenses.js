@@ -9,6 +9,7 @@ import { withRouter, useHistory } from 'react-router-dom';
 import { createMuiTheme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import ExpenseTableS from '../Components/Spending/ExpenseTableS'; 
+import Dropzone from '../Components/Dropzone/Dropzone';
 
 const Container = styled.div`
   margin-left: 35px;
@@ -88,6 +89,7 @@ function Expenses() {
             <ExpenseTableS/>
         </Grid>
         <Grid item xs>
+            <Dropzone />
             <CreateExpense />
         </Grid>
       </Grid>

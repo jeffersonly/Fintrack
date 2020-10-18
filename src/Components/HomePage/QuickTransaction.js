@@ -7,6 +7,7 @@ import { ThemeProvider } from '@material-ui/styles';
 //import AddIcon from '@material-ui/icons/Add';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import Dropzone from '../Dropzone/Dropzone';
 
 import { useFormik } from 'formik';
 
@@ -103,6 +104,7 @@ function QuickTransaction () {
           <Typography className={classes.cardtitle} align="center">
             + Quick-Create Transaction
           </Typography>
+          <Dropzone />
           <Divider className={classes.divider}/>
           {/*<DayPickerInput
             formatDate={formatDate}

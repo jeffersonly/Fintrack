@@ -5,9 +5,10 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
-import awsconfig from './aws-exports';
+import { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
+
 Amplify.configure(awsExports);
-Amplify.configure(awsconfig);
+Amplify.addPluggable(new AmazonAIPredictionsProvider());
 
 ReactDOM.render(
   <App />,
