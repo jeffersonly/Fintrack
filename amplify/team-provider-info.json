@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fintrack-dev-141609-authRole",
+      "UnauthRoleArn": "arn:aws:iam::162045688266:role/amplify-fintrack-dev-141609-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::162045688266:role/amplify-fintrack-dev-141609-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-fintrack-dev-141609-deployment",
+      "UnauthRoleName": "amplify-fintrack-dev-141609-unauthRole",
+      "StackName": "amplify-fintrack-dev-141609",
+      "StackId": "arn:aws:cloudformation:us-west-2:162045688266:stack/amplify-fintrack-dev-141609/84dfae50-f218-11ea-9265-02cb7c2cea95",
+      "AmplifyAppId": "d191rl4e83chd"
+    },
+    "categories": {
+      "auth": {
+        "fintrackbd6fd57a": {}
+      }
+    }
+  }
+}
