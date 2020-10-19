@@ -18,6 +18,8 @@ function Dropzone(props) {
                 }
             })
             .then(res => {
+                console.log(res);
+                console.log("here");
                 const totalCost = parseText(res);
                 let costAndImgObj = {
                     totalCost: totalCost,
