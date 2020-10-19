@@ -44,6 +44,12 @@ const useStyles = makeStyles({
   },
   datepicker: {
     marginBottom: "20px",
+  },
+  text: {
+    color: "#A9A9A9",
+    fontSize: "12px",
+    marginTop: "-15px",
+    paddingBottom: "5px"
   }
 });
 
@@ -165,6 +171,7 @@ function CreateSaving() {
                     options={repeats}
                     select={true}
                   />
+                  <p className={classes.text}>Please select how often the saving reoccurs.</p>
                   <TableField
                     label="Notes"
                     name="note"
