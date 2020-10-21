@@ -4,7 +4,7 @@ type Saving @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
   id: ID!
   date: String!
   name: String!
-  value: String!
+  value: Float!
   repeat: String!
   note: String!
 }
