@@ -9,6 +9,7 @@ import { listSavings, savingsByOwner } from '../../graphql/queries';
 
 import TableHeader from '../Tables/TableHeader';
 import SnackbarNotification from '../Modals/SnackbarNotification';
+import MoreInformation from '../Modals/MoreInformation';
 import '../Tables/Table.css';
 
 const columnTitles = [
@@ -60,10 +61,15 @@ function SavingTableS() {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
+
   const [savings, setSaving] = useState([]);
+
   const [search, setSearch] = useState("");
   const [status, setStatusBase] = useState("");
-  const [open, setOpen] = useState(true);
+
+  const [openAlert, setOpenAlert] = useState(true);
+
+  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     fetchSaving();
@@ -101,7 +107,7 @@ function SavingTableS() {
         setSaving(savingList);
       }
       else {
-        setOpen(true);
+        setOpenAlert(true);
         setStatusBase("No match found.");
       }
     }
@@ -116,7 +122,7 @@ function SavingTableS() {
     if (reason === "clickaway") {
       return;
     }
-    setOpen(false);
+    setOpenAlert(false);
   }
 
   return (
@@ -128,7 +134,7 @@ function SavingTableS() {
         InputProps={{
           endAdornment: (
             <InputAdornment>
-              <IconButton className="table-searchicon" onClick={handleClick} type="submit">
+              <IconButton className="table-icon" onClick={handleClick} type="submit">
                 <Search />
               </IconButton>
             </InputAdornment>
@@ -157,7 +163,9 @@ function SavingTableS() {
                     <TableCell align="center">${saving.value}</TableCell>
                     <TableCell align="center">{saving.repeat}</TableCell>
                     <TableCell align="center">   
-                      <IconButton> <Info /> </IconButton>
+                      <IconButton className="table-icon" onClick={() => setShowMore(true)}> 
+                        <Info /> 
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 )
@@ -171,10 +179,14 @@ function SavingTableS() {
           className="table-snackbar"
           message={status} 
           onClose={handleCloseAlert} 
-          open={open} 
+          open={openAlert} 
           vertical="top"
         /> 
       : null}
+      <MoreInformation
+        closeMore={() => setShowMore(!showMore)} 
+        openMore={showMore}
+      />
     </div>
   );
 }
