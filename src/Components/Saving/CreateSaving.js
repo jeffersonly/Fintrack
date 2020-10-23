@@ -9,7 +9,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 
 import { API } from 'aws-amplify';
-import { createSaving } from '../../src/graphql/mutations';
+import { createSaving } from '../../graphql/mutations';
 
 import TableField from '../InputFields/TableField';
 import CardTitle from '../Cards/CardTitle';
@@ -92,6 +92,7 @@ async function submitNewSaving(data) {
     console.log({ err });
   }
 }
+
 function CreateSaving() {
   const classes = useStyles();
 

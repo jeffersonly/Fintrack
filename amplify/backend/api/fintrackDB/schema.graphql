@@ -1,5 +1,10 @@
 type Saving @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
 @auth(rules: [{ allow: owner }])
+@key (
+  fields: ["owner", "name"]
+  queryField: "savingsByOwner"
+  name: "ownerIndex"
+)
 {
   id: ID!
   date: String!
@@ -7,6 +12,7 @@ type Saving @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
   value: Float!
   repeat: String!
   note: String!
+  owner: String
 }
 
 type Transaction @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"}) 

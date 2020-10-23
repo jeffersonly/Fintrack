@@ -13,9 +13,9 @@ export const createSaving = /* GraphQL */ `
       value
       repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
@@ -31,9 +31,9 @@ export const updateSaving = /* GraphQL */ `
       value
       repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
@@ -49,9 +49,9 @@ export const deleteSaving = /* GraphQL */ `
       value
       repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
