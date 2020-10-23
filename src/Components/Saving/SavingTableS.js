@@ -10,7 +10,6 @@ import { Search, Close, Info } from '@material-ui/icons';
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Snackbar from "@material-ui/core/Snackbar";
-import { Modal, Form } from 'semantic-ui-react'
 
 
 const useStyles = makeStyles({
@@ -176,12 +175,8 @@ function SavingTableS() {
                 <TableCell align="center">${saving.value}</TableCell>
                 <TableCell align="center">{saving.repeat}</TableCell>
                 <TableCell align="center">   
-                <Modal trigger={  <IconButton onClick={this.state.handleOpen}> <Info /> </IconButton>}  open={this.state.modalOpen} Close onClose={this.state.handleClose}> 
-                  <Modal.Header>Details</Modal.Header>
-                  <Modal.Content>
-                    
-                  </Modal.Content>
-                </Modal>  
+                <IconButton> <Info /> </IconButton>
+                
                 </TableCell>
               </TableRow>
             );
