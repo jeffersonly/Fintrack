@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Button, Card, CardContent, InputAdornment, makeStyles
-} from '@material-ui/core';
+import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { Formik, Form } from 'formik';
@@ -13,6 +11,7 @@ import { createSaving } from '../../graphql/mutations';
 
 import TableField from '../InputFields/TableField';
 import CardTitle from '../Cards/CardTitle';
+import '../Cards/Card.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -23,13 +22,6 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles({
-  card: {
-    width: "100%",
-    marginBottom: "20px",
-  },
-  container: {
-    fontFamily: "Roboto"
-  },
   createbutton: {
     backgroundColor: "#ace1af",
     fontSize: "16px",
@@ -41,15 +33,6 @@ const useStyles = makeStyles({
       backgroundColor: "#ace1af",
       opacity: 0.8
     },
-  },
-  datepicker: {
-    marginBottom: "20px",
-  },
-  text: {
-    color: "#A9A9A9",
-    fontSize: "12px",
-    marginTop: "-15px",
-    paddingBottom: "5px"
   }
 });
 
@@ -94,19 +77,36 @@ async function submitNewSaving(data) {
 }
 
 function CreateSaving() {
+
   const classes = useStyles();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
   const resetDate = () => {
     setSelectedDate(new Date());
   };
+
+  const formatDate = (date) => {
+    let split = date.split("/");
+    let month = split[0];
+    let day = split[1];
+    let year = split[2];
+    if (month < 10) {
+      month = "0" + month;
+    }
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return month + "/" + day + "/" + year;
+  }
   
   return (
-    <div className={classes.container}>
-      <Card className={classes.card} variant="outlined">
+    <div className="card-container">
+      <Card className="card-fintrack" variant="outlined">
         <CardContent>
           <CardTitle title="Create New Savings" />
           <ThemeProvider theme={theme}>
@@ -131,7 +131,8 @@ function CreateSaving() {
               }}
               onSubmit={(data, { resetForm }) => {
                 console.log(data, selectedDate.toLocaleDateString());
-                const array = [selectedDate.toLocaleDateString(), data.name, data.value, data.repeat, data.note];
+                const formattedDate = formatDate(selectedDate.toLocaleDateString());
+                const array = [formattedDate, data.name, data.value, data.repeat, data.note];
                 submitNewSaving(array);
                 resetDate();
                 resetForm();
@@ -142,7 +143,7 @@ function CreateSaving() {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      className={classes.datepicker}
+                      className="card-datepicker"
                       format="MM/dd/yyyy"
                       fullWidth
                       InputAdornmentProps={{ position: "end" }}
@@ -172,7 +173,7 @@ function CreateSaving() {
                     options={repeats}
                     select={true}
                   />
-                  <p className={classes.text}>Please select how often the saving reoccurs.</p>
+                  <p className="card-text">Please select how often the saving reoccurs.</p>
                   <TableField
                     label="Notes"
                     name="note"

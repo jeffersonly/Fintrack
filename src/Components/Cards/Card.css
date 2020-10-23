@@ -1,0 +1,33 @@
+.card-fintrack {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.card-container {
+  font-family: Roboto;
+}
+
+.card-createbutton {
+  background-color: #ace1af;
+  font-size: 16px;
+  width: 100%;
+}
+
+.card-createbutton:focus {
+  outline: none;
+}
+
+.card-createbutton:hover {
+  opacity: 0.8;
+}
+
+.card-datepicker {
+  margin-bottom: 20px !important;
+}
+
+.card-text {
+  color: #A9A9A9;
+  font-size: 12px;
+  margin-top: -15px;
+  padding-bottom: 5px;
+}

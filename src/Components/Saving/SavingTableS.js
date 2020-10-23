@@ -1,92 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  TableContainer, Table, TableRow, TableCell, TableHead, TableBody, Button
+import { 
+  IconButton, InputAdornment, Table, TableBody, TableCell, 
+  TableContainer, TableRow, TextField 
 } from '@material-ui/core';
+import { Search, Info } from '@material-ui/icons';
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { listSavings, savingsByOwner } from '../../graphql/queries';
-import { TextField } from '@material-ui/core';
-import { Search, Close, Info } from '@material-ui/icons';
-import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Snackbar from "@material-ui/core/Snackbar";
 
+import TableHeader from '../Tables/TableHeader';
+import SnackbarNotification from '../Modals/SnackbarNotification';
+import '../Tables/Table.css';
 
-const useStyles = makeStyles({
-  container: {
-    maxHeight: 440,
-  },
-  tableTitle: {
-    fontWeight: "bold",
-    fontSize: "20px",
-  },
-  createbutton: {
-    backgroundColor: "#ace1af",
-    fontSize: "16px",
-    width: "100%",
-    '&:focus': {
-      outline: "none"
-    },
-    '&:hover': {
-      backgroundColor: "#ace1af",
-      opacity: 0.8
-    },
-  },
-})
-
-const columns = [
+const columnTitles = [
   { id: "date", label: "Date", align: "center", minWidth: 50 },
   { id: "name", label: "Savings Name", align: "center", minWidth: 150 },
-  { id: "value", label: "Value", align: "center", minWidth: 100 },
+  { id: "value", label: "Value", align: "center", minWidth: 100, numeric: true },
   { id: "repeat", label: "Repeat", align: "center", minWidth: 100 },
-  { id: "info", label: "", align: "center", minWidth: 50 },
+  { id: "info", label: "More Information", align: "center", minWidth: 50 },
 ];
 
-function AlertMessage({ message }) {
-  const [open, setOpen] = React.useState(true);
-  function handleClose(event, reason) {
-    if (reason === "clickaway") {
-      return;
+function descendingComparator(a, b, orderBy) {
+  if (orderBy === "date") {
+    let bdate = new Date(b.date);
+    let adate = new Date(a.date);
+    if (bdate < adate) {
+      return -1;
     }
-    setOpen(false);
+    if (bdate > adate) {
+      return 1;
+    }
   }
-  return (
-    <div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center"
-        }}
-        open={open}
-        autoHideDuration={4000}
-        onClose={handleClose}
-        variant="warning"
-        ContentProps={{
-          "aria-describedby": "message-id"
-        }}
-        message={message}
-        action={[
-          <IconButton key="close" onClick={handleClose}>
-            <Close />
-          </IconButton>
-        ]}
-      />
-    </div>
-  );
+  else {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+  }
 }
 
-function editItem() {
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
 
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function SavingTableS() {
+
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('date');
   const [savings, setSaving] = useState([]);
   const [search, setSearch] = useState("");
   const [status, setStatusBase] = useState("");
+  const [open, setOpen] = useState(true);
 
   useEffect(() => {
     fetchSaving();
   }, []);
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
   const fetchSaving = async () => {
     if (search === "") {
       try {
@@ -113,15 +101,10 @@ function SavingTableS() {
         setSaving(savingList);
       }
       else {
-        setStatusBase({ msg: "No match: Clear your search to see your Savings", key: Math.random() });
+        setOpen(true);
+        setStatusBase("No match found.");
       }
-
     }
-
-  };
-
-  const handleChange = (event) => {
-    setSearch(event.target.value);
   };
 
   const handleClick = (event) => {
@@ -129,63 +112,70 @@ function SavingTableS() {
     fetchSaving();
   };
 
-  const handleClose = () => {this.setState({show:false})};
-  const handleOpen = () =>{this.setState({show:true})};
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  }
 
-  const classes = useStyles();
   return (
-    <TableContainer className={classes.container}>
+    <div>
       <TextField
-        className={classes.textfield}
-        variant="outlined"
-        placeholder="Search"
+        className="table-search"
         fullWidth
         InputLabelProps={{ shrink: true, }}
-        value={search}
-        onChange={search => handleChange(search)}
         InputProps={{
           endAdornment: (
             <InputAdornment>
-              <IconButton
-                onClick={handleClick}
-                type="submit">
+              <IconButton className="table-searchicon" onClick={handleClick} type="submit">
                 <Search />
               </IconButton>
             </InputAdornment>
           )
         }}
+        onChange={e => setSearch(e.target.value)}
+        placeholder="Search"
+        value={search}
+        variant="outlined"
       />
-
-      <Table>
-        <TableHead>
-          <TableRow>
-            {columns.map((column) => (
-              <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                {column.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {savings.map((saving) => {
-            return (
-              <TableRow hover key={saving.id}>
-                <TableCell align="center">{saving.date}</TableCell>
-                <TableCell align="center">{saving.name}</TableCell>
-                <TableCell align="center">${saving.value}</TableCell>
-                <TableCell align="center">{saving.repeat}</TableCell>
-                <TableCell align="center">   
-                <IconButton> <Info /> </IconButton>
-                
-                </TableCell>
-              </TableRow>
-            );
-          })
-          }
-        </TableBody>
-      </Table>
-      {status ? <AlertMessage key={status.key} message={status.msg} /> : null}
-    </TableContainer>
+      <TableContainer className="table-container">
+        <Table stickyHeader>
+          <TableHeader
+            headCells={columnTitles}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(savings, getComparator(order, orderBy))
+              .map((saving) => {
+                return (
+                  <TableRow hover key={saving.id}>
+                    <TableCell align="center">{saving.date}</TableCell>
+                    <TableCell align="center">{saving.name}</TableCell>
+                    <TableCell align="center">${saving.value}</TableCell>
+                    <TableCell align="center">{saving.repeat}</TableCell>
+                    <TableCell align="center">   
+                      <IconButton> <Info /> </IconButton>
+                    </TableCell>
+                  </TableRow>
+                )
+              })
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {status 
+      ? <SnackbarNotification 
+          className="table-snackbar"
+          message={status} 
+          onClose={handleCloseAlert} 
+          open={open} 
+          vertical="top"
+        /> 
+      : null}
+    </div>
   );
 }
 
