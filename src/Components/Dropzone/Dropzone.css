@@ -5,6 +5,7 @@
     font-weight: bold;
     padding: 15px;
     transition: all 0.3s ease;
+    margin-bottom: 20px;
 }
 
 .dropzone:hover {
@@ -16,7 +17,7 @@
     text-shadow: 1px 1px 40px rgba(1, 114, 71);
 }
 
-.thumbs-imgs-container {
+/* .thumbs-imgs-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -44,7 +45,7 @@
     display: block;
     width: auto;
     height: 100%;
-}
+} */
 
 .dropbox-text {
     font-size: 1.25em;

@@ -1,0 +1,12 @@
+.itemRow {
+    border: 1px solid lightgray;
+    border-radius: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.itemReceiptImg {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
