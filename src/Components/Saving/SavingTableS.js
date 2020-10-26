@@ -1,43 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { 
-  TableContainer, Table, TableRow, TableCell, TableHead, TableBody 
+  IconButton, InputAdornment, Table, TableBody, TableCell, 
+  TableContainer, TableRow, TextField 
 } from '@material-ui/core';
-import {API, graphqlOperation} from "aws-amplify";
-import {listSavings} from '../../src/graphql/queries';
+import { Search, Info } from '@material-ui/icons';
+import { Auth, API, graphqlOperation } from "aws-amplify";
+import { listSavings, savingsByOwner } from '../../graphql/queries';
 
-const useStyles = makeStyles({
-  container: {
-    maxHeight: 440,
-  },
-  tableTitle: {
-    fontWeight: "bold",
-    fontSize: "20px",
-  },
-})
+import TableHeader from '../Tables/TableHeader';
+import SnackbarNotification from '../Modals/SnackbarNotification';
+import MoreInformation from '../Modals/MoreInformation';
+import '../Tables/Table.css';
 
-const columns = [
+const columnTitles = [
   { id: "date", label: "Date", align: "center", minWidth: 50 },
   { id: "name", label: "Savings Name", align: "center", minWidth: 150 },
-  { id: "value", label: "Value", align: "center", minWidth: 100 },
+  { id: "value", label: "Value", align: "center", minWidth: 100, numeric: true },
   { id: "repeat", label: "Repeat", align: "center", minWidth: 100 },
-  { id: "note", label: "Notes", align: "center", minWidth: 150 },
+  { id: "info", label: "More Information", align: "center", minWidth: 50 },
 ];
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
+  if (orderBy === "date") {
+    let bdate = new Date(b.date);
+    let adate = new Date(a.date);
+    if (bdate < adate) {
+      return -1;
+    }
+    if (bdate > adate) {
+      return 1;
+    }
   }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
+  else {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
   }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'saving'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function stableSort(array, comparator) {
@@ -50,53 +51,143 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function SavingTableS ({rows}) {
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function SavingTableS() {
+
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('date');
+
   const [savings, setSaving] = useState([]);
+
+  const [search, setSearch] = useState("");
+  const [status, setStatusBase] = useState("");
+
+  const [openAlert, setOpenAlert] = useState(true);
+
+  const [showMore, setShowMore] = useState(false);
+
   useEffect(() => {
     fetchSaving();
   }, []);
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
   const fetchSaving = async () => {
-    try{
-      const savingData = await API.graphql(graphqlOperation(listSavings));
-      const savingList = savingData.data.listSavings.items;
-      console.log('saving list', savingList);
-      setSaving(savingList)
-    } catch (error){
-      console.log('Error on fetching saving', error)
+    if (search === "") {
+      try {
+        const savingData = await API.graphql(graphqlOperation(listSavings));
+        const savingList = savingData.data.listSavings.items;
+        console.log('saving list', savingList);
+        setSaving(savingList)
+      } catch (error) {
+        console.log('Error on fetching saving', error)
+      }
+    }
+    else {
+      const owner = await Auth.currentAuthenticatedUser();
+      const input = {
+        owner: owner.username,
+        name: {
+          beginsWith: search,
+        },
+      };
+      const savingData = await API.graphql(graphqlOperation(savingsByOwner, input));
+      const savingList = savingData.data.savingsByOwner.items;
+      console.log(savingList);
+      if (savingList.length > 0) {
+        setSaving(savingList);
+      }
+      else {
+        setOpenAlert(true);
+        setStatusBase("No match found.");
+      }
     }
   };
 
-  const classes = useStyles();
-  const [order, setOrder] = useState('saving');
-  const [orderBy, setOrderBy] = useState('date');
+  const handleClick = (event) => {
+    event.preventDefault();
+    fetchSaving();
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenAlert(false);
+  }
+
   return (
-    <TableContainer className={classes.container}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {columns.map((column) => (
-              <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                {column.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-            {savings.map((saving) => {
+    <div>
+      <TextField
+        className="table-search"
+        fullWidth
+        InputLabelProps={{ shrink: true, }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment>
+              <IconButton className="table-icon" onClick={handleClick} type="submit">
+                <Search />
+              </IconButton>
+            </InputAdornment>
+          )
+        }}
+        onChange={e => setSearch(e.target.value)}
+        placeholder="Search"
+        value={search}
+        variant="outlined"
+      />
+      <TableContainer className="table-container">
+        <Table stickyHeader>
+          <TableHeader
+            headCells={columnTitles}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(savings, getComparator(order, orderBy))
+              .map((saving) => {
                 return (
                   <TableRow hover key={saving.id}>
                     <TableCell align="center">{saving.date}</TableCell>
                     <TableCell align="center">{saving.name}</TableCell>
                     <TableCell align="center">${saving.value}</TableCell>
                     <TableCell align="center">{saving.repeat}</TableCell>
-                    <TableCell align="center">{saving.note}</TableCell>
+                    <TableCell align="center">   
+                      <IconButton className="table-icon" onClick={() => setShowMore(true)}> 
+                        <Info /> 
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
-                );
+                )
               })
             }
           </TableBody>
-      </Table>
-    </TableContainer>
+        </Table>
+      </TableContainer>
+      {status 
+      ? <SnackbarNotification 
+          className="table-snackbar"
+          message={status} 
+          onClose={handleCloseAlert} 
+          open={openAlert} 
+          vertical="top"
+        /> 
+      : null}
+      <MoreInformation
+        closeMore={() => setShowMore(!showMore)} 
+        openMore={showMore}
+      />
+    </div>
   );
 }
 

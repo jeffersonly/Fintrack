@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import {
-  Button, makeStyles, TextField, Card, CardContent, Typography, Divider, InputAdornment
-} from '@material-ui/core';
+import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import { Formik, Form } from 'formik';
-import TableField from "../InputFields/TableField";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { API, graphqlOperation } from 'aws-amplify';
-import { createSaving } from '../../src/graphql/mutations';
 
+import { API } from 'aws-amplify';
+import { createSaving } from '../../graphql/mutations';
 
-const Container = styled.div`
-  font-family: Roboto;
-`;
+import TableField from '../InputFields/TableField';
+import CardTitle from '../Cards/CardTitle';
+import '../Cards/Card.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -30,23 +22,13 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles({
-  root: {
-    width: "100%",
-    marginBottom: "20px",
-  },
-  title: {
-    fontSize: "20px",
-    fontWeight: "bold",
-    marginBottom: "15px",
-  },
-  divider: {
-    marginBottom: "30px",
-  },
-  textfield: {
-    marginBottom: "20px",
-  },
-  create: {
+  createbutton: {
     backgroundColor: "#ace1af",
+    fontSize: "16px",
+    width: "100%",
+    '&:focus': {
+      outline: "none"
+    },
     '&:hover': {
       backgroundColor: "#ace1af",
       opacity: 0.8
@@ -73,36 +55,17 @@ const repeats = [
   },
 ];
 
-const formState = { date: new Date().toLocaleDateString(), name: '', value: '', repeat: 'Never', note: '' };
-
-function updateFormState(key, value) {
-  formState[key] = value;
-  console.log(key, value);
-}
-async function submitNewSaving() {
-  var checkName, checkValue;
-  checkName = document.getElementById("id-input").value;
-  if (checkName === ""){
-    alert("Enter a name for the saving");
-    return false;
-  }
-  checkValue = document.getElementById("value-input").value;
-  if (checkValue === ""){
-    alert("Enter a value for the saving's amount");
-    return false;
-  }
+async function submitNewSaving(data) {
   try {
-    console.log (formState.date);
-    console.log (formState.repeat);
     await API.graphql({
       query: createSaving,
       variables: {
         input: {
-          date: formState.date,
-          name: formState.name,
-          value: formState.value,
-          repeat: formState.repeat,
-          note: formState.note
+          date: data[0],
+          name: data[1],
+          value: data[2],
+          repeat: data[3],
+          note: data[4]
         }
       }
     })
@@ -112,153 +75,128 @@ async function submitNewSaving() {
     console.log({ err });
   }
 }
-function CreateSaving({ onSubmit }) {
+
+function CreateSaving() {
+
   const classes = useStyles();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    updateFormState('date', date.toLocaleDateString());
   };
+
   const resetDate = () => {
     setSelectedDate(new Date());
   };
 
-  const [repeat, setRepeat] = React.useState('Never');
-  const handleRepeatChange = (event) => {
-    setRepeat(event.target.value);
-    updateFormState('repeat', event.target.value);
-  };
-
+  const formatDate = (date) => {
+    let split = date.split("/");
+    let month = split[0];
+    let day = split[1];
+    let year = split[2];
+    if (month < 10) {
+      month = "0" + month;
+    }
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return month + "/" + day + "/" + year;
+  }
+  
   return (
-    <Container>
-      <Card className={classes.root} variant="outlined">
+    <div className="card-container">
+      <Card className="card-fintrack" variant="outlined">
         <CardContent>
-          <Typography className={classes.title} align="center">
-            Create New Savings
-          </Typography>
-          <Divider className={classes.divider} />
+          <CardTitle title="Create New Savings" />
           <ThemeProvider theme={theme}>
-            {
-            /*<Formik
-              initialValues={
-                { value1: '', name1: '' }
-              }
+            <Formik
+              initialValues={{ 
+                name: "",
+                value: "",
+                repeat: "Never",
+                note: ""
+              }}
               validate={values => {
                 const errors = {};
 
-                if (!values.name1) {
-                  errors.name1 = "Required";
+                if (!values.name) {
+                  errors.name = "Required";
                 }
-
-                if (!values.value1) {
-                  errors.value1 = "Required";
+                if (!values.value) {
+                  errors.value = "Required";
                 }
 
                 return errors;
               }}
               onSubmit={(data, { resetForm }) => {
                 console.log(data, selectedDate.toLocaleDateString());
-                submitNewSaving();
+                const formattedDate = formatDate(selectedDate.toLocaleDateString());
+                const array = [formattedDate, data.name, data.value, data.repeat, data.note];
+                submitNewSaving(array);
                 resetDate();
                 resetForm();
               }}
             >
               {({ values }) => (
                 <Form>
-              */}
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
+                      className="card-datepicker"
+                      format="MM/dd/yyyy"
                       fullWidth
-                      className={classes.textfield}
-                      variant="inline"
+                      InputAdornmentProps={{ position: "end" }}
                       inputVariant="outlined"
                       label="Date"
-                      format="MM/dd/yyyy"
+                      onChange={date => handleDateChange(date)}
                       required
                       value={selectedDate}
-                      InputAdornmentProps={{ position: "end" }}
-                      onChange={date => handleDateChange(date)}
+                      variant="inline"
                     />
                   </MuiPickersUtilsProvider>
-                  <TextField
-                    className={classes.textfield}
-                    variant="outlined"
-                    fullWidth
-                    InputLabelProps={{ shrink: true, }}
+                  <TableField
                     label="Savings Name"
-                    id = "id-input"
                     name="name"
                     placeholder="Paycheck"
-                    required
-                    onChange={e => updateFormState('name', e.target.value)}
                   />
-                  <TextField
-                    className={classes.textfield}
-                    variant="outlined"
-                    fullWidth
-                    InputLabelProps={{ shrink: true, }}
-                    id = "value-input"
+                  <TableField
+                    InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
                     label="Value"
                     name="value"
                     placeholder="300"
                     type="number"
-                    required
-                    InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
-                    onChange={e => updateFormState('value', e.target.value)}
                   />
-                  <TextField
-                    className={classes.textfield}
+                  <TableField
                     label="Repeat"
                     name="repeat"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    InputLabelProps={{ shrink: true, }}
-                    select
-                    value={repeat}
-                    required
-                    onChange={handleRepeatChange}
-                    helperText="Please select when the saving reoccur"
-                  >
-                    {repeats.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    className={classes.textfield}
+                    options={repeats}
+                    select={true}
+                  />
+                  <p className="card-text">Please select how often the saving reoccurs.</p>
+                  <TableField
                     label="Notes"
                     name="note"
-                    variant="outlined"
                     placeholder="12 hours"
-                    fullWidth
-                    InputLabelProps={{ shrink: true, }}
-                    onChange={e => updateFormState('note', e.target.value)}
+                    required={false}
                   />
                   <Button
-                    className={classes.create}
-                    variant="contained"
+                    className={classes.createbutton}
                     disableElevation
+                    disabled={!values.name || !values.value}
                     size="large"
-                    style={{ width: "100%", fontSize: "16px" }}
                     type="submit"
-                    onClick = {submitNewSaving}
+                    variant="contained"
                   >
                     Create
                   </Button>
-                  {
-            /*
                 </Form>
               )}
             </Formik>
-          */}
           </ThemeProvider>
         </CardContent>
       </Card>
-    </Container>
+    </div>
   );
 }
 

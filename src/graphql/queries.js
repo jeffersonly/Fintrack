@@ -10,9 +10,9 @@ export const getSaving = /* GraphQL */ `
       value
       repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
@@ -30,9 +30,9 @@ export const listSavings = /* GraphQL */ `
         value
         repeat
         note
+        owner
         createdOn
         updatedOn
-        owner
       }
       nextToken
     }
@@ -107,6 +107,38 @@ export const listExpenses = /* GraphQL */ `
         createdOn
         updatedOn
         owner
+      }
+      nextToken
+    }
+  }
+`;
+export const savingsByOwner = /* GraphQL */ `
+  query SavingsByOwner(
+    $owner: String
+    $name: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSavingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    savingsByOwner(
+      owner: $owner
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        date
+        name
+        value
+        repeat
+        note
+        owner
+        createdOn
+        updatedOn
       }
       nextToken
     }
