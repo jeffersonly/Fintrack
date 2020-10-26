@@ -94,7 +94,7 @@ function NavBar(props) {
     }, [props.openLoginModal])
 
     return (
-        <Navbar sticky="top" collapseOnSelect expand="lg" variant="dark" className="navbar">
+        <Navbar sticky="top" collapseOnSelect expand="lg" variant="dark" className="app-navbar">
             {/* Nav Bar Items */}
             <Navbar.Brand>
                 <h1 className="navbar-brandname">FinTrack</h1>

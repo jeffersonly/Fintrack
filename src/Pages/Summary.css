@@ -4,20 +4,9 @@
   font-size: 1.1rem;
 }
 
-.DayPicker-TodayButton {
-  margin-left: 100px;
-}
-
 .DayPicker-Day {
   padding: 0.4em;
   width: 40px;
-}
-
-.DayPicker-Weekday {
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-  padding-left: 0.6em;
-  padding-right: 0.6em;
 }
 
 .DayPicker-Day--today {
@@ -27,6 +16,17 @@
 
 .DayPicker-Day--today:hover {
   background-color: rgb(1, 114, 71) !important;
+}
+
+.DayPicker-TodayButton {
+  margin-left: 110px;
+}
+
+.DayPicker-Weekday {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
 }
 
 /* Summary page CSS */
@@ -43,10 +43,53 @@
   margin-bottom: 20px;
 }
 
-.homepage-welcome {
-  padding-bottom: 12px;
+.homepage-error {
+  font-size: 14px;
+  color: red;
 }
 
 .homepage-todaydate {
   padding-bottom: 15px;
+}
+
+.homepage-welcome {
+  padding-bottom: 12px;
+}
+
+@media (max-width: 800px) {
+
+  .DayPicker {
+    display: block;
+    font-size: 1rem;
+  }
+
+  .DayPicker-TodayButton {
+    margin-left: 45%;
+    margin-right: -50%;
+  }
+
+  .homepage-todaydate {
+    text-align: center;
+  }
+
+  .homepage-welcome {
+    text-align: center;
+  }
+
+  .notif-center {
+    padding-bottom: 25px;
+  }
+
+}
+
+@media only screen and (max-width: 600px) {
+
+  .homepage {
+    margin-top: 140px;
+  }
+
+  .homepage-table {
+    padding-bottom: 25px;
+  }
+
 }
