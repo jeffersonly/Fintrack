@@ -8,7 +8,9 @@ export const createSaving = /* GraphQL */ `
   ) {
     createSaving(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat
@@ -26,7 +28,9 @@ export const updateSaving = /* GraphQL */ `
   ) {
     updateSaving(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat
@@ -44,7 +48,9 @@ export const deleteSaving = /* GraphQL */ `
   ) {
     deleteSaving(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat

@@ -5,7 +5,9 @@ export const onCreateSaving = /* GraphQL */ `
   subscription OnCreateSaving($owner: String!) {
     onCreateSaving(owner: $owner) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat
@@ -20,7 +22,9 @@ export const onUpdateSaving = /* GraphQL */ `
   subscription OnUpdateSaving($owner: String!) {
     onUpdateSaving(owner: $owner) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat
@@ -35,7 +39,9 @@ export const onDeleteSaving = /* GraphQL */ `
   subscription OnDeleteSaving($owner: String!) {
     onDeleteSaving(owner: $owner) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat

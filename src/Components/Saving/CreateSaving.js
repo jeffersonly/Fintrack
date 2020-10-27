@@ -61,11 +61,13 @@ async function submitNewSaving(data) {
       query: createSaving,
       variables: {
         input: {
-          date: data[0],
-          name: data[1],
-          value: data[2],
-          repeat: data[3],
-          note: data[4]
+          month: data[0],
+          day: data[1],
+          year: data[2],
+          name: data[3],
+          value: data[4],
+          repeat: data[5],
+          note: data[6]
         }
       }
     })
@@ -101,7 +103,8 @@ function CreateSaving() {
     if (day < 10) {
       day = "0" + day;
     }
-    return month + "/" + day + "/" + year;
+    //return month + "/" + day + "/" + year;
+    return [month, day, year];
   }
   
   return (
@@ -132,7 +135,7 @@ function CreateSaving() {
               onSubmit={(data, { resetForm }) => {
                 console.log(data, selectedDate.toLocaleDateString());
                 const formattedDate = formatDate(selectedDate.toLocaleDateString());
-                const array = [formattedDate, data.name, data.value, data.repeat, data.note];
+                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.repeat, data.note];
                 submitNewSaving(array);
                 resetDate();
                 resetForm();

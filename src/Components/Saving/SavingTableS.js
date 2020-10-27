@@ -92,6 +92,9 @@ function SavingTableS() {
         console.log('Error on fetching saving', error)
       }
     }
+    else if (search === "filter") {
+      const savingData = await API.graphql(graphqlOperation(listSavings));
+    }
     else {
       const owner = await Auth.currentAuthenticatedUser();
       const input = {
@@ -158,7 +161,7 @@ function SavingTableS() {
               .map((saving) => {
                 return (
                   <TableRow hover key={saving.id}>
-                    <TableCell align="center">{saving.date}</TableCell>
+                    <TableCell align="center">{saving.month}/{saving.day}/{saving.year}</TableCell>
                     <TableCell align="center">{saving.name}</TableCell>
                     <TableCell align="center">${saving.value}</TableCell>
                     <TableCell align="center">{saving.repeat}</TableCell>

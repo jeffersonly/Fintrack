@@ -5,7 +5,9 @@ export const getSaving = /* GraphQL */ `
   query GetSaving($id: ID!) {
     getSaving(id: $id) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat
@@ -25,7 +27,9 @@ export const listSavings = /* GraphQL */ `
     listSavings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        date
+        month
+        day
+        year
         name
         value
         repeat
@@ -131,7 +135,9 @@ export const savingsByOwner = /* GraphQL */ `
     ) {
       items {
         id
-        date
+        month
+        day
+        year
         name
         value
         repeat
