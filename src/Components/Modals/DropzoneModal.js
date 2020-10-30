@@ -7,6 +7,31 @@ import DropzoneInput from '../InputFields/DropzoneInput';
 
 export default function DropzoneModal(props) {
     function generateItems() {
+        if(props.from == "webcam") {
+            return generateItemsFromWebcam()
+        } else {
+            return generateItemsFromDropzone()
+        }
+    }
+
+    function generateItemsFromWebcam() {
+        return (
+            <Row className="itemRow">
+                <Col xs={9} md={6}>
+                    <img 
+                        src={props.data.image}
+                        className="itemReceiptImg"
+                        alt="receipt" 
+                    />
+                </Col>
+                <Col xs={9} md={6}>
+                    <DropzoneInput data={props.data} />
+                </Col>
+            </Row>
+        );
+    }
+
+    function generateItemsFromDropzone() {
         let arrayOfItems = [];
         for(var i = 0; i < props.data.length; i++) {
             let item = (

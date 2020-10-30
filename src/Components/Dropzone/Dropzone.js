@@ -71,22 +71,10 @@ function Dropzone(props) {
         }
     });
 
-    // const thumbs = files.map(file => (
-    //     <div className="thumbs-img" key={file.name}>
-    //         <div className="thumbs-img-inner">
-    //             <img
-    //                 src={file.preview}
-    //                 className="thumbnail-image"
-    //                 alt="receipt"
-    //             />
-    //         </div>
-    //     </div>
-    // ));
-
     useEffect(() => () => {
         // Make sure to revoke the data uris to avoid memory leaks
         files.forEach(file => URL.revokeObjectURL(file.preview));
-        console.log(filesWithCost);
+        //console.log(filesWithCost);
     }, [files, filesWithCost]);
 
     return (
@@ -97,11 +85,13 @@ function Dropzone(props) {
                     <p className="dropbox-text"> Drag 'n' Drop Images Here <br/> or <br/> Click to Select</p>
                     <p className="dropbox-disclaimer-text">Only *.jpeg and *.png images are accepted! <br/> Images must have a $ indicator! </p>
                 </div>
-                {/* <aside className="thumbs-imgs-container">
-                    {thumbs}
-                </aside> */}
             </section>
-            <DropzoneModal show={showModal} onHide={() => setShowModal(false)} data={filesWithCost} />
+            <DropzoneModal 
+                show={showModal} 
+                onHide={() => setShowModal(false)} 
+                data={filesWithCost} 
+                from="dropzone"
+            />
         </>
     );
 }

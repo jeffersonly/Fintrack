@@ -10,6 +10,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import TransactionTableS from '../Components/Spending/TransactionTableS'; 
 import Dropzone from '../Components/Dropzone/Dropzone';
+import WebcameCapture from '../Components/Webcam/Webcam';
 
 const Container = styled.div`
   margin-left: 35px;
@@ -90,6 +91,7 @@ function Transactions() {
         </Grid>
         <Grid item xs>
           <Dropzone />
+          <WebcameCapture />
           <CreateTransaction />
         </Grid>
       </Grid>
