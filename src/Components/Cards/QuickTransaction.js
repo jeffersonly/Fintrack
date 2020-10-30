@@ -6,8 +6,9 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
 
-import TableField from "../InputFields/TableField";
-import CardTitle from "./CardTitle";
+import TableField from '../InputFields/TableField';
+//import DateField from '../InputFields/DateField';
+import CardTitle from './CardTitle';
 import Dropzone from '../Dropzone/Dropzone';
 
 const theme = createMuiTheme ({
@@ -47,15 +48,15 @@ function QuickTransaction ({ onSubmit }) {
   
   const classes = useStyles();
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  //const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const handleDateChange = (date) => {
+  /*const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
   const resetDate = () => {
     setSelectedDate(new Date());
-  };
+  };*/
 
   const options = [
     {
@@ -98,6 +99,7 @@ function QuickTransaction ({ onSubmit }) {
             />*/}
             <Formik
               initialValues={{
+                date: new Date(),
                 transaction: "",
                 amount: "",
                 pay: "cash"
@@ -105,6 +107,11 @@ function QuickTransaction ({ onSubmit }) {
               validate={values => {
                 const errors = {};
           
+                //doesn't print
+                if (!values.date) {
+                  errors.date = "Required";
+                }
+
                 if (!values.transaction) {
                   errors.transaction = "Required";
                 }
@@ -115,14 +122,15 @@ function QuickTransaction ({ onSubmit }) {
                 return errors;
               }}
               onSubmit={(data, { resetForm }) => {
-                console.log(data, selectedDate.toLocaleDateString());
-                const array = [selectedDate.toLocaleDateString(), data.transaction, data.amount, data.pay];
+                //console.log(data.date.toLocaleDateString())
+                //console.log(data, selectedDate.toLocaleDateString());
+                const array = [data.date.toLocaleDateString(), data.transaction, data.amount, data.pay];
                 onSubmit(array);
-                resetDate();
+                //resetDate();
                 resetForm();
               }}
             >
-              {({ values }) => (
+              {({ errors, setFieldError, setFieldValue, values }) => (
                 <Form>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
@@ -133,9 +141,16 @@ function QuickTransaction ({ onSubmit }) {
                       InputAdornmentProps={{ position: "end" }}
                       inputVariant="outlined"
                       label="Date"
-                      onChange={date => handleDateChange(date)}
+                      name="date"
+                      onChange={date => setFieldValue("date", date, true)}
+                      onError={err => {
+                        if (err !== errors.date) {
+                          setFieldError("date", err);
+                          console.log(errors.date);
+                        }
+                      }}
                       required
-                      value={selectedDate}
+                      value={values.date}
                       variant="inline"
                     />
                   </MuiPickersUtilsProvider>
@@ -161,7 +176,7 @@ function QuickTransaction ({ onSubmit }) {
                   <Button
                     className={classes.createbutton}
                     disableElevation
-                    disabled={!values.transaction || !values.amount}
+                    disabled={!values.transaction || !values.amount || errors.date !== ""}
                     size="large"
                     type="submit"
                     variant="contained"

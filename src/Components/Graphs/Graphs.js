@@ -4,10 +4,8 @@ import ChartistGraph from "react-chartist";
 
 var Chartist = require("chartist");
 
-var delays = 80,
-  durations = 500;
-var delays2 = 16,
-  durations2 = 100;
+var delays = 16,
+  durations = 100;
 
 function Graphs (props) {
   
@@ -189,8 +187,8 @@ function Graphs (props) {
               if (data.type === "bar") {
                 data.element.animate({
                   opacity: {
-                    begin: (data.index + 1) * delays2,
-                    dur: durations2,
+                    begin: (data.index + 1) * delays,
+                    dur: durations,
                     from: 0,
                     to: 1,
                     easing: "ease"
