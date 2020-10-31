@@ -12,7 +12,6 @@ import SnackbarNotification from '../Modals/SnackbarNotification';
 import MoreInformation from '../Modals/MoreInformation';
 import '../Tables/Table.css';
 
-
 const columnTitles = [
   { id: "date", label: "Date", align: "center", minWidth: 50 },
   { id: "name", label: "Savings Name", align: "center", minWidth: 150 },
@@ -71,7 +70,8 @@ function SavingTableS() {
   const [openAlert, setOpenAlert] = useState(true);
 
   const [showMore, setShowMore] = useState(false);
-  const [item, setItem] = useState("");
+  const [itemID, setItemID] = useState("");
+  const [data, setData] = useState({});
 
   useEffect(() => {
     fetchSaving();
@@ -126,8 +126,6 @@ function SavingTableS() {
     }
   };
 
-
-
   const handleClick = (event) => {
     event.preventDefault();
     fetchSaving();
@@ -139,8 +137,6 @@ function SavingTableS() {
     }
     setOpenAlert(false);
   }
-
-
 
   return (
     <div>
@@ -170,7 +166,7 @@ function SavingTableS() {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
           />
-          <TableBody fetchSaving = {fetchSaving}>
+          <TableBody>
             {stableSort(savings, getComparator(order, orderBy))
               .map((saving) => {
                 return (
@@ -180,7 +176,22 @@ function SavingTableS() {
                     <TableCell align="center">${saving.value}</TableCell>
                     <TableCell align="center">{saving.repeat}</TableCell>
                     <TableCell align="center">   
-                      <IconButton className="table-icon" onClick={() => {setItem(saving.id); setShowMore(true)}}> 
+                      <IconButton 
+                        className="table-icon" 
+                        onClick={() => {
+                          setItemID(saving.id);
+                          //setData([saving.month, saving.day, saving.year, saving.name, saving.value, saving.repeat, saving.note]); 
+                          setData({
+                            month: saving.month,
+                            day: saving.day,
+                            year: saving.year,
+                            name: saving.name,
+                            value: saving.value,
+                            repeat: saving.repeat,
+                            note: saving.note
+                          })
+                          setShowMore(true);
+                        }}> 
                         <Info /> 
                       </IconButton>
                     </TableCell>
@@ -191,18 +202,21 @@ function SavingTableS() {
           </TableBody>
         </Table>
       </TableContainer>
-      {status 
-      ? <SnackbarNotification 
-          className="table-snackbar"
-          message={status} 
-          onClose={handleCloseAlert} 
-          open={openAlert} 
-          vertical="top"
-        /> 
-      : null}
+      {
+        status ? 
+          <SnackbarNotification 
+            className="table-snackbar"
+            message={status} 
+            onClose={handleCloseAlert} 
+            open={openAlert} 
+            vertical="top"
+          /> 
+        : null
+      }
       <MoreInformation
-        item = {item}
         closeMore={() => setShowMore(!showMore)} 
+        itemData={data}
+        itemID={itemID}
         openMore={showMore}
       />
     </div>

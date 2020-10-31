@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Divider, InputAdornment} from '@material-ui/core';
+import { Button, Divider, InputAdornment } from '@material-ui/core';
 import { Modal } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
-import TableField from '../InputFields/TableField';
-import { deleteSaving } from '../../graphql/mutations';
-import { API, graphqlOperation } from "aws-amplify";
-import { getSaving } from '../../graphql/queries';
-import { updateSaving } from '../../graphql/mutations';
-import '../Cards/Profile.css';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
+import { deleteSaving } from '../../graphql/mutations';
+import { API, graphqlOperation } from "aws-amplify";
+//import { getSaving } from '../../graphql/queries';
+import { updateSaving } from '../../graphql/mutations';
+
+import TableField from '../InputFields/TableField';
+
+import '../Cards/Profile.css';
+import '../Cards/Card.css';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "rgb(1, 114, 71)",
+    },
+    secondary: {
+      main: "#ff6666"
+    },
+  },
+});
 
 const repeats = [
   {
@@ -34,22 +50,23 @@ const repeats = [
 function MoreInformation(props) {
 
   const [show, setShow] = useState(props.openMore);
-  const [item, setItem] = useState(props.item);
-  const [data, setData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(Date());
+  const [itemID, setItemID] = useState(props.itemID);
+  //const [data, setData] = useState([]);
+  //const [selectedDate, setSelectedDate] = useState(Date());
   const [changedDate, setChangedDate] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
-    setItem(props.item);
-    getData(props.item);
-  }, [props.openMore], [props.item]);
+    setItemID(props.itemID);
+    //getData(props.item);
+  }, [props.openMore], [props.itemID]);
 
-  async function getData(item) {
+  /*async function getData(item) {
+    //console.log(props.data.name);
     const itemData = await API.graphql(graphqlOperation(getSaving, { id: item }));
     const itemName = itemData.data.getSaving;
     setData(itemName);
-  }
+  }*/
 
   async function handleDelete(event) {
     try {
@@ -58,7 +75,7 @@ function MoreInformation(props) {
       }
       await API.graphql(graphqlOperation(deleteSaving, { input: id }));
       console.log('Deleted saving')
-      setShow(props.closeMore);
+      props.closeMore();
       window.location.reload();
     }
     catch (error) {
@@ -72,7 +89,7 @@ function MoreInformation(props) {
         query: updateSaving,
         variables: {
           input: {
-            id: props.item,
+            id: props.itemID,
             month: data[0],
             day: data[1],
             year: data[2],
@@ -86,17 +103,16 @@ function MoreInformation(props) {
       console.log('Saving updated!');
       window.location.reload();
     } catch (err) {
-      console.log('pain')
-      console.log({ err });
+      console.log(err);
     }
   }
 
-  const handleDateChange = (date) => {
+  /*const handleDateChange = (date) => {
     setSelectedDate(date);
     setChangedDate(true);
-  };
+  };*/
 
-  const formatDate = (date) => {
+  const splitDate = (date) => {
     let split = date.split("/");
     let month = split[0];
     let day = split[1];
@@ -109,30 +125,36 @@ function MoreInformation(props) {
     }
     return [month, day, year];
   }
+
+  const formatDate = (month, day, year) => {
+    return month + "/" + day + "/" + year;
+  }  
   
   return (
-    <div >
-      {data && Object.entries(data).map((key, value) => (
-        <Modal
-          className="profile"
-          show={show}
-          onHide={props.closeMore}
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-          key={value}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">Details</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="editprofile-textfield">
+    <div>
+      {/*{data && Object.entries(data).map((key, value) => (*/}
+      {/*{props.itemData && Object.entries(props.itemData).map((key, value) => (*/}
+      <Modal
+        className="profile"
+        show={show}
+        onHide={props.closeMore}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        //key={value}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="editprofile-textfield">
+            <ThemeProvider theme={theme}>
               <Formik
-                enableReinitialize
                 initialValues={{
-                  name: data.name,
-                  value: data.value,
-                  repeat: data.repeat,
-                  note: data.note,
+                  date: formatDate(props.itemData.month, props.itemData.day, props.itemData.year),
+                  name: props.itemData.name,
+                  value: props.itemData.value,
+                  repeat: props.itemData.repeat,
+                  note: props.itemData.note,
                 }}
                 validate={(values) => {
                   const errors = {};
@@ -146,39 +168,23 @@ function MoreInformation(props) {
 
                   return errors;
                 }}
-                onSubmit={(data) => {
+                onSubmit={(info) => {
                   if (changedDate){
-                    console.log(data, selectedDate.toLocaleDateString());
-                    const formattedDate = formatDate(selectedDate.toLocaleDateString());
-                    const array = [
-                      formattedDate[0],
-                      formattedDate[1],
-                      formattedDate[2],
-                      data.name,
-                      data.value,
-                      data.repeat,
-                      data.note,
-                    ];
-                    editSaving(array);
+                    //console.log(data, selectedDate.toLocaleDateString());
+                    //console.log(data.date.toLocaleDateString());
+                    const formattedDate = splitDate(info.date.toLocaleDateString());
+                    console.log(formattedDate);
+                    var array = [formattedDate[0], formattedDate[1], formattedDate[2]];
                   }
-                  else{
-                    const array = [
-                      data.year, 
-                      data.month, 
-                      data.day,
-                      data.name,
-                      data.value,
-                      data.repeat,
-                      data.note,
-                    ];
-                    editSaving(array);
+                  else {
+                    var array = [props.itemData.month, props.itemData.day, props.itemData.year];
                   }
-                  
+                  array.push(info.name, info.value, info.repeat, info.note);
+                  editSaving(array);
                 }}
               >
-                {({ values }) => (
+                {({ errors, setFieldError, setFieldValue, values }) => (
                   <Form>
-                    Date:
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
                         autoOk
@@ -187,54 +193,66 @@ function MoreInformation(props) {
                         fullWidth
                         InputAdornmentProps={{ position: "end" }}
                         inputVariant="outlined"
-                        onChange={(date) => handleDateChange(date)}
+                        label="Date"
+                        name="date"
+                        onChange={date => {
+                          setFieldValue("date", date, true);
+                          setChangedDate(true);
+                        }}
+                        onError={err => {
+                          if (err !== errors.date) {
+                            setFieldError("date", err);
+                          }
+                        }}
+                        required
                         value={
                           !changedDate
-                            ? new Date(data.year, data.month - 1, data.day)
-                            : selectedDate
+                            ? formatDate(props.itemData.month, props.itemData.day, props.itemData.year)
+                            : values.date
                         }
                         variant="inline"
                       />
                     </MuiPickersUtilsProvider>
-                    Saving Name:
-                    <TableField value={data.name} name="name" />
-                    Value:
+                    <TableField 
+                      label="Savings Name"
+                      name="name" 
+                    />
                     <TableField
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">$</InputAdornment>
-                        ),
-                      }}
+                      InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}
+                      label="Value"
                       name="value"
                       type="number"
                     />
-                    Repeat:
                     <TableField
+                      label="Repeat"
                       name="repeat"
                       options={repeats}
                       select={true}
                     />
-                    Notes:
                     <TableField
+                      label="Notes"
+                      multiline={true}
                       name="note"
                       required={false}
+                      rowsMax={3}
                     />
                     <Divider className="editprofile-divider" />
                     <div align="right">
                       <Button
-                        className="editprofile-cancelbutton"
+                        className="profile-button editprofile-cancelbutton"
                         disableElevation
                         variant="contained"
-                        disabled={!values.name || !values.value}
+                        disabled={!values.name || !values.value || errors.date !== ""}
                         type="submit"
                       >
-                        Edit
+                        Save
                       </Button>
                       <Button
-                        className="profile-button"
+                        className="deletebutton"
+                        color="secondary"
                         disableElevation
+                        onClick={() => handleDelete(itemID)}
                         variant="contained"
-                        onClick={() => handleDelete(item)}
                       >
                         Delete
                       </Button>
@@ -242,13 +260,12 @@ function MoreInformation(props) {
                   </Form>
                 )}
               </Formik>
-            </div>
-          </Modal.Body>
-        </Modal>
-      ))}
+            </ThemeProvider>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
-
 }
 
 export default MoreInformation;

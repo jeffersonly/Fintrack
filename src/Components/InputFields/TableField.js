@@ -26,8 +26,10 @@ function TableField(props) {
         InputLabelProps={{shrink: true}}
         InputProps={props.InputProps}
         label={props.label}
+        multiline={props.multiline}
         placeholder={props.placeholder}
         required={props.required}
+        rowsMax={props.rowsMax}
         select={props.select}
         type={props.type}
         variant="outlined"
@@ -48,6 +50,7 @@ function TableField(props) {
 TableField.defaultProps = {
   inputprops: "",
   label: "",
+  multiline: false,
   placeholder: "",
   required: true,
   select: false,

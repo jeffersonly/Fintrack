@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
@@ -82,7 +82,7 @@ function CreateSaving() {
 
   const classes = useStyles();
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  /*const [selectedDate, setSelectedDate] = useState(new Date());
   
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -90,7 +90,7 @@ function CreateSaving() {
 
   const resetDate = () => {
     setSelectedDate(new Date());
-  };
+  };*/
 
   const formatDate = (date) => {
     let split = date.split("/");
@@ -115,6 +115,7 @@ function CreateSaving() {
           <ThemeProvider theme={theme}>
             <Formik
               initialValues={{ 
+                date: new Date(),
                 name: "",
                 value: "",
                 repeat: "Never",
@@ -122,6 +123,10 @@ function CreateSaving() {
               }}
               validate={values => {
                 const errors = {};
+
+                if (!values.date) {
+                  errors.date = "Required";
+                }
 
                 if (!values.name) {
                   errors.name = "Required";
@@ -133,15 +138,15 @@ function CreateSaving() {
                 return errors;
               }}
               onSubmit={(data, { resetForm }) => {
-                console.log(data, selectedDate.toLocaleDateString());
-                const formattedDate = formatDate(selectedDate.toLocaleDateString());
+                //console.log(data, selectedDate.toLocaleDateString());
+                const formattedDate = formatDate(data.date.toLocaleDateString());
                 const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.repeat, data.note];
                 submitNewSaving(array);
-                resetDate();
+                //resetDate();
                 resetForm();
               }}
             >
-              {({ values }) => (
+              {({ errors, setFieldError, setFieldValue, values }) => (
                 <Form>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
@@ -152,9 +157,15 @@ function CreateSaving() {
                       InputAdornmentProps={{ position: "end" }}
                       inputVariant="outlined"
                       label="Date"
-                      onChange={date => handleDateChange(date)}
+                      name="date"
+                      onChange={date => setFieldValue("date", date, true)}
+                      onError={err => {
+                        if (err !== errors.date) {
+                          setFieldError("date", err);
+                        }
+                      }}
                       required
-                      value={selectedDate}
+                      value={values.date}
                       variant="inline"
                     />
                   </MuiPickersUtilsProvider>
@@ -179,14 +190,16 @@ function CreateSaving() {
                   <p className="card-text">Please select how often the saving reoccurs.</p>
                   <TableField
                     label="Notes"
+                    multiline={true}
                     name="note"
                     placeholder="12 hours"
                     required={false}
+                    rowsMax={3}
                   />
                   <Button
                     className={classes.createbutton}
                     disableElevation
-                    disabled={!values.name || !values.value}
+                    disabled={!values.name || !values.value || errors.date !== ""}
                     size="large"
                     type="submit"
                     variant="contained"
