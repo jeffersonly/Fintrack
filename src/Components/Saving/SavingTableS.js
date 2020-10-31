@@ -12,6 +12,7 @@ import SnackbarNotification from '../Modals/SnackbarNotification';
 import MoreInformation from '../Modals/MoreInformation';
 import '../Tables/Table.css';
 
+
 const columnTitles = [
   { id: "date", label: "Date", align: "center", minWidth: 50 },
   { id: "name", label: "Savings Name", align: "center", minWidth: 150 },
@@ -70,6 +71,7 @@ function SavingTableS() {
   const [openAlert, setOpenAlert] = useState(true);
 
   const [showMore, setShowMore] = useState(false);
+  const [item, setItem] = useState("");
 
   useEffect(() => {
     fetchSaving();
@@ -86,14 +88,17 @@ function SavingTableS() {
       try {
         const savingData = await API.graphql(graphqlOperation(listSavings));
         const savingList = savingData.data.listSavings.items;
-        console.log('saving list', savingList);
-        setSaving(savingList)
+        console.log('saving data', savingList);
+        setSaving(savingList);
+        let data = await Promise.all(savings.map(async (saving) => {
+          return{
+            repeat: saving.repeat
+          }
+        }));
+        console.log(data);
       } catch (error) {
         console.log('Error on fetching saving', error)
       }
-    }
-    else if (search === "filter") {
-      const savingData = await API.graphql(graphqlOperation(listSavings));
     }
     else {
       const owner = await Auth.currentAuthenticatedUser();
@@ -104,17 +109,24 @@ function SavingTableS() {
         },
       };
       const savingData = await API.graphql(graphqlOperation(savingsByOwner, input));
+      console.log('saving data', savingData);
       const savingList = savingData.data.savingsByOwner.items;
-      console.log(savingList);
+      console.log('saving list', savingList);
       if (savingList.length > 0) {
         setSaving(savingList);
+        console.log('savings', savings);
       }
       else {
         setOpenAlert(true);
         setStatusBase("No match found.");
       }
     }
+    if (!Array.isArray(savings)){
+      console.log('saving not array')
+    }
   };
+
+
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -127,6 +139,8 @@ function SavingTableS() {
     }
     setOpenAlert(false);
   }
+
+
 
   return (
     <div>
@@ -156,7 +170,7 @@ function SavingTableS() {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
           />
-          <TableBody>
+          <TableBody fetchSaving = {fetchSaving}>
             {stableSort(savings, getComparator(order, orderBy))
               .map((saving) => {
                 return (
@@ -166,7 +180,7 @@ function SavingTableS() {
                     <TableCell align="center">${saving.value}</TableCell>
                     <TableCell align="center">{saving.repeat}</TableCell>
                     <TableCell align="center">   
-                      <IconButton className="table-icon" onClick={() => setShowMore(true)}> 
+                      <IconButton className="table-icon" onClick={() => {setItem(saving.id); setShowMore(true)}}> 
                         <Info /> 
                       </IconButton>
                     </TableCell>
@@ -187,6 +201,7 @@ function SavingTableS() {
         /> 
       : null}
       <MoreInformation
+        item = {item}
         closeMore={() => setShowMore(!showMore)} 
         openMore={showMore}
       />
