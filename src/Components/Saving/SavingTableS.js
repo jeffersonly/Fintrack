@@ -6,10 +6,12 @@ import {
 import { Search, Info } from '@material-ui/icons';
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { listSavings, savingsByOwner } from '../../graphql/queries';
+import { deleteSaving } from '../../graphql/mutations';
 
 import TableHeader from '../Tables/TableHeader';
 import SnackbarNotification from '../Modals/SnackbarNotification';
 import MoreInformation from '../Modals/MoreInformation';
+import ConfirmDelete from '../Modals/ConfirmDelete';
 import '../Tables/Table.css';
 
 const columnTitles = [
@@ -72,6 +74,7 @@ function SavingTableS() {
   const [showMore, setShowMore] = useState(false);
   const [itemID, setItemID] = useState("");
   const [data, setData] = useState({});
+  const [showConfirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     fetchSaving();
@@ -127,6 +130,24 @@ function SavingTableS() {
       return;
     }
     setOpenAlert(false);
+  }
+
+  async function handleDelete(event) {
+    try {
+      const id = {
+        id: event
+      }
+      await API.graphql(graphqlOperation(deleteSaving, { input: id }));
+      console.log('Deleted saving')
+      window.location.reload();
+    }
+    catch (error) {
+      console.log('Error on delete saving', error)
+    }
+  }
+
+  function handleShowConfirmDelete() {
+    setConfirmDelete(true);
   }
 
   return (
@@ -205,10 +226,22 @@ function SavingTableS() {
         : null
       }
       <MoreInformation
-        closeMore={() => setShowMore(!showMore)} 
+        closeMore={() => setShowMore(!showMore)}
+        confirmDelete={() => handleShowConfirmDelete()} 
         itemData={data}
         itemID={itemID}
         openMore={showMore}
+      />
+      <ConfirmDelete
+        closeConfirmDelete={() => {
+          setConfirmDelete(false);
+          setShowMore(true);
+        }}
+        confirmed={() => {
+          setConfirmDelete(false);
+          handleDelete(itemID);
+        }}
+        openConfirmDelete={showConfirmDelete} 
       />
     </div>
   );

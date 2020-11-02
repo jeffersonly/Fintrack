@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Divider, InputAdornment } from '@material-ui/core';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -54,6 +54,8 @@ function MoreInformation(props) {
   //const [data, setData] = useState([]);
   //const [selectedDate, setSelectedDate] = useState(Date());
   const [changedDate, setChangedDate] = useState(false);
+
+  const [showConfirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
@@ -130,6 +132,10 @@ function MoreInformation(props) {
     return month + "/" + day + "/" + year;
   }  
   
+  function handleShowConfirmDelete() {
+    setConfirmDelete(true);
+  }
+
   return (
     <div>
       {/*{data && Object.entries(data).map((key, value) => (*/}
@@ -177,7 +183,7 @@ function MoreInformation(props) {
                     var array = [formattedDate[0], formattedDate[1], formattedDate[2]];
                   }
                   else {
-                    var array = [props.itemData.month, props.itemData.day, props.itemData.year];
+                    array = [props.itemData.month, props.itemData.day, props.itemData.year];
                   }
                   array.push(info.name, info.value, info.repeat, info.note);
                   editSaving(array);
@@ -251,7 +257,11 @@ function MoreInformation(props) {
                         className="deletebutton"
                         color="secondary"
                         disableElevation
-                        onClick={() => handleDelete(itemID)}
+                        onClick={() => {
+                          props.closeMore();
+                          props.confirmDelete();
+                        }}
+                        //onClick={() => handleDelete(itemID)}
                         variant="contained"
                       >
                         Delete
