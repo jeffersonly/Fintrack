@@ -1,9 +1,9 @@
 import React from 'react';
-import CreateSaving from '../Components/Saving/CreateSaving';
 import { Grid, makeStyles} from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import SavingTableS from '../Components/Saving/SavingTableS';
 
+import CreateSaving from '../Components/Cards/CreateSaving';
+import SavingTable from '../Components/Tables/SavingTable';
 
 const useStyles = makeStyles({
   container: {
@@ -11,34 +11,18 @@ const useStyles = makeStyles({
     marginRight: "35px",
     marginTop: "80px",
     fontFamily: "Roboto"
-  },
-  createbutton: {
-    backgroundColor: "#ace1af",
-    fontSize: "12px",
-    '&:focus': {
-      outline: "none"
-    },
-    '&:hover': {
-      backgroundColor: "#ace1af",
-      opacity: 0.8
-    },
-  },
-  textfield: {
-    paddingBottom: "30px"
   }
 });
 
-
 function Savings() {
+
   const classes = useStyles();
 
-
   return (
-    
     <div className={classes.container}>
       <Grid container spacing={2}>
         <Grid item xs>
-          <SavingTableS />
+          <SavingTable />
         </Grid>
         <Grid item xs={3}>
           <CreateSaving />

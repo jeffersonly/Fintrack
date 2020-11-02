@@ -7,8 +7,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
-import { deleteSaving } from '../../graphql/mutations';
-import { API, graphqlOperation } from "aws-amplify";
+//import { deleteSaving } from '../../graphql/mutations';
+import { API } from "aws-amplify";
 //import { getSaving } from '../../graphql/queries';
 import { updateSaving } from '../../graphql/mutations';
 
@@ -47,21 +47,21 @@ const repeats = [
   },
 ];
 
-function MoreInformation(props) {
+function MoreSavingInformation(props) {
 
   const [show, setShow] = useState(props.openMore);
-  const [itemID, setItemID] = useState(props.itemID);
+  //const [itemID, setItemID] = useState(props.itemID);
   //const [data, setData] = useState([]);
   //const [selectedDate, setSelectedDate] = useState(Date());
   const [changedDate, setChangedDate] = useState(false);
 
-  const [showConfirmDelete, setConfirmDelete] = useState(false);
+  //const [showConfirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
-    setItemID(props.itemID);
+    //setItemID(props.itemID);
     //getData(props.item);
-  }, [props.openMore], [props.itemID]);
+  }, [props.openMore]); //, [props.itemID]);
 
   /*async function getData(item) {
     //console.log(props.data.name);
@@ -70,7 +70,7 @@ function MoreInformation(props) {
     setData(itemName);
   }*/
 
-  async function handleDelete(event) {
+  /*async function handleDelete(event) {
     try {
       const id = {
         id: event
@@ -83,7 +83,7 @@ function MoreInformation(props) {
     catch (error) {
       console.log('Error on delete saving', error)
     }
-  }
+  }*/
 
   async function editSaving(data) {
     try {
@@ -132,9 +132,9 @@ function MoreInformation(props) {
     return month + "/" + day + "/" + year;
   }  
   
-  function handleShowConfirmDelete() {
+  /*function handleShowConfirmDelete() {
     setConfirmDelete(true);
-  }
+  }*/
 
   return (
     <div>
@@ -278,4 +278,4 @@ function MoreInformation(props) {
   );
 }
 
-export default MoreInformation;
+export default MoreSavingInformation;

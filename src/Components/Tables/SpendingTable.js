@@ -6,12 +6,10 @@ import {
 import { Search, Info } from '@material-ui/icons';
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { listSpendings, spendingsByOwner } from '../../graphql/queries';
-import TableHeader from '../Tables/TableHeader';
+import TableHeader from './TableHeader';
 import SnackbarNotification from '../Modals/SnackbarNotification';
 import MoreSpendingInfo from '../Modals/MoreSpendingInfo';
 import '../Tables/Table.css';
-
-
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center", minWidth: 50 },
@@ -58,7 +56,7 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function TransactionTableS() {
+function SpendingTable() {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
@@ -215,4 +213,4 @@ return (
 );
 }
 
-export default TransactionTableS;
+export default SpendingTable;

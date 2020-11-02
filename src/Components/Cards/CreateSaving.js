@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
@@ -6,9 +6,9 @@ import { Formik, Form } from 'formik';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { API } from 'aws-amplify';
-import { createSpending } from '../../graphql/mutations';
+import { createSaving } from '../../graphql/mutations';
 import TableField from '../InputFields/TableField';
-import CardTitle from '../Cards/CardTitle';
+import CardTitle from './CardTitle';
 import '../Cards/Card.css';
 
 const theme = createMuiTheme({
@@ -53,49 +53,10 @@ const repeats = [
   },
 ];
 
-const categories = [
-  {
-    value: 'Merchandise',
-    label: 'Merchandise',
-  },
-  {
-    value: 'Food',
-    label: 'Food',
-  },
-  {
-    value: 'Vehicle Services',
-    label: 'Vehicle Services',
-  },
-  {
-    value: 'Services',
-    label: 'Services',
-  },
-  {
-    value: 'Entertainment',
-    label: 'Entertainment',
-  },
-  {
-    value: 'Organizations',
-    label: 'Organizations',
-  },
-  {
-    value: 'Health Care',
-    label: 'Health Care',
-  },
-  {
-    value: 'Travel',
-    label: 'Travel',
-  },
-  {
-    value: 'Other',
-    label: 'Other',
-  },
-];
-
-async function submitNewSpending(data) {
+async function submitNewSaving(data) {
   try {
     await API.graphql({
-      query: createSpending,
+      query: createSaving,
       variables: {
         input: {
           month: data[0],
@@ -103,25 +64,23 @@ async function submitNewSpending(data) {
           year: data[2],
           name: data[3],
           value: data[4],
-          category: data[5],
-          repeat: data[6],
-          note: data[7]
+          repeat: data[5],
+          note: data[6]
         }
       }
     })
-    console.log('New spending created!');
+    console.log('New saving created!');
     window.location.reload();
   } catch (err) {
     console.log({ err });
   }
 }
 
-function CreateSpending () {
-  
+function CreateSaving() {
+
   const classes = useStyles();
 
-  /*
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  /*const [selectedDate, setSelectedDate] = useState(new Date());
   
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -129,8 +88,7 @@ function CreateSpending () {
 
   const resetDate = () => {
     setSelectedDate(new Date());
-  };
-  */
+  };*/
 
   const formatDate = (date) => {
     let split = date.split("/");
@@ -146,19 +104,18 @@ function CreateSpending () {
     //return month + "/" + day + "/" + year;
     return [month, day, year];
   }
-
+  
   return (
-<div className="card-container">
+    <div className="card-container">
       <Card className="card-fintrack" variant="outlined">
         <CardContent>
-          {/*<CardTitle title="Create New Spending" />*/}
+          <CardTitle title="Create New Savings" />
           <ThemeProvider theme={theme}>
             <Formik
               initialValues={{ 
                 date: new Date(),
                 name: "",
                 value: "",
-                category: "Merchandise",
                 repeat: "Never",
                 note: ""
               }}
@@ -181,8 +138,8 @@ function CreateSpending () {
               onSubmit={(data, { resetForm }) => {
                 //console.log(data, selectedDate.toLocaleDateString());
                 const formattedDate = formatDate(data.date.toLocaleDateString());
-                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.category, data.repeat, data.note];
-                submitNewSpending(array);
+                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.repeat, data.note];
+                submitNewSaving(array);
                 //resetDate();
                 resetForm();
               }}
@@ -211,9 +168,9 @@ function CreateSpending () {
                     />
                   </MuiPickersUtilsProvider>
                   <TableField
-                    label="Spendings Name"
+                    label="Savings Name"
                     name="name"
-                    placeholder="Costco"
+                    placeholder="Paycheck"
                   />
                   <TableField
                     InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
@@ -223,19 +180,12 @@ function CreateSpending () {
                     type="number"
                   />
                   <TableField
-                    label="Category"
-                    name="category"
-                    options={categories}
-                    select={true}
-                  />
-                  <p className="card-text">Please select the category.</p>
-                  <TableField
                     label="Repeat"
                     name="repeat"
                     options={repeats}
                     select={true}
                   />
-                  <p className="card-text">Please select how often the spending reoccurs.</p>
+                  <p className="card-text">Please select how often the saving reoccurs.</p>
                   <TableField
                     label="Notes"
                     multiline={true}
@@ -264,4 +214,4 @@ function CreateSpending () {
   );
 }
 
-export default CreateSpending;
+export default CreateSaving;

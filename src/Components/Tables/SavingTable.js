@@ -8,9 +8,9 @@ import { Auth, API, graphqlOperation } from "aws-amplify";
 import { listSavings, savingsByOwner } from '../../graphql/queries';
 import { deleteSaving } from '../../graphql/mutations';
 
-import TableHeader from '../Tables/TableHeader';
+import TableHeader from './TableHeader';
 import SnackbarNotification from '../Modals/SnackbarNotification';
-import MoreInformation from '../Modals/MoreInformation';
+import MoreSavingInformation from '../Modals/MoreSavingInformation';
 import ConfirmDelete from '../Modals/ConfirmDelete';
 import '../Tables/Table.css';
 
@@ -59,7 +59,7 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function SavingTableS() {
+function SavingTable() {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
@@ -225,7 +225,7 @@ function SavingTableS() {
           /> 
         : null
       }
-      <MoreInformation
+      <MoreSavingInformation
         closeMore={() => setShowMore(!showMore)}
         confirmDelete={() => handleShowConfirmDelete()} 
         itemData={data}
@@ -247,4 +247,4 @@ function SavingTableS() {
   );
 }
 
-export default SavingTableS;
+export default SavingTable;

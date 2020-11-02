@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  Button, Card, CardContent, InputAdornment, makeStyles
- } from '@material-ui/core';
+import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';

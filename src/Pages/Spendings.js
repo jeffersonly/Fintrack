@@ -1,47 +1,43 @@
-import React, { useState} from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import { Grid, IconButton } from '@material-ui/core';
+import Create from '@material-ui/icons/Create';
 import { withRouter, useHistory } from 'react-router-dom';
-//import SpendingsButton from '../Components/Spending/Button'; 
-import Dropzone from '../Components/Dropzone/Dropzone';
-import CreateTransaction from '../Components/Spending/CreateTransaction';
-import Grid from '@material-ui/core/Grid';
-import { ArrowBack } from '@material-ui/icons';
-import {
-  IconButton
-} from '@material-ui/core';
-import CreateSpendingModal from '../Components/Modals/CreateSpendingModal';
 
-const Container = styled.div`
-  margin-left: 35px;
-  margin-right: 35px;
-  margin-top: 80px;
-  font-family: Roboto;
-`;
+import SpendingTable from '../Components/Tables/SpendingTable'; 
+import CreateSpendingModal from '../Components/Modals/CreateSpendingModal';
+import './Spendings.css';
+//import Dropzone from '../Components/Dropzone/Dropzone';
+//import CreateTransaction from '../Components/Spending/CreateTransaction';
 
 function Spendings() {
-  const history = useHistory();
+  
+  //const history = useHistory();
   const [showMore, setShowMore] = useState(false);
+  
   return (
     <div>
-    <Container>
-      <Grid container spacing={3}>
-        <Grid item xs={1}>
-          <IconButton className="table-icon" onClick={() => history.push('/spendings')}>
-            <ArrowBack />
-          </IconButton>
+      <div className="spendings">
+        <Grid container spacing={3}>
+          <Grid item xs = {1}>
+            <IconButton className="table-icon" onClick={() => setShowMore(true) /*history.push('/spendings')*/}>
+              <Create />
+            </IconButton>
+          </Grid>
+          <Grid item xs>
+              <SpendingTable />
+          </Grid>
+          {/* 
+          <Grid item xs>
+            <Dropzone />
+            <CreateTransaction />
+          </Grid>
+          */}
         </Grid>
-        <Grid item xs>
-          <Dropzone />
-        </Grid>
-        <Grid item xs>
-          <CreateTransaction />
-        </Grid>
-      </Grid>
-    </Container>
-     <CreateSpendingModal
-     closeMore={() => setShowMore(!showMore)} 
-     openMore={showMore}
-    />
+      </div>
+      <CreateSpendingModal
+        closeMore={() => setShowMore(!showMore)} 
+        openMore={showMore}
+      />
    </div>
   );
 }

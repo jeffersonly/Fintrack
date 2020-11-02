@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 import Dropzone from '../../Components/Dropzone/Dropzone';
-import CreateTransaction from '../../Components/Spending/CreateTransaction';
+import CreateSpending from '../Cards/CreateSpending';
 
 function CreateSpendingModal(props) {
     const [show, setShow] = useState(props.openMore);
@@ -25,7 +25,7 @@ function CreateSpendingModal(props) {
                 <Modal.Body>
                     <Grid container spacing={2}>
                         <Grid item xs>
-                            <CreateTransaction />
+                            <CreateSpending />
                         </Grid>
                         <Grid item xs>
 

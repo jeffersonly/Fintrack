@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Divider, InputAdornment} from '@material-ui/core';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
 import TableField from '../InputFields/TableField';
 import { deleteSpending } from '../../graphql/mutations';
@@ -215,7 +215,7 @@ const splitDate = (date) => {
                     var array = [formattedDate[0], formattedDate[1], formattedDate[2]];
                   }
                   else {
-                    var array = [props.itemData.month, props.itemData.day, props.itemData.year];
+                    array = [props.itemData.month, props.itemData.day, props.itemData.year];
                   }
                   array.push(info.name, info.value, info.category, info.repeat, info.note);
                   editSpending(array);
