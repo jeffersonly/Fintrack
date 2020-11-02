@@ -90,12 +90,6 @@ function SavingTableS() {
         const savingList = savingData.data.listSavings.items;
         console.log('saving data', savingList);
         setSaving(savingList);
-        let data = await Promise.all(savings.map(async (saving) => {
-          return{
-            repeat: saving.repeat
-          }
-        }));
-        console.log(data);
       } catch (error) {
         console.log('Error on fetching saving', error)
       }
@@ -120,9 +114,6 @@ function SavingTableS() {
         setOpenAlert(true);
         setStatusBase("No match found.");
       }
-    }
-    if (!Array.isArray(savings)){
-      console.log('saving not array')
     }
   };
 

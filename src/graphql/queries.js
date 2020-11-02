@@ -42,75 +42,44 @@ export const listSavings = /* GraphQL */ `
     }
   }
 `;
-export const getTransaction = /* GraphQL */ `
-  query GetTransaction($id: ID!) {
-    getTransaction(id: $id) {
+export const getSpending = /* GraphQL */ `
+  query GetSpending($id: ID!) {
+    getSpending(id: $id) {
       id
-      date
+      month
+      day
+      year
       name
       value
       category
+      repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
-export const listTransactions = /* GraphQL */ `
-  query ListTransactions(
-    $filter: ModelTransactionFilterInput
+export const listSpendings = /* GraphQL */ `
+  query ListSpendings(
+    $filter: ModelSpendingFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listTransactions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listSpendings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        date
+        month
+        day
+        year
         name
         value
         category
-        note
-        createdOn
-        updatedOn
-        owner
-      }
-      nextToken
-    }
-  }
-`;
-export const getExpense = /* GraphQL */ `
-  query GetExpense($id: ID!) {
-    getExpense(id: $id) {
-      id
-      date
-      name
-      value
-      repeat
-      note
-      createdOn
-      updatedOn
-      owner
-    }
-  }
-`;
-export const listExpenses = /* GraphQL */ `
-  query ListExpenses(
-    $filter: ModelExpenseFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listExpenses(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        date
-        name
-        value
         repeat
         note
+        owner
         createdOn
         updatedOn
-        owner
       }
       nextToken
     }
@@ -140,6 +109,41 @@ export const savingsByOwner = /* GraphQL */ `
         year
         name
         value
+        repeat
+        note
+        owner
+        createdOn
+        updatedOn
+      }
+      nextToken
+    }
+  }
+`;
+export const spendingsByOwner = /* GraphQL */ `
+  query SpendingsByOwner(
+    $owner: String
+    $name: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSpendingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    spendingsByOwner(
+      owner: $owner
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        month
+        day
+        year
+        name
+        value
+        category
         repeat
         note
         owner

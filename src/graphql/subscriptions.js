@@ -52,93 +52,57 @@ export const onDeleteSaving = /* GraphQL */ `
     }
   }
 `;
-export const onCreateTransaction = /* GraphQL */ `
-  subscription OnCreateTransaction($owner: String!) {
-    onCreateTransaction(owner: $owner) {
+export const onCreateSpending = /* GraphQL */ `
+  subscription OnCreateSpending($owner: String!) {
+    onCreateSpending(owner: $owner) {
       id
-      date
+      month
+      day
+      year
       name
       value
       category
+      repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
-export const onUpdateTransaction = /* GraphQL */ `
-  subscription OnUpdateTransaction($owner: String!) {
-    onUpdateTransaction(owner: $owner) {
+export const onUpdateSpending = /* GraphQL */ `
+  subscription OnUpdateSpending($owner: String!) {
+    onUpdateSpending(owner: $owner) {
       id
-      date
+      month
+      day
+      year
       name
       value
       category
+      repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
-export const onDeleteTransaction = /* GraphQL */ `
-  subscription OnDeleteTransaction($owner: String!) {
-    onDeleteTransaction(owner: $owner) {
+export const onDeleteSpending = /* GraphQL */ `
+  subscription OnDeleteSpending($owner: String!) {
+    onDeleteSpending(owner: $owner) {
       id
-      date
+      month
+      day
+      year
       name
       value
       category
-      note
-      createdOn
-      updatedOn
-      owner
-    }
-  }
-`;
-export const onCreateExpense = /* GraphQL */ `
-  subscription OnCreateExpense($owner: String!) {
-    onCreateExpense(owner: $owner) {
-      id
-      date
-      name
-      value
       repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
-    }
-  }
-`;
-export const onUpdateExpense = /* GraphQL */ `
-  subscription OnUpdateExpense($owner: String!) {
-    onUpdateExpense(owner: $owner) {
-      id
-      date
-      name
-      value
-      repeat
-      note
-      createdOn
-      updatedOn
-      owner
-    }
-  }
-`;
-export const onDeleteExpense = /* GraphQL */ `
-  subscription OnDeleteExpense($owner: String!) {
-    onDeleteExpense(owner: $owner) {
-      id
-      date
-      name
-      value
-      repeat
-      note
-      createdOn
-      updatedOn
-      owner
     }
   }
 `;

@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState} from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
-import SpendingsButton from '../Components/Spending/Button'; 
+import { withRouter, useHistory } from 'react-router-dom';
+//import SpendingsButton from '../Components/Spending/Button'; 
+import Dropzone from '../Components/Dropzone/Dropzone';
+import CreateTransaction from '../Components/Spending/CreateTransaction';
+import Grid from '@material-ui/core/Grid';
+import { ArrowBack } from '@material-ui/icons';
+import {
+  IconButton
+} from '@material-ui/core';
+import CreateSpendingModal from '../Components/Modals/CreateSpendingModal';
 
 const Container = styled.div`
   margin-left: 35px;
@@ -11,10 +19,30 @@ const Container = styled.div`
 `;
 
 function Spendings() {
+  const history = useHistory();
+  const [showMore, setShowMore] = useState(false);
   return (
+    <div>
     <Container>
-          <SpendingsButton />
+      <Grid container spacing={3}>
+        <Grid item xs={1}>
+          <IconButton className="table-icon" onClick={() => history.push('/spendings')}>
+            <ArrowBack />
+          </IconButton>
+        </Grid>
+        <Grid item xs>
+          <Dropzone />
+        </Grid>
+        <Grid item xs>
+          <CreateTransaction />
+        </Grid>
+      </Grid>
     </Container>
+     <CreateSpendingModal
+     closeMore={() => setShowMore(!showMore)} 
+     openMore={showMore}
+    />
+   </div>
   );
 }
 

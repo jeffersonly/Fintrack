@@ -36,14 +36,11 @@ function Savings() {
   return (
     
     <div className={classes.container}>
-      <Grid container spacing={3}>
-        <Grid item xs={2}>
-        </Grid>
-        <Grid item xs={7}>
-
+      <Grid container spacing={2}>
+        <Grid item xs>
           <SavingTableS />
         </Grid>
-        <Grid item xs>
+        <Grid item xs={3}>
           <CreateSaving />
         </Grid>
       </Grid>

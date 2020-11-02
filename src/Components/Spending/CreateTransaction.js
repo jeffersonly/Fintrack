@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { 
-  Button, makeStyles, TextField, Card, CardContent, Typography, Divider, InputAdornment
- } from '@material-ui/core';
+import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { Formik, Form } from 'formik';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { API } from 'aws-amplify';
+import { createSpending } from '../../graphql/mutations';
+import TableField from '../InputFields/TableField';
+import CardTitle from '../Cards/CardTitle';
+import '../Cards/Card.css';
 
-const Container = styled.div`
-  font-family: Roboto;
-`;
-
-const theme = createMuiTheme ({
+const theme = createMuiTheme({
   palette: {
     primary: {
       main: "rgb(1, 114, 71)",
@@ -26,23 +20,13 @@ const theme = createMuiTheme ({
 });
 
 const useStyles = makeStyles({
-  root: {
-    width: "100%",
-    marginBottom: "20px",
-  },
-  title: {
-    fontSize: "20px",
-    fontWeight: "bold",
-    marginBottom: "15px",
-  },
-  divider: {
-    marginBottom: "30px",
-  },
-  textfield: {
-    marginBottom: "20px",
-  },
-  create: {
+  createbutton: {
     backgroundColor: "#ace1af",
+    fontSize: "16px",
+    width: "100%",
+    '&:focus': {
+      outline: "none"
+    },
     '&:hover': {
       backgroundColor: "#ace1af",
       opacity: 0.8
@@ -50,143 +34,234 @@ const useStyles = makeStyles({
   }
 });
 
+const repeats = [
+  {
+    value: 'Never',
+    label: 'Never',
+  },
+  {
+    value: 'Weekly',
+    label: 'Weekly',
+  },
+  {
+    value: 'Monthly',
+    label: 'Monthly',
+  },
+  {
+    value: 'Yearly',
+    label: 'Yearly',
+  },
+];
+
 const categories = [
   {
-    value: 'merch',
+    value: 'Merchandise',
     label: 'Merchandise',
   },
   {
-    value: 'food',
+    value: 'Food',
     label: 'Food',
   },
   {
-    value: 'vehicle',
+    value: 'Vehicle Services',
     label: 'Vehicle Services',
   },
   {
-    value: 'service',
+    value: 'Services',
     label: 'Services',
   },
   {
-    value: 'entertainment',
+    value: 'Entertainment',
     label: 'Entertainment',
   },
   {
-    value: 'org',
+    value: 'Organizations',
     label: 'Organizations',
   },
   {
-    value: 'health',
+    value: 'Health Care',
     label: 'Health Care',
   },
   {
-    value: 'travel',
+    value: 'Travel',
     label: 'Travel',
   },
   {
-    value: 'other',
+    value: 'Other',
     label: 'Other',
   },
 ];
 
-function CreateTransaction () {
+async function submitNewSpending(data) {
+  try {
+    await API.graphql({
+      query: createSpending,
+      variables: {
+        input: {
+          month: data[0],
+          day: data[1],
+          year: data[2],
+          name: data[3],
+          value: data[4],
+          category: data[5],
+          repeat: data[6],
+          note: data[7]
+        }
+      }
+    })
+    console.log('New spending created!');
+    window.location.reload();
+  } catch (err) {
+    console.log({ err });
+  }
+}
+
+function CreateSpending () {
   
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
+  /*
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const [category, setCat] = React.useState('food');
-
-  const handleCategoryChange = (event) => {
-    setCat(event.target.value);
+  const resetDate = () => {
+    setSelectedDate(new Date());
   };
+  */
+
+  const formatDate = (date) => {
+    let split = date.split("/");
+    let month = split[0];
+    let day = split[1];
+    let year = split[2];
+    if (month < 10) {
+      month = "0" + month;
+    }
+    if (day < 10) {
+      day = "0" + day;
+    }
+    //return month + "/" + day + "/" + year;
+    return [month, day, year];
+  }
 
   return (
-    <Container>
-      <Card className={classes.root} variant="outlined">
+<div className="card-container">
+      <Card className="card-fintrack" variant="outlined">
         <CardContent>
-          <Typography className={classes.title} align="center">
-            Create New Transaction
-          </Typography>
-          <Divider className={classes.divider}/>
+          {/*<CardTitle title="Create New Spending" />*/}
           <ThemeProvider theme={theme}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                autoOk
-                fullWidth
-                className={classes.textfield}
-                variant="inline"
-                inputVariant="outlined"
-                label="Date"
-                format="MM/dd/yyyy"
-                value={selectedDate}
-                InputAdornmentProps={{ position: "end" }}
-                onChange={date => handleDateChange(date)}
-              />
-            </MuiPickersUtilsProvider>
-            <TextField
-              className={classes.textfield}
-              label="Transaction"
-              variant="outlined"
-              placeholder="Soyful"
-              fullWidth
-              required
-              InputLabelProps={{shrink: true,}}
-            />
-            <TextField
-              className={classes.textfield}
-              label="Value"
-              variant="outlined"
-              placeholder="5"
-              fullWidth
-              type="number"
-              required
-              InputLabelProps={{shrink: true,}}
-              InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
-            />
-            <TextField
-              className={classes.textfield}
-              label="Category"
-              variant="outlined"
-              fullWidth
-              required
-              InputLabelProps={{ shrink: true, }}
-              select
-              value={category}
-              onChange={handleCategoryChange}
-              helperText="Please select the category"
+            <Formik
+              initialValues={{ 
+                date: new Date(),
+                name: "",
+                value: "",
+                category: "Merchandise",
+                repeat: "Never",
+                note: ""
+              }}
+              validate={values => {
+                const errors = {};
+
+                if (!values.date) {
+                  errors.date = "Required";
+                }
+
+                if (!values.name) {
+                  errors.name = "Required";
+                }
+                if (!values.value) {
+                  errors.value = "Required";
+                }
+
+                return errors;
+              }}
+              onSubmit={(data, { resetForm }) => {
+                //console.log(data, selectedDate.toLocaleDateString());
+                const formattedDate = formatDate(data.date.toLocaleDateString());
+                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.category, data.repeat, data.note];
+                submitNewSpending(array);
+                //resetDate();
+                resetForm();
+              }}
             >
-              {categories.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              className={classes.textfield}
-              label="Notes"
-              variant="outlined"
-              placeholder="Hong kong mf"
-              fullWidth
-              InputLabelProps={{shrink: true,}}
-            />
-            <Button
-              className={classes.create}
-              variant="contained"
-              disableElevation
-              size="large"
-              style={{width: "100%", fontSize: "16px"}}
-            >
-              Create
-            </Button>
+              {({ errors, setFieldError, setFieldValue, values }) => (
+                <Form>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      className="card-datepicker"
+                      format="MM/dd/yyyy"
+                      fullWidth
+                      InputAdornmentProps={{ position: "end" }}
+                      inputVariant="outlined"
+                      label="Date"
+                      name="date"
+                      onChange={date => setFieldValue("date", date, true)}
+                      onError={err => {
+                        if (err !== errors.date) {
+                          setFieldError("date", err);
+                        }
+                      }}
+                      required
+                      value={values.date}
+                      variant="inline"
+                    />
+                  </MuiPickersUtilsProvider>
+                  <TableField
+                    label="Spendings Name"
+                    name="name"
+                    placeholder="Costco"
+                  />
+                  <TableField
+                    InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
+                    label="Value"
+                    name="value"
+                    placeholder="300"
+                    type="number"
+                  />
+                  <TableField
+                    label="Category"
+                    name="category"
+                    options={categories}
+                    select={true}
+                  />
+                  <p className="card-text">Please select the category.</p>
+                  <TableField
+                    label="Repeat"
+                    name="repeat"
+                    options={repeats}
+                    select={true}
+                  />
+                  <p className="card-text">Please select how often the spending reoccurs.</p>
+                  <TableField
+                    label="Notes"
+                    multiline={true}
+                    name="note"
+                    placeholder="12 hours"
+                    required={false}
+                    rowsMax={3}
+                  />
+                  <Button
+                    className={classes.createbutton}
+                    disableElevation
+                    disabled={!values.name || !values.value || errors.date !== ""}
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                  >
+                    Create
+                  </Button>
+                </Form>
+              )}
+            </Formik>
           </ThemeProvider>
         </CardContent>
       </Card>
-    </Container>
+    </div>
   );
 }
 
-export default CreateTransaction;
+export default CreateSpending;

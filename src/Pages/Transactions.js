@@ -1,15 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
-import CreateTransaction from '../Components/Spending/CreateTransaction';
 import {
-  Button, makeStyles, TextField
+  IconButton, makeStyles
 } from '@material-ui/core';
 import { withRouter, useHistory } from 'react-router-dom';
 import { createMuiTheme } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
 import TransactionTableS from '../Components/Spending/TransactionTableS'; 
-import Dropzone from '../Components/Dropzone/Dropzone';
+import { Create } from '@material-ui/icons';
+import CreateSpendingModal from '../Components/Modals/CreateSpendingModal';
+//import Dropzone from '../Components/Dropzone/Dropzone';
+//import CreateTransaction from '../Components/Spending/CreateTransaction';
 
 const Container = styled.div`
   margin-left: 35px;
@@ -52,48 +53,32 @@ const useStyles = makeStyles({
 function Transactions() {
   const classes = useStyles();
   const history = useHistory();
-  let searchIcon=<SearchIcon />;
-  let submitIcon=<Button
-                  className={classes.create}
-                  variant="contained"
-                  disableElevation
-                  size="large"
-                  style={{fontSize: "12px"}}
-                >
-                  SEARCH
-                </Button>
+  const [showMore, setShowMore] = useState(false);
   return (
+    <div>
     <Container>
       <Grid container spacing={3}>
-        <Grid item xs={2}>
-          <Button
-            className={classes.back}
-            onClick={() => history.push('/spendings')}
-            variant="contained"
-            disableElevation
-            size="large"
-            style={{ width: "100%", fontSize: "16px", marginBottom: "20px" }}
-          >
-            ← Back
-          </Button>
+        <Grid item xs = {1}>
+          <IconButton className="table-icon" onClick={() => setShowMore(true) /*history.push('/spendings')*/}>
+            <Create />
+          </IconButton>
         </Grid>
-        <Grid item xs={7}>
-          <TextField
-              className={classes.textfield}
-              variant="outlined"
-              placeholder="Search"
-              fullWidth
-              InputLabelProps={{shrink: true,}}
-              InputProps={{startAdornment: searchIcon, endAdornment: submitIcon}}
-            />
+        <Grid item xs>
             <TransactionTableS />
         </Grid>
+        {/* 
         <Grid item xs>
           <Dropzone />
           <CreateTransaction />
         </Grid>
+        */}
       </Grid>
     </Container>
+    <CreateSpendingModal
+    closeMore={() => setShowMore(!showMore)} 
+    openMore={showMore}
+   />
+   </div>
   );
 }
 
