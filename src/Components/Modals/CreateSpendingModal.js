@@ -32,7 +32,7 @@ function CreateSpendingModal(props) {
                         <Col xs={6}>
                             <CreateSpending />
                         </Col>
-                        <Col xs={6}>
+                        <Col xs={6} className="editprofile-textfield">
                             <Dropzone />
                         </Col>
                     </Row>

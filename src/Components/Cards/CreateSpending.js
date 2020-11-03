@@ -136,7 +136,7 @@ function CreateSpending () {
   */
 
   return (
-    <div className="card-container">
+    <div className="card-container card-spendings">
       {/*<Card className="card-fintrack" variant="outlined">
         <CardContent>*/}
           {/*<CardTitle title="Create New Spending" />*/}

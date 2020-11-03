@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
+import { Button, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -79,7 +79,7 @@ async function submitNewSaving(data) {
   }
 }
 
-function CreateSaving() {
+function CreateSaving(props) {
 
   const classes = useStyles();
 
@@ -94,10 +94,10 @@ function CreateSaving() {
   };*/
   
   return (
-    <div className="card-container">
-      <Card className="card-fintrack" variant="outlined">
-        <CardContent>
-          <CardTitle title="Create New Savings" />
+    <div className="card-container card-savings">
+      {/*<Card className="card-fintrack" variant="outlined">
+        <CardContent>*/}
+          {props.title && <CardTitle title="Create New Savings" />}
           <ThemeProvider theme={theme}>
             <Formik
               initialValues={{ 
@@ -196,8 +196,8 @@ function CreateSaving() {
               )}
             </Formik>
           </ThemeProvider>
-        </CardContent>
-      </Card>
+        {/*</CardContent>
+      </Card>*/}
     </div>
   );
 }
