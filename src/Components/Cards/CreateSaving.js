@@ -2,12 +2,15 @@ import React from 'react';
 import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { Formik, Form } from 'formik';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { Formik, Form } from 'formik';
+
 import { API } from 'aws-amplify';
 import { createSaving } from '../../graphql/mutations';
+
 import TableField from '../InputFields/TableField';
+import { splitDate } from '../Tables/TableFunctions';
 import CardTitle from './CardTitle';
 import '../Cards/Card.css';
 
@@ -89,21 +92,6 @@ function CreateSaving() {
   const resetDate = () => {
     setSelectedDate(new Date());
   };*/
-
-  const formatDate = (date) => {
-    let split = date.split("/");
-    let month = split[0];
-    let day = split[1];
-    let year = split[2];
-    if (month < 10) {
-      month = "0" + month;
-    }
-    if (day < 10) {
-      day = "0" + day;
-    }
-    //return month + "/" + day + "/" + year;
-    return [month, day, year];
-  }
   
   return (
     <div className="card-container">
@@ -137,7 +125,7 @@ function CreateSaving() {
               }}
               onSubmit={(data, { resetForm }) => {
                 //console.log(data, selectedDate.toLocaleDateString());
-                const formattedDate = formatDate(data.date.toLocaleDateString());
+                const formattedDate = splitDate(data.date.toLocaleDateString());
                 const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.repeat, data.note];
                 submitNewSaving(array);
                 //resetDate();

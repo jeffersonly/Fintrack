@@ -4,15 +4,17 @@ import {
   TableContainer, TableRow, TextField 
 } from '@material-ui/core';
 import { Search, Info } from '@material-ui/icons';
+
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { listSavings, savingsByOwner } from '../../graphql/queries';
 import { deleteSaving } from '../../graphql/mutations';
 
 import TableHeader from './TableHeader';
+import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
 import MoreSavingInformation from '../Modals/MoreSavingInformation';
 import ConfirmDelete from '../Modals/ConfirmDelete';
-import '../Tables/Table.css';
+import './Table.css';
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center", minWidth: 50 },
@@ -21,43 +23,6 @@ const columnTitles = [
   { id: "repeat", label: "Repeat", align: "center", minWidth: 100 },
   { id: "info", label: "More Information", align: "center", minWidth: 50 },
 ];
-
-function descendingComparator(a, b, orderBy) {
-  if (orderBy === "date") {
-    let bdate = new Date(b.date);
-    let adate = new Date(a.date);
-    if (bdate < adate) {
-      return -1;
-    }
-    if (bdate > adate) {
-      return 1;
-    }
-  }
-  else {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-  }
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
 
 function SavingTable() {
 
@@ -183,7 +148,7 @@ function SavingTable() {
               .map((saving) => {
                 return (
                   <TableRow hover key={saving.id}>
-                    <TableCell align="center">{saving.month}/{saving.day}/{saving.year}</TableCell>
+                    <TableCell align="center">{formatDate(saving.month, saving.day, saving.year)}</TableCell>
                     <TableCell align="center">{saving.name}</TableCell>
                     <TableCell align="center">${saving.value}</TableCell>
                     <TableCell align="center">{saving.repeat}</TableCell>

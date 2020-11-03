@@ -4,3 +4,15 @@
   margin-right: 35px;
   margin-top: 80px;
 }
+
+@media only screen and (max-width: 600px) {
+
+  .spendings {
+    margin-top: 125px;
+  }
+
+  .spendings-table {
+    padding-bottom: 25px;
+  }
+
+}

@@ -1,13 +1,16 @@
 import React from 'react';
-import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
+import { Button, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { Formik, Form } from 'formik';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+
 import { API } from 'aws-amplify';
 import { createSpending } from '../../graphql/mutations';
+
 import TableField from '../InputFields/TableField';
+import { splitDate } from '../Tables/TableFunctions';
 //import CardTitle from './CardTitle';
 import '../Cards/Card.css';
 
@@ -55,36 +58,36 @@ const repeats = [
 
 const categories = [
   {
-    value: 'Merchandise',
-    label: 'Merchandise',
+    value: 'Entertainment',
+    label: 'Entertainment',
   },
   {
     value: 'Food',
     label: 'Food',
   },
   {
-    value: 'Vehicle Services',
-    label: 'Vehicle Services',
+    value: 'Health Care',
+    label: 'Health Care',
   },
   {
-    value: 'Services',
-    label: 'Services',
-  },
-  {
-    value: 'Entertainment',
-    label: 'Entertainment',
+    value: 'Merchandise',
+    label: 'Merchandise',
   },
   {
     value: 'Organizations',
     label: 'Organizations',
   },
   {
-    value: 'Health Care',
-    label: 'Health Care',
+    value: 'Services',
+    label: 'Services',
   },
   {
     value: 'Travel',
     label: 'Travel',
+  },
+  {
+    value: 'Vehicle Services',
+    label: 'Vehicle Services',
   },
   {
     value: 'Other',
@@ -132,25 +135,10 @@ function CreateSpending () {
   };
   */
 
-  const formatDate = (date) => {
-    let split = date.split("/");
-    let month = split[0];
-    let day = split[1];
-    let year = split[2];
-    if (month < 10) {
-      month = "0" + month;
-    }
-    if (day < 10) {
-      day = "0" + day;
-    }
-    //return month + "/" + day + "/" + year;
-    return [month, day, year];
-  }
-
   return (
     <div className="card-container">
-      <Card className="card-fintrack" variant="outlined">
-        <CardContent>
+      {/*<Card className="card-fintrack" variant="outlined">
+        <CardContent>*/}
           {/*<CardTitle title="Create New Spending" />*/}
           <ThemeProvider theme={theme}>
             <Formik
@@ -158,7 +146,7 @@ function CreateSpending () {
                 date: new Date(),
                 name: "",
                 value: "",
-                category: "Merchandise",
+                category: "Food",
                 repeat: "Never",
                 note: ""
               }}
@@ -179,7 +167,7 @@ function CreateSpending () {
               }}
               onSubmit={(data, { resetForm }) => {
                 //console.log(data, selectedDate.toLocaleDateString());
-                const formattedDate = formatDate(data.date.toLocaleDateString());
+                const formattedDate = splitDate(data.date.toLocaleDateString());
                 const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.category, data.repeat, data.note];
                 submitNewSpending(array);
                 //resetDate();
@@ -257,8 +245,8 @@ function CreateSpending () {
               )}
             </Formik>
           </ThemeProvider>
-        </CardContent>
-      </Card>
+        {/*</CardContent>
+      </Card>*/}
     </div>
   );
 }

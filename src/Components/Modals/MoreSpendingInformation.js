@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Divider, InputAdornment} from '@material-ui/core';
+import { Button, Divider, InputAdornment } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
-import TableField from '../InputFields/TableField';
-import { deleteSpending } from '../../graphql/mutations';
-import { API, graphqlOperation } from "aws-amplify";
-//import { getSpending } from '../../graphql/queries';
-import { updateSpending } from '../../graphql/mutations';
-import '../Cards/Profile.css';
-import '../Cards/Card.css';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+
+import { API } from "aws-amplify";
+//import { getSpending } from '../../graphql/queries';
+import { updateSpending } from '../../graphql/mutations';
+
+import TableField from '../InputFields/TableField';
+import { formatDate, splitDate } from '../Tables/TableFunctions';
+
+import '../Cards/Profile.css';
+import '../Cards/Card.css';
 
 const theme = createMuiTheme({
     palette: {
@@ -83,19 +86,19 @@ const repeats = [
     },
   ];
 
-function MoreSpendingInfo(props) {
+function MoreSpendingInformation(props) {
 
     const [show, setShow] = useState(props.openMore);
-    const [itemID, setItemID] = useState(props.itemID);
+    //const [itemID, setItemID] = useState(props.itemID);
     //const [data, setData] = useState([]);
     //const [selectedDate, setSelectedDate] = useState(Date());
     const [changedDate, setChangedDate] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
-    setItemID(props.itemID);
+    //setItemID(props.itemID);
     //getData(props.item);
-  }, [props.openMore], [props.item]);
+  }, [props.openMore]); //, [props.item]);
 
   /*
   async function getData(item) {
@@ -103,7 +106,7 @@ function MoreSpendingInfo(props) {
     const itemName = itemData.data.getSpending;
     setData(itemName);
   }
-  */
+  
 
   async function handleDelete(event) {
     try {
@@ -118,7 +121,7 @@ function MoreSpendingInfo(props) {
     catch (error) {
       console.log('Error on delete spending', error)
     }
-  }
+  }*/
 
   async function editSpending(data) {
     try {
@@ -141,7 +144,7 @@ function MoreSpendingInfo(props) {
       console.log('Spending updated!');
       window.location.reload();
     } catch (err) {
-      console.log({ err });
+      console.log(err);
     }
   }
 
@@ -151,24 +154,7 @@ function MoreSpendingInfo(props) {
     setChangedDate(true);
   };
 */
-const splitDate = (date) => {
-    let split = date.split("/");
-    let month = split[0];
-    let day = split[1];
-    let year = split[2];
-    if (month < 10) {
-      month = "0" + month;
-    }
-    if (day < 10) {
-      day = "0" + day;
-    }
-    return [month, day, year];
-  }
 
-  const formatDate = (month, day, year) => {
-    return month + "/" + day + "/" + year;
-  }  
-  
   return (
     <div >
       {/*data && Object.entries(data).map((key, value) => (*/}
@@ -181,7 +167,7 @@ const splitDate = (date) => {
           //key={value}
         >
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">Details</Modal.Title>
+            <Modal.Title id="contained-modal-title-vcenter">Entry Details</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="editprofile-textfield">
@@ -256,11 +242,7 @@ const splitDate = (date) => {
                       name="name"  
                     />
                     <TableField
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">$</InputAdornment>
-                        ),
-                      }}
+                      InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}
                       label="Value"
                       name="value"
                       type="number"
@@ -287,7 +269,7 @@ const splitDate = (date) => {
                     <Divider className="editprofile-divider" />
                     <div align="right">
                       <Button
-                        className="editprofile-cancelbutton"
+                        className="profile-button editprofile-cancelbutton"
                         disableElevation
                         variant="contained"
                         disabled={!values.name || !values.value || errors.date !== ""}
@@ -299,7 +281,11 @@ const splitDate = (date) => {
                         className="deletebutton"
                         color="secondary"
                         disableElevation
-                        onClick={() => handleDelete(itemID)}
+                        onClick={() => {
+                          props.closeMore();
+                          props.confirmDelete();
+                        }}
+                        //onClick={() => handleDelete(itemID)}
                         variant="contained"
                       >
                         Delete
@@ -314,7 +300,6 @@ const splitDate = (date) => {
         </Modal>
     </div>
   );
-
 }
 
-export default MoreSpendingInfo;
+export default MoreSpendingInformation;

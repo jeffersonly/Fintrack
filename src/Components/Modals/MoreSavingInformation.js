@@ -13,6 +13,7 @@ import { API } from "aws-amplify";
 import { updateSaving } from '../../graphql/mutations';
 
 import TableField from '../InputFields/TableField';
+import { formatDate, splitDate } from '../Tables/TableFunctions';
 
 import '../Cards/Profile.css';
 import '../Cards/Card.css';
@@ -68,7 +69,7 @@ function MoreSavingInformation(props) {
     const itemData = await API.graphql(graphqlOperation(getSaving, { id: item }));
     const itemName = itemData.data.getSaving;
     setData(itemName);
-  }*/
+  }
 
   /*async function handleDelete(event) {
     try {
@@ -112,25 +113,7 @@ function MoreSavingInformation(props) {
   /*const handleDateChange = (date) => {
     setSelectedDate(date);
     setChangedDate(true);
-  };*/
-
-  const splitDate = (date) => {
-    let split = date.split("/");
-    let month = split[0];
-    let day = split[1];
-    let year = split[2];
-    if (month < 10) {
-      month = "0" + month;
-    }
-    if (day < 10) {
-      day = "0" + day;
-    }
-    return [month, day, year];
-  }
-
-  const formatDate = (month, day, year) => {
-    return month + "/" + day + "/" + year;
-  }  
+  };
   
   /*function handleShowConfirmDelete() {
     setConfirmDelete(true);
@@ -149,7 +132,7 @@ function MoreSavingInformation(props) {
         //key={value}
       >
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">Details</Modal.Title>
+          <Modal.Title id="contained-modal-title-vcenter">Entry Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="editprofile-textfield">

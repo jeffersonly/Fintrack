@@ -5,6 +5,9 @@
 
 .card-container {
   font-family: Roboto;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
 }
 
 .card-createbutton {

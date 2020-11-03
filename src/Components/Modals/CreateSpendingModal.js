@@ -1,37 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
+//import { Divider, Grid } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
+import { Row, Col } from 'react-bootstrap';
 import Dropzone from '../../Components/Dropzone/Dropzone';
 import CreateSpending from '../Cards/CreateSpending';
+import '../Cards/Profile.css';
 
 function CreateSpendingModal(props) {
-    const [show, setShow] = useState(props.openMore);
+
+	const [show, setShow] = useState(props.openCreateSpending);
+
     useEffect(() => {
-        setShow(props.openMore);
-    }, [props.openMore]);
+        setShow(props.openCreateSpending);
+    }, [props.openCreateSpending]);
+
     return (
         <div >
             <Modal
                 size="lg"
                 className="profile"
                 show={show}
-                onHide={props.closeMore}
+                onHide={props.closeCreateSpending}
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
                 <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">Create new spending</Modal.Title>
+                    <Modal.Title id="contained-modal-title-vcenter">Create New Spendings</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Grid container spacing={2}>
-                        <Grid item xs>
+                    <Row>
+                        <Col xs={6}>
                             <CreateSpending />
-                        </Grid>
-                        <Grid item xs>
-
+                        </Col>
+                        <Col xs={6}>
                             <Dropzone />
-                        </Grid>
-                    </Grid>
+                        </Col>
+                    </Row>
                 </Modal.Body>
             </Modal>
         </div>
