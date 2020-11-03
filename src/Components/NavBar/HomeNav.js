@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import './HomeNav.css';
@@ -6,6 +6,53 @@ import './HomeNav.css';
 function HomeNav () {
 
   const [color, setColor] = useState({sum: "rgb(1, 114, 71)", spend: "black", save: "black", split: "black", acc: "black"});
+
+  //maintains state in session storage for page refresh
+  useEffect(() => {
+    const data = sessionStorage.getItem("current-page");
+    if (data) {
+      setColor(JSON.parse(data));
+    }
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("current-page", JSON.stringify(color));
+  });
+
+  /*function linkButton () {
+    let buttonColor = {
+      "sum": "black",
+      "spend": "black",
+      "save": "black",
+      "split": "black",
+      "acc": "black"
+    }
+    const path = window.location.pathname;
+    switch (window.location.pathname) {
+      case "/summary":
+        buttonColor["sum"] = "rgb(1, 114, 71)";
+        console.log("sum")
+        break;
+      case "/spendings":
+        buttonColor["spend"] = "rgb(1, 114, 71)";
+        console.log("spen")
+        break;
+      case "/savings":
+        buttonColor["save"] = "rgb(1, 114, 71)";
+        console.log("sav")
+        break;
+      case "/split":
+        buttonColor["split"] = "rgb(1, 114, 71)";
+        console.log("sp")
+        break;
+      case "/account":
+        buttonColor["acc"] = "rgb(1, 114, 71)";
+        console.log("acc")
+        break;
+      default:
+        break;
+    }
+  }*/
 
   //doesn't work when you use browser to navigate back and forth
   const handleClick = (pg) => {

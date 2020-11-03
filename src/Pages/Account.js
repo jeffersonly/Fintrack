@@ -20,7 +20,7 @@ const theme = createMuiTheme ({
 function Account() {
 
   const [background, setBackground] = useState({prof: "#f5f5f5", notif: "", receipt: "", split: ""});
-  const [page, setPage] = useState({prof: true, notif: false, receipt: false, split: false})
+  const [page, setPage] = useState({prof: true, notif: false, receipt: false, split: false});
   const [expanded, setExpanded] = useState(false);
 
   const handleClick = (pg) => {
@@ -50,6 +50,8 @@ function Account() {
     Auth.signOut()
     .then(window.location = '/')
     .catch(err => console.log("Error signing out: ", err));
+
+    sessionStorage.clear();
   }
 
   function getCard() {

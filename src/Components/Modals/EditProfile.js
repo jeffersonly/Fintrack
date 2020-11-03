@@ -18,6 +18,13 @@ function EditProfile(props) {
     setShow(props.openEdit);
   }, [props.openEdit]);
 
+  //prevent submitting form when hit "enter" on edit email modal
+  function onKeyDown(keyEvent) {
+    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+      keyEvent.preventDefault();
+    }
+  }
+
   return (
     <div>
       <Modal
@@ -60,7 +67,7 @@ function EditProfile(props) {
               }}
             >
               {({ values, errors }) => (
-                <Form>
+                <Form onKeyDown={onKeyDown}>
                   <TableField
                     label="Email"
                     name="email"
