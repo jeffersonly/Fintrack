@@ -1,8 +1,9 @@
 import React from 'react';
 import { TableCell, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
+import './Table.css';
 
 function TableHeader(props) {
-  const { classes, headCells, order, orderBy, onRequestSort } = props;
+  const { headCells, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -15,6 +16,7 @@ function TableHeader(props) {
             key={headCell.id}
             align="center"
             sortDirection={orderBy === headCell.id ? order : false}
+            style={{width: headCell.width}}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -23,7 +25,7 @@ function TableHeader(props) {
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
+                <span className="table-visuallyHidden">
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
               ) : null}

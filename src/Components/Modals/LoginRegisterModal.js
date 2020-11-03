@@ -1,7 +1,7 @@
 import './AuthModal.css';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Auth } from 'aws-amplify';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 import InputField from '../InputFields/InputField';
 
 function LoginRegisterModal(props) {

@@ -1,113 +1,64 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import Grid from '@material-ui/core/Grid';
-import CreateSaving from '../Components/Saving/CreateSaving';
-import {
-  Button, makeStyles, TextField
-} from '@material-ui/core';
-import {withRouter} from 'react-router-dom';
-import { createMuiTheme } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import SavingTableS from '../Components/Saving/SavingTableS'; 
+import { Card, CardContent, makeStyles } from '@material-ui/core';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import { withRouter } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 
-const Container = styled.div`
-  margin-left: 35px;
-  margin-right: 35px;
-  margin-top: 80px;
-  font-family: Roboto;
-`;
+import CreateSaving from '../Components/Cards/CreateSaving';
+import CreateSavingModal from '../Components/Modals/CreateSavingModal';
+import SavingTable from '../Components/Tables/SavingTable';
+import './Savings.css';
+import '../Components/Cards/Card.css';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "rgb(1, 114, 71)",
-    }
-  },
-});
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    marginBottom: "20px",
-  },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  create: {
-    backgroundColor: "#ace1af",
-    '&:hover': {
-      backgroundColor: "#ace1af",
-      opacity: 0.8
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    backgroundColor: "#FFDE0A",
+    position: 'absolute',
+    bottom: theme.spacing(4),
+    right: theme.spacing(4),
+    '&:focus': {
+      outline: 'none'
     },
+    '&:hover': {
+      backgroundColor: "#FFE95C",
+    }
   }
-});
-
-
+}));
 
 function Savings() {
-  const classes = useStyles();
-  let searchIcon=<SearchIcon />;
-  let submitIcon=<Button
-                  className={classes.create}
-                  variant="contained"
-                  disableElevation
-                  size="large"
-                  style={{fontSize: "12px"}}
-                >
-                  SEARCH
-                </Button>
-  const [rows, setRows] = useState([
-    {
-      date: "8/15/2020",
-      saving: "Birthday money",
-      value: "200"
-    },
-    {
-      date: "9/15/2020",
-      saving: "Paycheck",
-      value: "800"
-    }
-  ]);
 
+  const classes = useStyles();
+
+  const [showCreateSaving, setCreateSaving] = useState(false);
 
   return (
-    <Container>
-      <Grid container spacing={3}>
-        <Grid item xs={2}>
-        </Grid>
-        <Grid item xs={7}>
-          <TextField
-              className={classes.textfield}
-              variant="outlined"
-              placeholder="Search"
-              fullWidth
-              InputLabelProps={{shrink: true,}}
-              InputProps={{startAdornment: searchIcon, endAdornment: submitIcon}}
-            />
-            <SavingTableS rows={rows} />
-        </Grid>
-        <Grid item xs>
-          <CreateSaving 
-           onSubmit={data => {
-            setRows(currentRows => [
-              {
-                date: data[0],
-                saving: data[1],
-                value: data[2]
-              },
-              ...currentRows
-            ]);
-          }}
-          
-          />
-        </Grid>
-      </Grid>
-    </Container>
+    <div className="savings">
+      <Row>
+        <Col className="savings-table">
+          <SavingTable />
+        </Col>
+        <Col md={3} className="savings-form">
+          <Card className="card-fintrack" variant="outlined">
+            <CardContent>
+              <CreateSaving title={true}/> 
+            </CardContent>
+          </Card>
+        </Col>
+      </Row>
+      <CreateSavingModal
+        closeCreateSaving={() => setCreateSaving(!showCreateSaving)}
+        openCreateSaving={showCreateSaving}
+      />
+      <div className="savings-add">
+        <Fab 
+          className={classes.fab}
+          onClick={() => setCreateSaving(true)}
+        >
+          <AddIcon />
+        </Fab>
+      </div>
+    </div>
   );
 }
 

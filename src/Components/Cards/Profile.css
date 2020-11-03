@@ -1,3 +1,11 @@
+.deletebutton:hover {
+  background-color: #ff9999 !important;
+}
+
+.deletebutton:focus {
+  outline: none;
+}
+
 .editprofile-cancelbutton {
   margin-right: 10px !important;
 }

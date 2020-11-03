@@ -1,0 +1,23 @@
+.graphs-button {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.graphs-button:focus {
+  outline: none;
+}
+
+.graphs-graph {
+  padding-bottom: 5px !important;
+  padding-top: 20px !important;
+}
+
+.graphs-table-subtitle {
+  font-size: 10px !important;
+  padding-bottom: 15px;
+}
+
+.graphs-table-title {
+  font-weight: bold !important;
+  margin-top: -20px !important;
+}

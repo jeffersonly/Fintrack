@@ -1,0 +1,49 @@
+.card-container {
+  font-family: Roboto;
+  padding-left: 15px;
+}
+
+.card-createbutton {
+  background-color: #ace1af;
+  font-size: 16px;
+  width: 100%;
+}
+
+.card-createbutton:focus {
+  outline: none;
+}
+
+.card-createbutton:hover {
+  opacity: 0.8;
+}
+
+.card-datepicker {
+  margin-bottom: 20px !important;
+}
+
+.card-fintrack {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.card-spendings {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.card-text {
+  color: #A9A9A9;
+  font-size: 12px;
+  margin-top: -15px;
+  padding-bottom: 5px;
+}
+
+@media only screen and (max-width: 840px) {
+  
+  .card-savings {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 15px;
+  }
+
+}

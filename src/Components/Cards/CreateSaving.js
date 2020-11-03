@@ -1,131 +1,133 @@
-import React, { useState } from 'react';
-import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
+import React from 'react';
+import { Button, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
 
-import TableField from '../InputFields/TableField';
-//import DateField from '../InputFields/DateField';
-import CardTitle from './CardTitle';
-import Dropzone from '../Dropzone/Dropzone';
+import { API } from 'aws-amplify';
+import { createSaving } from '../../graphql/mutations';
 
-const theme = createMuiTheme ({
+import TableField from '../InputFields/TableField';
+import { splitDate } from '../Tables/TableFunctions';
+import CardTitle from './CardTitle';
+import '../Cards/Card.css';
+
+const theme = createMuiTheme({
   palette: {
     primary: {
       main: "rgb(1, 114, 71)",
-    },
+    }
   },
 });
 
 const useStyles = makeStyles({
-  card: {
-    width: "100%",
-    marginBottom: "20px",
-  },
-  container: {
-    fontFamily: "Roboto",
-  },
   createbutton: {
     backgroundColor: "#ace1af",
     fontSize: "16px",
     width: "100%",
     '&:focus': {
-      outline: "none",
+      outline: "none"
     },
     '&:hover': {
       backgroundColor: "#ace1af",
       opacity: 0.8
     },
-  },
-  datepicker: {
-    marginBottom: "20px",
   }
 });
 
-function QuickTransaction ({ onSubmit }) {
-  
+const repeats = [
+  {
+    value: 'Never',
+    label: 'Never',
+  },
+  {
+    value: 'Weekly',
+    label: 'Weekly',
+  },
+  {
+    value: 'Monthly',
+    label: 'Monthly',
+  },
+  {
+    value: 'Yearly',
+    label: 'Yearly',
+  },
+];
+
+async function submitNewSaving(data) {
+  try {
+    await API.graphql({
+      query: createSaving,
+      variables: {
+        input: {
+          month: data[0],
+          day: data[1],
+          year: data[2],
+          name: data[3],
+          value: data[4],
+          repeat: data[5],
+          note: data[6]
+        }
+      }
+    })
+    console.log('New saving created!');
+    window.location.reload();
+  } catch (err) {
+    console.log({ err });
+  }
+}
+
+function CreateSaving(props) {
+
   const classes = useStyles();
 
-  //const [selectedDate, setSelectedDate] = useState(new Date());
-
-  /*const handleDateChange = (date) => {
+  /*const [selectedDate, setSelectedDate] = useState(new Date());
+  
+  const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
   const resetDate = () => {
     setSelectedDate(new Date());
   };*/
-
-  const options = [
-    {
-      value: 'cash',
-      label: 'Cash',
-    },
-    {
-      value: 'credit',
-      label: 'Credit',
-    },
-    {
-      value: 'debit',
-      label: 'Debit',
-    }
-  ];
-
+  
   return (
-    <div className={classes.container}>
-      <Card className={classes.card} variant="outlined">
-        <CardContent>
-          <CardTitle title="+ Quick-Create Transaction" />
-          {/*<DayPickerInput
-            formatDate={formatDate}
-            parseDate={parseDate}
-            placeholder={`${formatDate(new Date())}`}
-            dayPickerProps={{todayButton: 'Go to Today'}}
-            style={{ 
-            }}
-          />*/}
+    <div className="card-container card-savings">
+      {/*<Card className="card-fintrack" variant="outlined">
+        <CardContent>*/}
+          {props.title && <CardTitle title="Create New Savings" />}
           <ThemeProvider theme={theme}>
-            {/*<TextField
-              className={classes.textfield}
-              id="date"
-              variant="outlined"
-              label="Date"
-              type="date"
-              fullWidth
-              defaultValue={new Date()}
-              InputLabelProps={{shrink: true}}
-            />*/}
             <Formik
-              initialValues={{
+              initialValues={{ 
                 date: new Date(),
-                transaction: "",
-                amount: "",
-                pay: "cash"
+                name: "",
+                value: "",
+                repeat: "Never",
+                note: ""
               }}
               validate={values => {
                 const errors = {};
-          
-                //doesn't print
+
                 if (!values.date) {
                   errors.date = "Required";
                 }
 
-                if (!values.transaction) {
-                  errors.transaction = "Required";
+                if (!values.name) {
+                  errors.name = "Required";
                 }
-                if (!values.amount) {
-                  errors.amount = "Required";
+                if (!values.value) {
+                  errors.value = "Required";
                 }
-          
+
                 return errors;
               }}
               onSubmit={(data, { resetForm }) => {
-                //console.log(data.date.toLocaleDateString())
                 //console.log(data, selectedDate.toLocaleDateString());
-                const array = [data.date.toLocaleDateString(), data.transaction, data.amount, data.pay];
-                onSubmit(array);
+                const formattedDate = splitDate(data.date.toLocaleDateString());
+                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.repeat, data.note];
+                submitNewSaving(array);
                 //resetDate();
                 resetForm();
               }}
@@ -135,7 +137,7 @@ function QuickTransaction ({ onSubmit }) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      className={classes.datepicker}
+                      className="card-datepicker"
                       format="MM/dd/yyyy"
                       fullWidth
                       InputAdornmentProps={{ position: "end" }}
@@ -146,7 +148,6 @@ function QuickTransaction ({ onSubmit }) {
                       onError={err => {
                         if (err !== errors.date) {
                           setFieldError("date", err);
-                          console.log(errors.date);
                         }
                       }}
                       required
@@ -155,28 +156,36 @@ function QuickTransaction ({ onSubmit }) {
                     />
                   </MuiPickersUtilsProvider>
                   <TableField
-                    label="Transaction"
-                    name="transaction"
-                    placeholder="Bob's Birthday Gift"
-                  />
-                  <TableField
-                    label="Form of Payment"
-                    name="pay"
-                    options={options}
-                    select={true}
+                    label="Savings Name"
+                    name="name"
+                    placeholder="Paycheck"
                   />
                   <TableField
                     InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
                     label="Value"
-                    name="amount"
-                    placeholder="30"
+                    name="value"
+                    placeholder="300"
                     type="number"
                   />
-                  <Dropzone />
+                  <TableField
+                    label="Repeat"
+                    name="repeat"
+                    options={repeats}
+                    select={true}
+                  />
+                  <p className="card-text">Please select how often the saving reoccurs.</p>
+                  <TableField
+                    label="Notes"
+                    multiline={true}
+                    name="note"
+                    placeholder="12 hours"
+                    required={false}
+                    rowsMax={3}
+                  />
                   <Button
                     className={classes.createbutton}
                     disableElevation
-                    disabled={!values.transaction || !values.amount || errors.date !== ""}
+                    disabled={!values.name || !values.value || errors.date !== ""}
                     size="large"
                     type="submit"
                     variant="contained"
@@ -187,10 +196,10 @@ function QuickTransaction ({ onSubmit }) {
               )}
             </Formik>
           </ThemeProvider>
-        </CardContent>
-      </Card>
+        {/*</CardContent>
+      </Card>*/}
     </div>
   );
 }
 
-export default QuickTransaction;
+export default CreateSaving;
