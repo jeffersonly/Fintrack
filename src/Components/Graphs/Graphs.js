@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { calculateSavingsMonthTotal } from './GetGraphData';
+import { calculateSpendingsMonthTotal, calculateSavingsMonthTotal } from './GetGraphData';
 import ChartistGraph from "react-chartist";
 
 var Chartist = require("chartist");
@@ -9,11 +9,18 @@ var delays = 16,
 
 function Graphs (props) {
   
+  const [spendingsData, setSpendingsData] = useState([]);
   const [savingsData, setSavingsData] = useState([]);
 
   useEffect(() => {
+    getSpendingTotal();
     getSavingTotal();
   }, []);
+
+  async function getSpendingTotal() {
+    const result = await calculateSpendingsMonthTotal();
+    setSpendingsData(result);
+  }
 
   async function getSavingTotal() {
     const result = await calculateSavingsMonthTotal();
@@ -23,62 +30,145 @@ function Graphs (props) {
   //temporary
   function transInformation() {
     if (props.data === "trans") {
-      const transactionsChart = {
-        data: {
-          labels: ["M", "T", "W", "T", "F", "S", "S"],
-          series: [[12, 17, 7, 17, 23, 18, 38]]
-        },
-        options: {
-          lineSmooth: Chartist.Interpolation.cardinal({
-            tension: 0
-          }),
-          width: 650,
-          height: 230,
-          low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: -15
-          }
-        },
-        // for animation
-        animation: {
-          draw: function(data) {
-            if (data.type === "line" || data.type === "area") {
-              data.element.animate({
-                d: {
-                  begin: 600,
-                  dur: 700,
-                  from: data.path
-                    .clone()
-                    .scale(1, 0)
-                    .translate(0, data.chartRect.height())
-                    .stringify(),
-                  to: data.path.clone().stringify(),
-                  easing: Chartist.Svg.Easing.easeOutQuint
-                }
-              });
-            } else if (data.type === "point") {
-              data.element.animate({
-                opacity: {
-                  from: 0,
-                  to: 1,
-                  easing: "ease"
-                }
-              });
+      if (spendingsData === "There was an error.") {
+        return (
+          <p style={{color: "red"}}>{spendingsData}</p>
+        );
+      }
+      else {
+        const transactionsChart = {
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "Mai",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+            ],
+            series: [
+              [
+                spendingsData[0],
+                spendingsData[1],
+                spendingsData[2],
+                spendingsData[3],
+                spendingsData[4],
+                spendingsData[5],
+                spendingsData[6],
+                spendingsData[7],
+                spendingsData[8],
+                spendingsData[9],
+                spendingsData[10],
+                spendingsData[11],
+                spendingsData[12]
+              ]
+            ]
+          },
+          options: {
+            axisX: {
+              showGrid: false
+            },
+            axisY: {
+              labelInterpolationFnc: function(value, index) {
+                return index % 1 === 0 ? value : null;
+              }
+            },
+            width: 650,
+            height: 230,
+            low: 0,
+            high: 1500,
+            chartPadding: {
+              top: 0,
+              right: 5,
+              bottom: 0,
+              left: -5
+            }
+          },
+          responsiveOptions: [
+            [
+              "screen and (max-width: 640px)",
+              {
+                seriesBarDistance: 5,
+                axisX: {
+                  labelInterpolationFnc: function(value) {
+                    return value[0];
+                  }
+                },
+                width: 300
+              }
+            ],
+            [
+              "screen and (max-width: 768px)",
+              {
+                seriesBarDistance: 5,
+                axisX: {
+                  labelInterpolationFnc: function(value) {
+                    return value[0];
+                  }
+                },
+                width: 400
+              },
+            ],
+            [
+              "screen and (max-width: 1100px)",
+              {
+                seriesBarDistance: 5,
+                axisX: {
+                  labelInterpolationFnc: function(value) {
+                    return value[0];
+                  }
+                },
+                width: 450
+              },
+            ]
+          ],
+          // for animation
+          animation: {
+            draw: function(data) {
+              if (data.type === "line" || data.type === "area") {
+                data.element.animate({
+                  d: {
+                    begin: 600,
+                    dur: 700,
+                    from: data.path
+                      .clone()
+                      .scale(1, 0)
+                      .translate(0, data.chartRect.height())
+                      .stringify(),
+                    to: data.path.clone().stringify(),
+                    easing: Chartist.Svg.Easing.easeOutQuint
+                  }
+                });
+              } else if (data.type === "point") {
+                data.element.animate({
+                  opacity: {
+                    begin: (data.index + 1) * delays,
+                    dur: durations,
+                    from: 0,
+                    to: 1,
+                    easing: "ease"
+                  }
+                });
+              }
             }
           }
         }
+        return (
+          <ChartistGraph
+            data={transactionsChart.data}
+            listener={transactionsChart.animation}
+            options={transactionsChart.options}
+            responsiveOptions={transactionsChart.responsiveOptions}
+            type="Line"
+          />
+        );
       }
-      return (
-        <ChartistGraph
-          data={transactionsChart.data}
-          options={transactionsChart.options}
-          type="Line"
-        />
-      );
     }
   }
 
