@@ -160,18 +160,14 @@ function Profile() {
                     openPassword={showPassword}
                   />
                   <SnackbarNotification
-                    className="profile-snackbar"
                     message="Email has been verified!"
                     onClose={handleCloseAlert}
                     open={showProfileAlert}
-                    vertical="bottom"
                   />
                   <SnackbarNotification
-                    className="profile-snackbar"
                     message="Password successfully changed!"
                     onClose={handleCloseAlert}
                     open={showPasswordAlert}
-                    vertical="bottom"
                   />
                 </div>
               </ThemeProvider>

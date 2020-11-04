@@ -5,13 +5,13 @@ import CloseIcon from '@material-ui/icons/Close';
 function SnackbarNotification(props) {
   return (
     <Snackbar
-      anchorOrigin={{ vertical: props.vertical, horizontal: "center" }}
-      autoHideDuration={4000}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      autoHideDuration={5000}
       open={props.open}
       onClose={props.onClose}
     >
       <SnackbarContent 
-        className={props.className}
+        className="profile-snackbar"
         message={props.message}
         action={
           <IconButton size="small" aria-label="close" color="inherit" onClick={props.onClose}>

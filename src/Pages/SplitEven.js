@@ -3,10 +3,11 @@ import { withRouter , useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import { 
-  Button, makeStyles, withStyles, TextField, MenuItem, Card, CardContent, Typography, Divider, InputAdornment, Input
+  Button, makeStyles, TextField, MenuItem, Card, CardContent, Typography, Divider,
  } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+//import swal from 'sweetalert';
 
 const Container = styled.div`
   margin-left: 35px;
@@ -53,8 +54,19 @@ function calculateEvenSplit () {
   var totalDinnerCost = document.getElementById("Split-Cost").value;
   var totalPartySize = document.getElementById("Split-Size").value;
   var tipPercent = 1 + (.01) * document.getElementById("Tip-Percentage").value;
+  
+  /*
+  swal({
+    title: "Your " + totalPartySize + " way split is \n" + 
+        "$" + ((totalDinnerCost/totalPartySize) * tipPercent).toFixed(2),
+    icon: "success",
+    button: "OK"
+  });
+  
+  */
   alert("Your " + totalPartySize + " way split is \n" + 
     "$" + ((totalDinnerCost/totalPartySize) * tipPercent).toFixed(2));
+  
 }
 
 function SplitEven () {
