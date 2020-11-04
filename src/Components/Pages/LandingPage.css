@@ -1,0 +1,230 @@
+.landing-page-1 {
+    height: 100vh;
+    width: 100%;
+    background: rgb(1, 114, 71);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 15%;
+}
+
+.landing-page-text-container {
+    padding-top: 20%;
+}
+
+.landing-header-text {
+    color: white;
+    font-size: 3em;
+}
+
+.landing-text {
+    color: white;
+    font-size: 2em;
+    padding-bottom: 0.5em;
+}
+
+.landing-btn {
+    color: white;
+    background: transparent;
+    border: 1px solid white;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: all 0.5s ease-in-out;
+    z-index: 10;
+}
+
+.landing-btn:hover {
+    color: rgba(1, 114, 71);
+    background: white;
+    text-shadow: 2px 2px 20px rgba(1, 114, 71);
+}
+
+.landing-page-img {
+    height: 400px;
+    width: 400px;
+    z-index: 5;
+}
+
+/* Second Div in Landing Page */
+.landing-page-2 {
+    height: 100vh;
+    width: 100%;
+    background: white;
+    position: relative;
+}
+
+.tabs-container {
+    padding-top: 7.5%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.tabs .nav-link {
+    display: block;
+    padding: .5rem 2rem;
+}
+
+.tabs a {
+    color: rgba(1, 114, 71, 0.75);
+    text-decoration: none;
+    background-color: transparent;
+    font-size: 24px;
+}
+
+.tabs a:hover {
+    color: rgba(1, 114, 71);
+}
+
+.tabs a:after {
+    content: "";
+    display: block;
+    height: 2px;
+    background: rgba(1, 114, 71);
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+}
+
+.tabs a:hover:after {
+    width: 100%;
+}
+
+.tabs .nav-link {
+    border-bottom: 1px solid rgba(1, 114, 71, 0.75);
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    transition: all 0.25s smooth;
+}
+
+.tabs .nav-link.active {
+    color: rgba(1, 114, 71);
+    font-weight: bold;
+    border: 1px solid rgba(1, 114, 71, 0.75);
+    border-bottom: 1px solid transparent;
+}
+
+.tab-info-container {
+    display: block;
+    padding: 20px;
+}
+
+.tab-info {
+    color: rgba(1, 114, 71);
+    font-size: 20px;
+}
+
+.tab-pic-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Normal Waves */
+.landing-page-1 .wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url(../Images/whitewave.png);
+    background-size: 1000px 100px;
+}
+
+.landing-page-2 .wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url(../Images/greenwave.png);
+    background-size: 1000px 100px;
+}
+
+.wave.wave1 {
+    animation: animate 30s linear infinite;
+    z-index: 1000;
+    opacity: 1;
+    animation-delay: 0s;
+    bottom: 0;
+}
+
+.wave.wave2 {
+    animation: animate2 15s linear infinite;
+    z-index: 999;
+    opacity: 0.5;
+    animation-delay: -5s;
+    bottom: 10px;
+}
+
+.wave.wave3 {
+    animation: animate 30s linear infinite;
+    z-index: 998;
+    opacity: 0.2;
+    animation-delay: -2s;
+    bottom: 15px;
+}
+
+.wave.wave4 {
+    animation: animate2 5s linear infinite;
+    z-index: 997;
+    opacity: 0.7;
+    animation-delay: -5s;
+    bottom: 20px;
+}
+
+@keyframes animate {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: 1000px;
+    }
+}
+
+@keyframes animate2 {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: -1000px;
+    }
+}
+
+@media (max-width: 800px) {
+    .landing-page-1 {
+        padding: 5%;
+        padding-bottom: 40%;
+    }
+
+    .landing-page-img {
+        padding-top: 15px;
+        height: 100%;
+        width: 100%;
+    }
+
+    .landing-page-text-container {
+        padding-top: 0%;
+    }
+
+    .landing-page-2 {
+        padding-top: 12.5%;
+    }
+
+    .tabs a {
+        font-size: 16px;
+    }
+
+    .tab-info {
+        font-size: 14px;
+    }
+}
