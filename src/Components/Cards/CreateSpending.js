@@ -10,6 +10,7 @@ import { API } from 'aws-amplify';
 import { createSpending } from '../../graphql/mutations';
 
 import TableField from '../InputFields/TableField';
+import { repeats, categories } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 //import CardTitle from './CardTitle';
 import '../Cards/Card.css';
@@ -36,64 +37,6 @@ const useStyles = makeStyles({
     },
   }
 });
-
-const repeats = [
-  {
-    value: 'Never',
-    label: 'Never',
-  },
-  {
-    value: 'Weekly',
-    label: 'Weekly',
-  },
-  {
-    value: 'Monthly',
-    label: 'Monthly',
-  },
-  {
-    value: 'Yearly',
-    label: 'Yearly',
-  },
-];
-
-const categories = [
-  {
-    value: 'Entertainment',
-    label: 'Entertainment',
-  },
-  {
-    value: 'Food',
-    label: 'Food',
-  },
-  {
-    value: 'Health Care',
-    label: 'Health Care',
-  },
-  {
-    value: 'Merchandise',
-    label: 'Merchandise',
-  },
-  {
-    value: 'Organizations',
-    label: 'Organizations',
-  },
-  {
-    value: 'Services',
-    label: 'Services',
-  },
-  {
-    value: 'Travel',
-    label: 'Travel',
-  },
-  {
-    value: 'Vehicle Services',
-    label: 'Vehicle Services',
-  },
-  {
-    value: 'Other',
-    label: 'Other',
-  },
-];
 
 async function submitNewSpending(data) {
   try {

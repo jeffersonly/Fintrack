@@ -13,6 +13,7 @@ import { API } from "aws-amplify";
 import { updateSaving } from '../../graphql/mutations';
 
 import TableField from '../InputFields/TableField';
+import { repeats } from '../InputFields/TableFieldSelects';
 import { formatDate, splitDate } from '../Tables/TableFunctions';
 
 import '../Cards/Profile.css';
@@ -28,25 +29,6 @@ const theme = createMuiTheme({
     },
   },
 });
-
-const repeats = [
-  {
-    value: 'Never',
-    label: 'Never',
-  },
-  {
-    value: 'Weekly',
-    label: 'Weekly',
-  },
-  {
-    value: 'Monthly',
-    label: 'Monthly',
-  },
-  {
-    value: 'Yearly',
-    label: 'Yearly',
-  },
-];
 
 function MoreSavingInformation(props) {
 

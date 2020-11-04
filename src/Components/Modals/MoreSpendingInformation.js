@@ -12,6 +12,7 @@ import { API } from "aws-amplify";
 import { updateSpending } from '../../graphql/mutations';
 
 import TableField from '../InputFields/TableField';
+import { repeats, categories } from '../InputFields/TableFieldSelects';
 import { formatDate, splitDate } from '../Tables/TableFunctions';
 
 import '../Cards/Profile.css';
@@ -27,64 +28,6 @@ const theme = createMuiTheme({
       },
     },
   });
-
-const repeats = [
-    {
-      value: 'Never',
-      label: 'Never',
-    },
-    {
-      value: 'Weekly',
-      label: 'Weekly',
-    },
-    {
-      value: 'Monthly',
-      label: 'Monthly',
-    },
-    {
-      value: 'Yearly',
-      label: 'Yearly',
-    },
-  ];
-  
-  const categories = [
-    {
-      value: 'Merchandise',
-      label: 'Merchandise',
-    },
-    {
-      value: 'Food',
-      label: 'Food',
-    },
-    {
-      value: 'Vehicle Services',
-      label: 'Vehicle Services',
-    },
-    {
-      value: 'Services',
-      label: 'Services',
-    },
-    {
-      value: 'Entertainment',
-      label: 'Entertainment',
-    },
-    {
-      value: 'Organizations',
-      label: 'Organizations',
-    },
-    {
-      value: 'Health Care',
-      label: 'Health Care',
-    },
-    {
-      value: 'Travel',
-      label: 'Travel',
-    },
-    {
-      value: 'Other',
-      label: 'Other',
-    },
-  ];
 
 function MoreSpendingInformation(props) {
 
