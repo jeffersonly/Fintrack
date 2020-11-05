@@ -13,6 +13,7 @@ export const getSaving = /* GraphQL */ `
       repeat
       note
       owner
+      repeated
       createdOn
       updatedOn
     }
@@ -35,6 +36,7 @@ export const listSavings = /* GraphQL */ `
         repeat
         note
         owner
+        repeated
         createdOn
         updatedOn
       }
@@ -55,6 +57,7 @@ export const getSpending = /* GraphQL */ `
       repeat
       note
       owner
+      payment
       createdOn
       updatedOn
     }
@@ -78,6 +81,7 @@ export const listSpendings = /* GraphQL */ `
         repeat
         note
         owner
+        payment
         createdOn
         updatedOn
       }
@@ -112,6 +116,7 @@ export const savingsByOwner = /* GraphQL */ `
         repeat
         note
         owner
+        repeated
         createdOn
         updatedOn
       }
@@ -147,6 +152,7 @@ export const spendingsByOwner = /* GraphQL */ `
         repeat
         note
         owner
+        payment
         createdOn
         updatedOn
       }
