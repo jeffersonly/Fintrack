@@ -17,6 +17,21 @@ export const repeats = [
   },
 ];
 
+export const payments = [
+  {
+    value: 'Cash',
+    label: 'Cash',
+  },
+  {
+    value: 'Credit',
+    label: 'Credit',
+  },
+  {
+    value: 'Debit',
+    label: 'Debit',
+  },
+];
+
 export const categories = [
   {
     value: 'Banking',
