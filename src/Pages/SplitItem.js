@@ -1,11 +1,7 @@
 import React, {useState} from 'react';
 import { withRouter, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import { 
-  Button, makeStyles, withStyles, TextField, MenuItem, Card, CardContent, Divider, InputAdornment, Input
- } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { Button, makeStyles, Grid} from '@material-ui/core';
 // Split components
 import SplitItemTable from '../Components/Split/SplitItemTable';
 import SplitItemForm from '../Components/Split/SplitItemForm';
@@ -16,14 +12,6 @@ const Container = styled.div`
   margin-top: 80px;
   font-family: Roboto;
 `;
-
-const theme = createMuiTheme ({
-  palette: {
-    primary: {
-      main: "rgb(1, 114, 71)",
-    }
-  },
-});
 
 const useStyles = makeStyles({
   root: {
@@ -65,25 +53,6 @@ function SplitItem () {
   return (
     <div>
       <Container>
-        <SplitItemForm
-          onSubmit={data => {
-            setRows(currentRows => [
-              {
-                tName: data[0],
-                tItem: data[1],
-                tAmmount: data[2]
-              },
-              ...currentRows
-            ]);
-          }}
-        />
-        <SplitItemTable rows={rows}/>
-      </Container>
-    </div>
-  );
-  /*
-    return (
-      <Container>
         <Grid style={{justifyContent: 'space-evenly'}}s container spacing={2}>
           <Grid item xs={2}>
             <Button
@@ -98,70 +67,24 @@ function SplitItem () {
             </Button>
           </Grid>
           <Grid item xs={5}>
-            <Card className={classes.root} variant="outlined"> 
-              <CardContent>
-                <Typography className={classes.title} align="center">
-                  Itemize a Receipt
-                </Typography>
-                <Divider className={classes.divider}/>
-                <ThemeProvider theme={theme}>
-                  <TextField
-                    className={classes.textfield}
-                    label="Party Member"
-                    id="Party-Member"
-                    variant="outlined"
-                    placeholder="Enter the name of a party member"
-                    fullWidth
-                    required
-                    InputLabelProps={{shrink: true,}}
-                  />
-                  <Divider className={classes.divider}/>
-                  <TextField
-                    className={classes.textfield}
-                    label="Meal"
-                    id="Meal-Name"
-                    variant="outlined"
-                    placeholder="Enter the name of a meal"
-                    fullWidth
-                    required
-                    InputLabelProps={{shrink: true,}}
-                  />
-                  <TextField
-                    className={classes.textfield}
-                    label="Price"
-                    id="Meal-Price"
-                    variant="outlined"
-                    placeholder="Enter the price of a meal"
-                    fullWidth
-                    required
-                    InputLabelProps={{shrink: true,}}
-                  />
-                  <Button
-                    className={classes.create}
-                    variant="contained"
-                    disableElevation
-                    size="large"
-                    style={{width: "100%", fontSize: "16px"}}
-                  >
-                    Add Meal to Receipt
-                  </Button>
-                  <TextField
-                    className={classes.textfield}
-                    label="Tax"
-                    variant="outlined"
-                    size="medium"
-                    placeholder="Enter local tax rate"
-                    margin="normal"
-                    InputLabelProps={{shrink: true,}}
-                  />
-                </ThemeProvider>
-              </CardContent>
-            </Card>
+            <SplitItemForm
+              onSubmit={data => {
+                setRows(currentRows => [
+                  {
+                    SIName: data[0],
+                    SIItem: data[1],
+                    SIAmount: "$" + data[2]
+                  },
+                  ...currentRows
+                ]);
+              }}
+            />
+            <SplitItemTable rows={rows}/>
           </Grid>
         </Grid>
       </Container>
-    );
-    */
-  }
+    </div>
+  );
+}
   
   export default withRouter(SplitItem);

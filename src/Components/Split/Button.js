@@ -64,8 +64,7 @@ function SplitButton() {
                       style={{ width: "100%", fontSize: "16px", marginTop: "100px", marginBottom: "100px" }}
                     >
                       Split Evenly
-                                </Button>
-
+                    </Button>
                   </ThemeProvider>
                 </CardContent>
               </Card>
@@ -83,7 +82,7 @@ function SplitButton() {
                     style={{ width: "100%", fontSize: "16px", marginTop: "100px", marginBottom: "100px" }}
                   >
                     Itemize Receipt
-                                </Button>
+                  </Button>
                 </ThemeProvider>
               </CardContent>
             </Card>

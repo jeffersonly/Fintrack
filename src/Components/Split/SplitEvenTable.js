@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { 
-  Table, TableBody, TableCell, TableContainer, TableRow, Typography 
-} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
 import TableHeader from '../Tables/TableHeader';
 
 const useStyles = makeStyles({
@@ -28,12 +26,13 @@ const useStyles = makeStyles({
 })
 
 const columnTitles = [
-  { id: "SIName", label: "Name", align: "center" },
-  { id: "SIItem", label: "Item", align: "center", size: "small" },
-  { id: "SIAmount", label: "Value ($)", align: "center", size: "small" },
+  { id: "SETotal", label: "Total ($)", align: "center" },
+  { id: "SEMembers", label: "Party Size", align: "center", size: "small" },
+  { id: "SETip", label: "Tip (%)", align: "center", size: "small" },
+  { id: "SESplit", label: "Split ($)", align: "center", size: "small" },
 ];
 
-function SplitItemTable ({rows}) {
+function SplitEvenTable ({rows}) {
   const classes = useStyles();
   return (
     <div>
@@ -50,9 +49,10 @@ function SplitItemTable ({rows}) {
             {rows.map((row) => {
               return (
                 <TableRow>
-                  <TableCell align="center">{row.SIName}</TableCell>
-                  <TableCell align="center">{row.SIItem}</TableCell>
-                  <TableCell align="center">{row.SIAmount}</TableCell>
+                  <TableCell align="center">{row.SETotal}</TableCell>
+                  <TableCell align="center">{row.SEMembers}</TableCell>
+                  <TableCell align="center">{row.SETip}</TableCell>
+                  <TableCell align="center">{row.SESplit}</TableCell>
                 </TableRow>
               );
             })
@@ -64,4 +64,4 @@ function SplitItemTable ({rows}) {
   );
 }
 
-export default SplitItemTable;
+export default SplitEvenTable;

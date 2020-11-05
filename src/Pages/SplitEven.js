@@ -1,13 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { withRouter , useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
-import { 
-  Button, makeStyles, TextField, MenuItem, Card, CardContent, Typography, Divider,
- } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-//import swal from 'sweetalert';
+import { Button, makeStyles} from '@material-ui/core';
+import SplitEvenForm from '../Components/Split/SplitEvenForm';
+import SplitEvenTable from '../Components/Split/SplitEvenTable';
 
 const Container = styled.div`
   margin-left: 35px;
@@ -15,14 +12,6 @@ const Container = styled.div`
   margin-top: 80px;
   font-family: Roboto;
 `;
-
-const theme = createMuiTheme ({
-  palette: {
-    primary: {
-      main: "rgb(1, 114, 71)",
-    }
-  },
-});
 
 const useStyles = makeStyles({
   root: {
@@ -49,30 +38,12 @@ const useStyles = makeStyles({
   }
 });
 
-// Method to calculate split on click of "Split" button
-function calculateEvenSplit () {
-  var totalDinnerCost = document.getElementById("Split-Cost").value;
-  var totalPartySize = document.getElementById("Split-Size").value;
-  var tipPercent = 1 + (.01) * document.getElementById("Tip-Percentage").value;
-  
-  /*
-  swal({
-    title: "Your " + totalPartySize + " way split is \n" + 
-        "$" + ((totalDinnerCost/totalPartySize) * tipPercent).toFixed(2),
-    icon: "success",
-    button: "OK"
-  });
-  
-  */
-  alert("Your " + totalPartySize + " way split is \n" + 
-    "$" + ((totalDinnerCost/totalPartySize) * tipPercent).toFixed(2));
-  
-}
-
 function SplitEven () {
+  const [rows, setRows] = useState([]);
   const history = useHistory();
   const classes = useStyles();
-    return (
+  return (
+    <div>
       <Container>
         <Grid style={{justifyContent: 'space-evenly'}}s container spacing={2}>
           <Grid item xs={2}>
@@ -88,61 +59,25 @@ function SplitEven () {
             </Button>
           </Grid>
           <Grid item xs={5}>
-            <Card className={classes.root} variant="outlined"> 
-              <CardContent>
-                <Typography className={classes.title} align="center">
-                  Split a bill
-                </Typography>
-                <Divider className={classes.divider}/>
-                <ThemeProvider theme={theme}>
-                  <TextField
-                    className={classes.textfield}
-                    id="Split-Cost"
-                    label="Cost"
-                    type="number"
-                    variant="outlined"
-                    placeholder="Enter total dinner cost"
-                    fullWidth
-                    required
-                    InputLabelProps={{shrink: true,}}
-                  />
-                  <TextField
-                    className={classes.textfield}
-                    id="Split-Size"
-                    label="Size"
-                    variant="outlined"
-                    placeholder="Enter your party size"
-                    fullWidth
-                    required
-                    InputLabelProps={{shrink: true,}}
-                  />
-                  <TextField
-                    id="Tip-Percentage"
-                    size="medium"
-                    variant="outlined"
-                    label="Tip (%)"
-                    helperText="Please enter Tip (%)"
-                    margin="normal"
-                  >
-                  </TextField>
-                  <Button
-                    className={classes.create}
-                    id="Split-Btn"
-                    variant="contained"
-                    disableElevation
-                    size="large"
-                    style={{width: "100%", fontSize: "16px"}}
-                    onClick={calculateEvenSplit}
-                  >
-                    Split
-                  </Button>
-                </ThemeProvider>
-              </CardContent>
-            </Card>
+            <SplitEvenForm
+              onSubmit={data => {
+                setRows(currentRows => [
+                  {
+                    SETotal: "$" + data[0],
+                    SEMembers: data[1],
+                    SETip: data[2] + "%",
+                    SESplit: "$" + ((data[0]/data[1])*(1 + (.01 * data[2]))).toFixed(2)
+                  },
+                  ...currentRows
+                ]);
+              }}
+            />
+            <SplitEvenTable rows={rows}/>
           </Grid>
         </Grid>
       </Container>
-    );
-  }
+    </div>
+  );
+}
   
   export default withRouter(SplitEven);

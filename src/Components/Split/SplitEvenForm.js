@@ -38,35 +38,35 @@ const useStyles = makeStyles({
   }
 });
 
-function SplitItemForm ({ onSubmit }) { 
+function SplitEvenForm ({ onSubmit }) {
   const classes = useStyles();
   return (
     <div className={classes.container}>
       <Card className={classes.card} variant="outlined">
         <CardContent>
-          <CardTitle title="Itemize a Receipt" />
+          <CardTitle title="Split the Bill Evenly" />
           <ThemeProvider theme={theme}>
             <Formik
               initialValues={{
-                SIName: "",
-                SIItem: "",
-                SIAmount: ""
+                SETotal: "",
+                SEMembers: "",
+                SETip: "",
+                SESplit: ""
               }}
               validate={values => {
                 const errors = {};
           
-                if (!values.SIName) {
-                  errors.SIName = "Required";
+                if (!values.SETotal) {
+                  errors.SETotal = "Required";
                 }
-                if (!values.SIItem) {
-                  errors.SIItem = "Required";
+                if (!values.SEMembers) {
+                  errors.SEMembers = "Required";
                 }
-          
                 return errors;
               }}
               onSubmit={(data, { resetForm }) => {
                 console.log(data);
-                const array = [data.SIName, data.SIItem, data.SIAmount];
+                const array = [data.SETotal, data.SEMembers, data.SETip, data.SESplit];
                 onSubmit(array);
                 resetForm();
               }}
@@ -74,30 +74,32 @@ function SplitItemForm ({ onSubmit }) {
               {({ values }) => (
                 <Form>
                   <TableField
-                    label="Name"
-                    name="SIName"
-                    placeholder="Enter Party Member Name"
-                  />
-                  <TableField
-                    label="Item"
-                    name="SIItem"
-                    placeholder="Enter Item Name"
-                  />
-                  <TableField
                     label="Price"
-                    name="SIAmount"
-                    placeholder="Enter Item Price"
-                    type="float"
+                    name="SETotal"
+                    placeholder="Enter Total Bill Price"
+                    type="number"
+                  />
+                  <TableField
+                    label="Party Size"
+                    name="SEMembers"
+                    placeholder="Enter Number of Party Members"
+                    type="number"
+                  />
+                  <TableField
+                    label="Tip"
+                    name="SETip"
+                    placeholder="Enter Tip Percentage (if applicable)"
+                    type="number"
                   />
                   <Button
                     className={classes.createbutton}
                     disableElevation
-                    disabled={!values.SIName || !values.SIAmount}
+                    disabled={!values.SETotal || !values.SEMembers}
                     size="large"
                     type="submit"
                     variant="contained"
                   >
-                    Itemize
+                    Split
                   </Button>
                 </Form>
               )}
@@ -109,4 +111,4 @@ function SplitItemForm ({ onSubmit }) {
   );
 }
 
-export default SplitItemForm;
+export default SplitEvenForm;
