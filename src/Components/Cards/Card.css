@@ -1,6 +1,5 @@
 .card-container {
   font-family: Roboto;
-  padding-left: 15px;
 }
 
 .card-createbutton {
@@ -28,6 +27,7 @@
 
 .card-spendings {
   padding-bottom: 10px;
+  padding-left: 15px;
   padding-top: 10px;
 }
 
@@ -43,6 +43,7 @@
   .card-savings {
     padding-bottom: 10px;
     padding-top: 10px;
+    padding-left: 15px;
     padding-right: 15px;
   }
 

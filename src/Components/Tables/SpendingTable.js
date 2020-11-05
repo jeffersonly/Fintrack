@@ -19,6 +19,7 @@ import './Table.css';
 const columnTitles = [
   { id: "date", label: "Date", align: "center", width: 50 },
   { id: "name", label: "Spendings Name", align: "center", width: 200 },
+  { id: "payment", label: "Form of Payment", align: "center", width: 50 },
   { id: "value", label: "Value", align: "center", width: 100, numeric: true },
   { id: "category", label: "Category", align: "center", width: 150 },
   { id: "info", label: "More Information", align: "center", width: 50 },
@@ -150,6 +151,7 @@ function SpendingTable() {
                   <TableRow hover key={spending.id}>
                     <TableCell align="center">{formatDate(spending.month, spending.day, spending.year)}</TableCell>
                     <TableCell align="center">{spending.name}</TableCell>
+                    <TableCell align="center">{spending.payment}</TableCell>
                     <TableCell align="center">${spending.value}</TableCell>
                     <TableCell align="center">{spending.category}</TableCell>
                     <TableCell align="center">   
@@ -162,6 +164,7 @@ function SpendingTable() {
                             day: spending.day,
                             year: spending.year,
                             name: spending.name,
+                            payment: spending.payment,
                             value: spending.value,
                             category: spending.category,
                             repeat: spending.repeat,
@@ -191,11 +194,11 @@ function SpendingTable() {
         : null
       }
       <MoreSpendingInformation
-       closeMore={() => setShowMore(!showMore)} 
-       confirmDelete={() => handleShowConfirmDelete()} 
-       itemData={data}
-       itemID={itemID}
-       openMore={showMore}
+        closeMore={() => setShowMore(!showMore)} 
+        confirmDelete={() => handleShowConfirmDelete()} 
+        itemData={data}
+        itemID={itemID}
+        openMore={showMore}
       />
       <ConfirmDelete
         closeConfirmDelete={() => {

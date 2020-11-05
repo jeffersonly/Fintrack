@@ -21,34 +21,6 @@ function Summary () {
   }
 
   const [rows, setRows] = useState([
-    {
-      id: "1",
-      date: "09/24/2020",
-      transaction: "birthday gift",
-      pay: "Credit",
-      amount: 30
-    },
-    {
-      id: "2",
-      date: "10/23/2020",
-      transaction: "test",
-      pay: "Cash",
-      amount: 5
-    },
-    {
-      id: "3",
-      date: "11/10/2020",
-      transaction: "test2",
-      pay: "Debit",
-      amount: 10
-    },
-    {
-      id: "4",
-      date: "01/15/2021",
-      transaction: "test3",
-      pay: "Credit",
-      amount: 20
-    }
   ]);
   const [user, setUser] = useState("");
   const [authError, setAuthError] = useState("");
@@ -80,20 +52,7 @@ function Summary () {
       </Row>
       <Row>
         <Col xs md={3}>
-          <QuickTransaction 
-            onSubmit={data => {
-              setRows(currentRows => [
-                {
-                  id: generate(),
-                  date: data[0],
-                  transaction: data[1],
-                  pay: data[3].charAt(0).toUpperCase() + data[3].slice(1),
-                  amount: data[2]
-                },
-                ...currentRows
-              ]);
-            }}
-          />
+          <QuickTransaction />
         </Col>
         <Col xs md={{span: 8, offset: 1}} className="homepage-table">
           <QuickTransactionTable rows={rows}/>

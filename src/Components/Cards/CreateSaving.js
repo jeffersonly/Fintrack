@@ -10,6 +10,7 @@ import { API } from 'aws-amplify';
 import { createSaving } from '../../graphql/mutations';
 
 import TableField from '../InputFields/TableField';
+import { repeats } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 import CardTitle from './CardTitle';
 import '../Cards/Card.css';
@@ -36,25 +37,6 @@ const useStyles = makeStyles({
     },
   }
 });
-
-const repeats = [
-  {
-    value: 'Never',
-    label: 'Never',
-  },
-  {
-    value: 'Weekly',
-    label: 'Weekly',
-  },
-  {
-    value: 'Monthly',
-    label: 'Monthly',
-  },
-  {
-    value: 'Yearly',
-    label: 'Yearly',
-  },
-];
 
 async function submitNewSaving(data) {
   try {

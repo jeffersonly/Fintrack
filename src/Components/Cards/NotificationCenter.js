@@ -6,7 +6,8 @@ import Carousel from 'react-bootstrap/Carousel';
 import { generate } from 'shortid';
 
 import MonthlyExpenses from '../Tables/MonthlyExpenses';
-import MainGraphMenu from '../Graphs/MainGraphMenu';
+import SavingsGraph from '../Graphs/SavingsGraph';
+import TransactionsGraph from '../Graphs/TransactionsGraph';
 import './NotificationCenter.css';
 
 const theme = createMuiTheme ({
@@ -64,7 +65,14 @@ function NotificationCenter () {
           <Carousel.Item as={Card}>
             <Card className="notifcenter-card" variant="outlined">
               <CardContent>
-                <MainGraphMenu />
+                <TransactionsGraph />
+              </CardContent>
+            </Card>
+          </Carousel.Item>
+          <Carousel.Item as={Card}>
+            <Card className="notifcenter-card" variant="outlined">
+              <CardContent>
+                <SavingsGraph />
               </CardContent>
             </Card>
           </Carousel.Item>

@@ -13,6 +13,7 @@ export const onCreateSaving = /* GraphQL */ `
       repeat
       note
       owner
+      repeated
       createdOn
       updatedOn
     }
@@ -30,6 +31,7 @@ export const onUpdateSaving = /* GraphQL */ `
       repeat
       note
       owner
+      repeated
       createdOn
       updatedOn
     }
@@ -47,6 +49,7 @@ export const onDeleteSaving = /* GraphQL */ `
       repeat
       note
       owner
+      repeated
       createdOn
       updatedOn
     }
@@ -65,6 +68,7 @@ export const onCreateSpending = /* GraphQL */ `
       repeat
       note
       owner
+      payment
       createdOn
       updatedOn
     }
@@ -83,6 +87,7 @@ export const onUpdateSpending = /* GraphQL */ `
       repeat
       note
       owner
+      payment
       createdOn
       updatedOn
     }
@@ -101,6 +106,7 @@ export const onDeleteSpending = /* GraphQL */ `
       repeat
       note
       owner
+      payment
       createdOn
       updatedOn
     }
