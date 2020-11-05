@@ -87,7 +87,6 @@ const categories = [
 ];
 
 function DropzoneInput(props) {
-    console.log(props);
     const classes = useStyles();
     const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -138,6 +137,7 @@ function DropzoneInput(props) {
                         required
                         InputLabelProps={{shrink: true,}}
                         InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
+                        defaultValue={props.data.totalCost}
                     />
                     <TextField
                         className={classes.textfield}

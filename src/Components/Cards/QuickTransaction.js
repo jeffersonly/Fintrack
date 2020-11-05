@@ -10,6 +10,7 @@ import TableField from '../InputFields/TableField';
 //import DateField from '../InputFields/DateField';
 import CardTitle from './CardTitle';
 import Dropzone from '../Dropzone/Dropzone';
+import WebcamCapture from '../Webcam/Webcam';
 
 const theme = createMuiTheme ({
   palette: {
@@ -173,6 +174,7 @@ function QuickTransaction ({ onSubmit }) {
                     type="number"
                   />
                   <Dropzone />
+                  <WebcamCapture />
                   <Button
                     className={classes.createbutton}
                     disableElevation

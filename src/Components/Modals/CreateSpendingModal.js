@@ -5,6 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 import Dropzone from '../../Components/Dropzone/Dropzone';
 import CreateSpending from '../Cards/CreateSpending';
 import '../Cards/Profile.css';
+import WebcamCapture from '../Webcam/Webcam';
 
 function CreateSpendingModal(props) {
 
@@ -34,6 +35,7 @@ function CreateSpendingModal(props) {
                         </Col>
                         <Col xs={6} className="editprofile-textfield">
                             <Dropzone />
+                            <WebcamCapture />
                         </Col>
                     </Row>
                 </Modal.Body>
