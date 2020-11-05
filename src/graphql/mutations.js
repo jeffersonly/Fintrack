@@ -8,7 +8,9 @@ export const createSaving = /* GraphQL */ `
   ) {
     createSaving(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat
@@ -26,7 +28,9 @@ export const updateSaving = /* GraphQL */ `
   ) {
     updateSaving(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat
@@ -44,7 +48,9 @@ export const deleteSaving = /* GraphQL */ `
   ) {
     deleteSaving(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       repeat
@@ -55,111 +61,66 @@ export const deleteSaving = /* GraphQL */ `
     }
   }
 `;
-export const createTransaction = /* GraphQL */ `
-  mutation CreateTransaction(
-    $input: CreateTransactionInput!
-    $condition: ModelTransactionConditionInput
+export const createSpending = /* GraphQL */ `
+  mutation CreateSpending(
+    $input: CreateSpendingInput!
+    $condition: ModelSpendingConditionInput
   ) {
-    createTransaction(input: $input, condition: $condition) {
+    createSpending(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       category
+      repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
-export const updateTransaction = /* GraphQL */ `
-  mutation UpdateTransaction(
-    $input: UpdateTransactionInput!
-    $condition: ModelTransactionConditionInput
+export const updateSpending = /* GraphQL */ `
+  mutation UpdateSpending(
+    $input: UpdateSpendingInput!
+    $condition: ModelSpendingConditionInput
   ) {
-    updateTransaction(input: $input, condition: $condition) {
+    updateSpending(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       category
+      repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
     }
   }
 `;
-export const deleteTransaction = /* GraphQL */ `
-  mutation DeleteTransaction(
-    $input: DeleteTransactionInput!
-    $condition: ModelTransactionConditionInput
+export const deleteSpending = /* GraphQL */ `
+  mutation DeleteSpending(
+    $input: DeleteSpendingInput!
+    $condition: ModelSpendingConditionInput
   ) {
-    deleteTransaction(input: $input, condition: $condition) {
+    deleteSpending(input: $input, condition: $condition) {
       id
-      date
+      month
+      day
+      year
       name
       value
       category
-      note
-      createdOn
-      updatedOn
-      owner
-    }
-  }
-`;
-export const createExpense = /* GraphQL */ `
-  mutation CreateExpense(
-    $input: CreateExpenseInput!
-    $condition: ModelExpenseConditionInput
-  ) {
-    createExpense(input: $input, condition: $condition) {
-      id
-      date
-      name
-      value
       repeat
       note
+      owner
       createdOn
       updatedOn
-      owner
-    }
-  }
-`;
-export const updateExpense = /* GraphQL */ `
-  mutation UpdateExpense(
-    $input: UpdateExpenseInput!
-    $condition: ModelExpenseConditionInput
-  ) {
-    updateExpense(input: $input, condition: $condition) {
-      id
-      date
-      name
-      value
-      repeat
-      note
-      createdOn
-      updatedOn
-      owner
-    }
-  }
-`;
-export const deleteExpense = /* GraphQL */ `
-  mutation DeleteExpense(
-    $input: DeleteExpenseInput!
-    $condition: ModelExpenseConditionInput
-  ) {
-    deleteExpense(input: $input, condition: $condition) {
-      id
-      date
-      name
-      value
-      repeat
-      note
-      createdOn
-      updatedOn
-      owner
     }
   }
 `;

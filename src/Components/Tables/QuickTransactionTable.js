@@ -5,8 +5,6 @@ import {
 } from '@material-ui/core';
 import TableHeader from './TableHeader';
 
-//sorting doesn't completely work yet
-
 const useStyles = makeStyles({
   container: {
     maxHeight: 400,
@@ -34,7 +32,7 @@ const columnTitles = [
   { id: "date", label: "Date", align: "center", size: "small" },
   { id: "transaction", label: "Transaction", align: "center" },
   { id: "pay", label: "Form of Payment", align: "center", size: "small" },
-  { id: "amount", label: "Value ($)", align: "center", size: "small" },
+  { id: "amount", label: "Value ($)", align: "center", size: "small", numeric: true },
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -63,7 +61,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function TransactionTable ({rows}) {
+function QuickTransactionTable ({rows}) {
   
   const classes = useStyles();
 
@@ -84,11 +82,11 @@ function TransactionTable ({rows}) {
       <TableContainer className={classes.container}>
         <Table stickyHeader>
           <TableHeader
-              classes={classes}
-              headCells={columnTitles}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
+            classes={classes}
+            headCells={columnTitles}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
           />
           <TableBody>
             {stableSort(rows, getComparator(order, orderBy))
@@ -99,7 +97,7 @@ function TransactionTable ({rows}) {
                     <TableCell align="center">{row.date}</TableCell>
                     <TableCell align="center">{row.transaction}</TableCell>
                     <TableCell align="center">{row.pay}</TableCell>
-                    <TableCell align="center">{row.amount}</TableCell>
+                    <TableCell align="center">{Number(row.amount)}</TableCell>
                   </TableRow>
                 );
               })
@@ -111,4 +109,4 @@ function TransactionTable ({rows}) {
   );
 }
 
-export default TransactionTable;
+export default QuickTransactionTable;

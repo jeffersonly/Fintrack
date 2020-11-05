@@ -4,10 +4,8 @@ import LandingPage from '../Pages/LandingPage';
 import TopHeader from './NavBar/TopHeader';
 import HomeNav from './NavBar/HomeNav';
 import Summary from '../Pages/Summary';
-import Spendings from '../Pages/Spendings';
 import Savings from '../Pages/Savings';
-import Expenses from '../Pages/Expenses';
-import Transactions from '../Pages/Transactions';
+import Spendings from '../Pages/Spendings';
 import Account from '../Pages/Account';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
@@ -60,9 +58,7 @@ function App() {
                     : <AuthenticatedRoute exact path="/" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />}
                     
                     <AuthenticatedRoute exact path="/summary" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />
-                    <AuthenticatedRoute exact path="/spendings" component={Spendings} appProps={{userAuthenticated, setUserAuthenticated}} /> 
-                    <AuthenticatedRoute exact path="/transactions" component={Transactions} appProps={{userAuthenticated, setUserAuthenticated}} />
-                    <AuthenticatedRoute exact path="/expenses" component={Expenses} appProps={{userAuthenticated, setUserAuthenticated}} />
+                    <AuthenticatedRoute exact path="/spendings" component={Spendings} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/savings" component={Savings} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/account" component={Account} appProps={{userAuthenticated, setUserAuthenticated}} />
                 </Switch>

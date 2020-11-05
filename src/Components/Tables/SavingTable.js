@@ -4,13 +4,17 @@ import {
   TableContainer, TableRow, TextField 
 } from '@material-ui/core';
 import { Search, Info } from '@material-ui/icons';
+
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { listSavings, savingsByOwner } from '../../graphql/queries';
+import { deleteSaving } from '../../graphql/mutations';
 
-import TableHeader from '../Tables/TableHeader';
+import TableHeader from './TableHeader';
+import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
-import MoreInformation from '../Modals/MoreInformation';
-import '../Tables/Table.css';
+import MoreSavingInformation from '../Modals/MoreSavingInformation';
+import ConfirmDelete from '../Modals/ConfirmDelete';
+import './Table.css';
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center", minWidth: 50 },
@@ -20,44 +24,7 @@ const columnTitles = [
   { id: "info", label: "More Information", align: "center", minWidth: 50 },
 ];
 
-function descendingComparator(a, b, orderBy) {
-  if (orderBy === "date") {
-    let bdate = new Date(b.date);
-    let adate = new Date(a.date);
-    if (bdate < adate) {
-      return -1;
-    }
-    if (bdate > adate) {
-      return 1;
-    }
-  }
-  else {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-  }
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function SavingTableS() {
+function SavingTable() {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
@@ -70,6 +37,9 @@ function SavingTableS() {
   const [openAlert, setOpenAlert] = useState(true);
 
   const [showMore, setShowMore] = useState(false);
+  const [itemID, setItemID] = useState("");
+  const [data, setData] = useState({});
+  const [showConfirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     fetchSaving();
@@ -86,8 +56,8 @@ function SavingTableS() {
       try {
         const savingData = await API.graphql(graphqlOperation(listSavings));
         const savingList = savingData.data.listSavings.items;
-        console.log('saving list', savingList);
-        setSaving(savingList)
+        console.log('saving data', savingList);
+        setSaving(savingList);
       } catch (error) {
         console.log('Error on fetching saving', error)
       }
@@ -101,10 +71,12 @@ function SavingTableS() {
         },
       };
       const savingData = await API.graphql(graphqlOperation(savingsByOwner, input));
+      console.log('saving data', savingData);
       const savingList = savingData.data.savingsByOwner.items;
-      console.log(savingList);
+      console.log('saving list', savingList);
       if (savingList.length > 0) {
         setSaving(savingList);
+        console.log('savings', savings);
       }
       else {
         setOpenAlert(true);
@@ -123,6 +95,24 @@ function SavingTableS() {
       return;
     }
     setOpenAlert(false);
+  }
+
+  async function handleDelete(event) {
+    try {
+      const id = {
+        id: event
+      }
+      await API.graphql(graphqlOperation(deleteSaving, { input: id }));
+      console.log('Deleted saving')
+      window.location.reload();
+    }
+    catch (error) {
+      console.log('Error on delete saving', error)
+    }
+  }
+
+  function handleShowConfirmDelete() {
+    setConfirmDelete(true);
   }
 
   return (
@@ -158,12 +148,27 @@ function SavingTableS() {
               .map((saving) => {
                 return (
                   <TableRow hover key={saving.id}>
-                    <TableCell align="center">{saving.date}</TableCell>
+                    <TableCell align="center">{formatDate(saving.month, saving.day, saving.year)}</TableCell>
                     <TableCell align="center">{saving.name}</TableCell>
                     <TableCell align="center">${saving.value}</TableCell>
                     <TableCell align="center">{saving.repeat}</TableCell>
                     <TableCell align="center">   
-                      <IconButton className="table-icon" onClick={() => setShowMore(true)}> 
+                      <IconButton 
+                        className="table-icon" 
+                        onClick={() => {
+                          setItemID(saving.id);
+                          //setData([saving.month, saving.day, saving.year, saving.name, saving.value, saving.repeat, saving.note]); 
+                          setData({
+                            month: saving.month,
+                            day: saving.day,
+                            year: saving.year,
+                            name: saving.name,
+                            value: saving.value,
+                            repeat: saving.repeat,
+                            note: saving.note
+                          })
+                          setShowMore(true);
+                        }}> 
                         <Info /> 
                       </IconButton>
                     </TableCell>
@@ -174,21 +179,37 @@ function SavingTableS() {
           </TableBody>
         </Table>
       </TableContainer>
-      {status 
-      ? <SnackbarNotification 
-          className="table-snackbar"
-          message={status} 
-          onClose={handleCloseAlert} 
-          open={openAlert} 
-          vertical="top"
-        /> 
-      : null}
-      <MoreInformation
-        closeMore={() => setShowMore(!showMore)} 
+      {
+        status ? 
+          <SnackbarNotification 
+            className="table-snackbar"
+            message={status} 
+            onClose={handleCloseAlert} 
+            open={openAlert} 
+            vertical="top"
+          /> 
+        : null
+      }
+      <MoreSavingInformation
+        closeMore={() => setShowMore(!showMore)}
+        confirmDelete={() => handleShowConfirmDelete()} 
+        itemData={data}
+        itemID={itemID}
         openMore={showMore}
+      />
+      <ConfirmDelete
+        closeConfirmDelete={() => {
+          setConfirmDelete(false);
+          setShowMore(true);
+        }}
+        confirmed={() => {
+          setConfirmDelete(false);
+          handleDelete(itemID);
+        }}
+        openConfirmDelete={showConfirmDelete} 
       />
     </div>
   );
 }
 
-export default SavingTableS;
+export default SavingTable;

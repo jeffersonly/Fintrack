@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Divider, Link } from '@material-ui/core';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
 import TableField from '../InputFields/TableField';
 import '../Cards/Profile.css';
@@ -17,6 +17,13 @@ function EditProfile(props) {
   useEffect(() => {
     setShow(props.openEdit);
   }, [props.openEdit]);
+
+  //prevent submitting form when hit "enter" on edit email modal
+  function onKeyDown(keyEvent) {
+    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+      keyEvent.preventDefault();
+    }
+  }
 
   return (
     <div>
@@ -60,7 +67,7 @@ function EditProfile(props) {
               }}
             >
               {({ values, errors }) => (
-                <Form>
+                <Form onKeyDown={onKeyDown}>
                   <TableField
                     label="Email"
                     name="email"
