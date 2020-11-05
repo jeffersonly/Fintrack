@@ -15,6 +15,7 @@ type Saving @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
   repeat: String!
   note: String!
   owner: String
+  repeated: Boolean
 }
 
 type Spending @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"}) 
@@ -35,4 +36,5 @@ type Spending @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"}
   repeat: String!
   note: String!
   owner: String
+  payment: String!
 }

@@ -1,3 +1,8 @@
+.graphs-axis {
+  font-size: 12px;
+  font-weight: bold;
+}
+
 .graphs-button {
   padding-left: 20px !important;
   padding-right: 20px !important;
@@ -12,6 +17,10 @@
   padding-top: 20px !important;
 }
 
+.graphs-pie {
+  padding-bottom: 4px !important;
+}
+
 .graphs-table-subtitle {
   font-size: 10px !important;
   padding-bottom: 15px;
@@ -20,4 +29,181 @@
 .graphs-table-title {
   font-weight: bold !important;
   margin-top: -20px !important;
+}
+
+.ct-chart {
+  position: relative;
+}
+
+.ct-pie {
+  margin-right: 200px;
+}
+
+.ct-legend {
+  position: relative;
+  z-index: 10;
+  list-style: none;
+  text-align: left;
+  font-size: 11px;
+}
+
+.ct-legend li {
+  position: relative;
+  padding-left: 23px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.ct-legend li:before {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  left: 0;
+  content: '';
+  border: 3px solid transparent;
+  border-radius: 2px;
+}
+
+.ct-legend li.inactive:before {
+  background: transparent;
+}
+
+.ct-legend.ct-legend-inside {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-top: 15px;
+}
+
+.ct-legend.ct-legend-inside li{
+  display: block;
+  margin: 0px;
+}
+
+/* banking */
+.ct-legend .ct-series-0:before {
+  background-color: #d70206;
+  border-color: #d70206;
+}
+
+/* clothing */
+.ct-legend .ct-series-1:before {
+  background-color: #f05b4f;
+  border-color: #f05b4f;
+}
+
+/* education */
+.ct-legend .ct-series-2:before {
+  background-color: #f4c63d;
+  border-color: #f4c63d;
+}
+
+/* entertainment */
+.ct-legend .ct-series-3:before {
+  background-color: #d17905;
+  border-color: #d17905;
+}
+
+/* food */
+.ct-legend .ct-series-4:before {
+  background-color: #453d3f;
+  border-color: #453d3f;
+}
+
+/* housing */
+.ct-legend .ct-series-5:before {
+  background-color: #59922b;
+  border-color: #59922b;
+}
+
+/* insurance */
+.ct-legend .ct-series-6:before {
+  background-color: #0544d3;
+  border-color: #0544d3;
+}
+
+/* medical */
+.ct-legend .ct-series-7:before {
+  background-color: #6b0392;
+  border-color: #6b0392;
+}
+
+/* personal */
+.ct-legend .ct-series-8:before {
+  background-color: #b2c326;
+  border-color: #b2c326;
+}
+
+.ct-series-i .ct-area,.ct-series-i .ct-slice-donut-solid,.ct-series-i .ct-slice-pie {
+  fill:#b2c326;
+}
+
+/* transportation */
+.ct-legend .ct-series-9:before {
+  background-color: #D4D4F7;
+  border-color: #D4D4F7;
+}
+
+.ct-series-j .ct-area,.ct-series-j .ct-slice-donut-solid,.ct-series-j .ct-slice-pie {
+  fill:#D4D4F7;
+}
+
+/* utilities */
+.ct-legend .ct-series-10:before {
+  background-color: #347B98;
+  border-color: #347B98;
+}
+
+.ct-series-k .ct-area,.ct-series-k .ct-slice-donut-solid,.ct-series-k .ct-slice-pie {
+  fill:#347B98;
+}
+
+/* other */
+.ct-legend .ct-series-11:before {
+  background-color: #86797d;
+  border-color: #86797d;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .ct-pie {
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+
+  .ct-legend.ct-legend-inside {
+    margin: 0px -50px !important;
+    padding-right: -200px;
+  }
+
+}
+
+@media only screen and (max-width: 850px) {
+
+  .ct-legend.ct-legend-inside {
+    margin: 0px 25px;
+  }
+
+}
+
+@media only screen and (max-width: 900px) {
+
+  .ct-pie {
+    margin-right: 170px;
+  }
+
+}
+
+@media only screen and (max-width: 1100px) {
+
+  .ct-pie {
+    margin-right: 140px;
+  }
+
+  .ct-legend.ct-legend-inside li {
+    margin: 0px -60px;
+  }
+
 }

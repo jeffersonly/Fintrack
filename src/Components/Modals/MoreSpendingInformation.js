@@ -12,6 +12,7 @@ import { API } from "aws-amplify";
 import { updateSpending } from '../../graphql/mutations';
 
 import TableField from '../InputFields/TableField';
+import { repeats, payments, categories } from '../InputFields/TableFieldSelects';
 import { formatDate, splitDate } from '../Tables/TableFunctions';
 
 import '../Cards/Profile.css';
@@ -27,64 +28,6 @@ const theme = createMuiTheme({
       },
     },
   });
-
-const repeats = [
-    {
-      value: 'Never',
-      label: 'Never',
-    },
-    {
-      value: 'Weekly',
-      label: 'Weekly',
-    },
-    {
-      value: 'Monthly',
-      label: 'Monthly',
-    },
-    {
-      value: 'Yearly',
-      label: 'Yearly',
-    },
-  ];
-  
-  const categories = [
-    {
-      value: 'Merchandise',
-      label: 'Merchandise',
-    },
-    {
-      value: 'Food',
-      label: 'Food',
-    },
-    {
-      value: 'Vehicle Services',
-      label: 'Vehicle Services',
-    },
-    {
-      value: 'Services',
-      label: 'Services',
-    },
-    {
-      value: 'Entertainment',
-      label: 'Entertainment',
-    },
-    {
-      value: 'Organizations',
-      label: 'Organizations',
-    },
-    {
-      value: 'Health Care',
-      label: 'Health Care',
-    },
-    {
-      value: 'Travel',
-      label: 'Travel',
-    },
-    {
-      value: 'Other',
-      label: 'Other',
-    },
-  ];
 
 function MoreSpendingInformation(props) {
 
@@ -134,10 +77,11 @@ function MoreSpendingInformation(props) {
             day: data[1],
             year: data[2],
             name: data[3],
-            value: data[4],
-            category: data[5],
-            repeat: data[6],
-            note: data[7]
+            value: data[5],
+            category: data[6],
+            repeat: data[7],
+            note: data[8],
+            payment: data[4]
           }
         }
       })
@@ -176,6 +120,7 @@ function MoreSpendingInformation(props) {
                 initialValues={{
                   date: formatDate(props.itemData.month, props.itemData.day, props.itemData.year),
                   name: props.itemData.name,
+                  payment: props.itemData.payment,
                   value: props.itemData.value,
                   category: props.itemData.category,
                   repeat: props.itemData.repeat,
@@ -203,7 +148,7 @@ function MoreSpendingInformation(props) {
                   else {
                     array = [props.itemData.month, props.itemData.day, props.itemData.year];
                   }
-                  array.push(info.name, info.value, info.category, info.repeat, info.note);
+                  array.push(info.name, info.payment, info.value, info.category, info.repeat, info.note);
                   editSpending(array);
                 }}
               >
@@ -240,6 +185,12 @@ function MoreSpendingInformation(props) {
                     <TableField 
                       label="Savings Name"
                       name="name"  
+                    />
+                    <TableField
+                      label="Form of Payment"
+                      name="payment"
+                      options={payments}
+                      select={true}
                     />
                     <TableField
                       InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}

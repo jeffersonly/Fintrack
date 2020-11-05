@@ -3,21 +3,21 @@ import { Button, ButtonGroup, Typography } from '@material-ui/core';
 import Graphs from './Graphs';
 import './Graphs.css';
 
-function MainGraphMenu () {
+function TransactionsGraph () {
 
   const [background, setBackground] = useState({trans: "#E8F7E2", savings: ""})
   //const [graph, setGraph] = useState({trans: true, savings: false});
   const [transGraph, setTransGraph] = useState(true);
-  const [savingsGraph, setSavingsGraph] = useState(false);
+  const [categoryGraph, setCategoryGraph] = useState(false);
 
   function handleShowTransGraph() {
     setTransGraph(true);
-    setSavingsGraph(false);
+    setCategoryGraph(false);
   }
 
-  function handleShowSavingsGraph() {
+  function handleShowCategoryGraph() {
     setTransGraph(false);
-    setSavingsGraph(true);
+    setCategoryGraph(true);
   }
 
   const today = new Date();
@@ -25,7 +25,7 @@ function MainGraphMenu () {
   const handleClick = (gr) => {
     var option = {
       "trans": "",
-      "savings": ""
+      "categ": ""
     }
     for (var btn in option) {
       if (gr === btn) {
@@ -52,29 +52,33 @@ function MainGraphMenu () {
     if (transGraph) {
       return (
         <div>
-          <Typography className="graphs-table-title" align="center">
+          {/*<Typography className="graphs-table-title" align="center">
             Transactions ({today.getFullYear()})
           </Typography>
+          <br />
           <Typography className="graphs-table-subtitle" align="center">
             [ <b>x-axis</b>: months, <b>y-axis</b>: $ ]
-          </Typography>
+          </Typography>*/}
+          <br />
           <Graphs data="trans" />
         </div>
       );
     }
   }
 
-  function showSavingsGraph() {
-    if (savingsGraph) {
+  function showCategoryGraph() {
+    if (categoryGraph) {
       return (
         <div>
-          <Typography className="graphs-table-title" align="center">
-            Savings ({today.getFullYear()})
-          </Typography>
+          {/*<Typography className="graphs-table-title" align="center">
+            Transactions: by Category ({today.getFullYear()})
+          </Typography>*/}
           <Typography className="graphs-table-subtitle" align="center">
-            [ <b>x-axis</b>: months, <b>y-axis</b>: $ ]
+            by Category: Perecentage of Total Spendings in Different Categories
           </Typography>
-          <Graphs data="savings"/>
+          <div className="graphs-pie">
+            <Graphs data="category" />
+          </div>
         </div>
       );
     }
@@ -105,8 +109,11 @@ function MainGraphMenu () {
   return (
     <div align="center">
       <div className="graphs-graph">
+        <Typography className="graphs-table-title" align="center">
+          Transactions ({today.getFullYear()})
+        </Typography>
         {showTransGraph()}
-        {showSavingsGraph()}
+        {showCategoryGraph()}
       </div>
       <ButtonGroup 
         aria-label="text primary button group"
@@ -122,21 +129,21 @@ function MainGraphMenu () {
           }}
           style={{backgroundColor: background["trans"]}}
         >
-          Transactions
+          By Month
         </Button>
         <Button 
           className="graphs-button"
           onClick={() => {
-            handleClick("savings");
-            handleShowSavingsGraph();
+            handleClick("categ");
+            handleShowCategoryGraph();
           }}
-          style={{backgroundColor: background["savings"]}}
+          style={{backgroundColor: background["categ"]}}
         >
-          Savings
+          By Category
         </Button>
       </ButtonGroup>
     </div>
   );
 }
 
-export default MainGraphMenu;
+export default TransactionsGraph;
