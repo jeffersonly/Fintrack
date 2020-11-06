@@ -1,0 +1,123 @@
+.notification-card {
+  height: 260px;
+  width: 12vw;
+  margin-top: 15px;
+}
+
+.notification-emphasis {
+  color: rgb(1, 114, 71);
+}
+
+.notification-saving {
+  margin-left: -3.7vw;
+}
+
+.notification-saving-picture {
+  width: 75%;
+  height: 75%;
+}
+
+.notification-spending {
+  margin-left: -0.8vw;
+  width: 13vw;
+}
+
+.notification-spending-picture {
+  width: 55%;
+  height: 55%;
+}
+
+.notification-weekly {
+  margin-left: 7vw;
+  width: 18vw;
+}
+
+.notification-weekly-picture {
+  width: 60%;
+  height: 60%;
+  margin-top: -35px;
+}
+
+@media only screen and (max-width: 1200px) {
+
+  .notification-spending {
+    margin-left: -1.5vw;
+  }
+
+  .notification-weekly {
+    margin-left: 6vw;
+  }
+
+  .notification-weekly-picture {
+    width: 50%;
+    height: 50%;
+  }
+
+}
+
+@media only screen and (max-width: 1000px) {
+
+  .notification-spending {
+    margin-left: -2.5vw;
+  }
+
+  .notification-weekly-picture {
+    display: none;
+  }
+
+}
+
+@media only screen and (max-width: 800px) {
+
+  .notification-saving {
+    width: 18vw;
+  }
+
+  .notification-spending {
+    margin-left: 1vw;
+    width: 18vw;
+  }
+
+  .notification-saving-picture {
+    display: none;
+  }
+
+  .notification-spending-picture {
+    display: none;
+  }
+
+  .notification-weekly {
+    margin-left: 10vw;
+  }
+
+}
+
+@media only screen and (max-width: 600px) {
+
+  .notification-card {
+    height: 270px;
+  }
+
+  .notification-saving {
+    margin-left: -6vw;
+  }
+
+  .notification-saving-picture {
+    display: none;
+  }
+
+  .notification-spending {
+    margin-left: -4vw;
+    width: 20vw;
+  }
+
+  .notification-spending-picture {
+    display: none;
+  }
+
+  .notification-weekly {
+    margin-left: 7vw;
+    width: 23vw;
+  }
+
+}

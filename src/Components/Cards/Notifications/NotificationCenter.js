@@ -4,10 +4,14 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Carousel from 'react-bootstrap/Carousel';
 import { generate } from 'shortid';
+import { Row, Col } from 'react-bootstrap';
 
-import MonthlyExpenses from '../Tables/MonthlyExpenses';
-import SavingsGraph from '../Graphs/SavingsGraph';
-import TransactionsGraph from '../Graphs/TransactionsGraph';
+import MonthlyExpenses from '../../Tables/MonthlyExpenses';
+import SavingsGraph from '../../Graphs/SavingsGraph';
+import TransactionsGraph from '../../Graphs/TransactionsGraph';
+import SavingNotification from './SavingNotification';
+import SpendingNotification from './SpendingNotification';
+import WeeklyNotification from './WeeklyNotification';
 import './NotificationCenter.css';
 
 const theme = createMuiTheme ({
@@ -33,6 +37,17 @@ function NotificationCenter () {
                 <Typography align="center" style={{fontWeight: "bold", fontSize: "16px"}}>
                   Notifications
                 </Typography>
+                <Row>
+                  <Col>
+                    <WeeklyNotification />
+                  </Col>
+                  <Col>
+                    <SpendingNotification />
+                  </Col>
+                  <Col>
+                    <SavingNotification />
+                  </Col>
+                </Row>
               </CardContent>
             </Card>
           </Carousel.Item>
