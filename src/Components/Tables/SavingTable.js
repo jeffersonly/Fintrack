@@ -12,7 +12,7 @@ import { deleteSaving } from '../../graphql/mutations';
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
-import MoreSavingInformation from '../Modals/MoreSavingInformation';
+import MoreSavingInformation from '../Modals/Saving/MoreSavingInformation';
 import ConfirmDelete from '../Modals/ConfirmDelete';
 import './Table.css';
 

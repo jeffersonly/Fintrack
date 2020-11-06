@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Divider, Link } from '@material-ui/core';
+import { Button, Divider, InputAdornment } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
-import TableField from '../InputFields/TableField';
-import '../Cards/Profile.css';
+import TableField from '../../InputFields/TableField';
+import '../../Cards/Profile.css';
 
-function EditProfile(props) {
+function EditGoals(props) {
 
   const [show, setShow] = useState(props.openEdit);
-
-  //used in email validation - RFC 2822 standard
-  const reg = new RegExp(
-    "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
-  );
 
   useEffect(() => {
     setShow(props.openEdit);
@@ -36,49 +31,49 @@ function EditProfile(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Edit Profile
+            Edit Goals
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="editprofile-textfield">
             <Formik
               initialValues={{
-                email: "",
+                spendings: props.spendings ? props.spendings : 0,
+                savings: props.savings ? props.savings : 0
               }}
               validate={values => {
 
                 const errors = {};
 
-                if (!values.email) {
-                  errors.email = "Required";
+                if (!values.spendings && values.spendings !== 0) {
+                  errors.spendings = "Required";
                 }
-                if (!reg.test(values.email)) {
-                  errors.email = "Please enter a valid email.";
-                }
-                if (values.email === props.email) {
-                  errors.email = "This email is your current default email.";
+                if (!values.savings && values.savings !== 0) {
+                  errors.savings = "Required";
                 }
 
                 return errors;
               }}
               onSubmit={(data) => {
                 console.log(data);
-                props.updateEmail(data.email);
+                props.closeEdit();
+                //props.updateEmail(data.email);
               }}
             >
               {({ values, errors }) => (
                 <Form onKeyDown={onKeyDown}>
                   <TableField
-                    label="Email"
-                    name="email"
+                    InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
+                    label="Spending per Month"
+                    name="spendings"
+                    type="number"
                   />
-                  <Link 
-                    className="editprofile-passwordLink"
-                    component="button" 
-                    onClick={props.selectPassword}
-                  >
-                    Change Password?
-                  </Link>
+                  <TableField
+                    InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
+                    label="Savings per Month"
+                    name="savings"
+                    type="number"
+                  />
                   <Divider className="editprofile-divider"/>
                   <div align="right">
                     <Button
@@ -92,8 +87,7 @@ function EditProfile(props) {
                     <Button 
                       className="profile-button"
                       disableElevation
-                      disabled={!values.email || errors.email !== undefined}
-                      onClick={props.confirm} 
+                      disabled={!values.spendings && values.spendings !== 0 || !values.savings && values.savings !== 0}
                       type="submit"
                       variant="contained"
                     >
@@ -110,4 +104,4 @@ function EditProfile(props) {
   );
 }
 
-export default EditProfile;
+export default EditGoals;

@@ -167,7 +167,6 @@
 }
 
 @media only screen and (max-width: 600px) {
-
   .ct-pie {
     padding-top: 20px;
     padding-bottom: 30px;
@@ -177,27 +176,21 @@
     margin: 0px -50px !important;
     padding-right: -200px;
   }
-
 }
 
 @media only screen and (max-width: 850px) {
-
   .ct-legend.ct-legend-inside {
     margin: 0px 25px;
   }
-
 }
 
 @media only screen and (max-width: 900px) {
-
   .ct-pie {
     margin-right: 170px;
   }
-
 }
 
 @media only screen and (max-width: 1100px) {
-
   .ct-pie {
     margin-right: 140px;
   }
@@ -205,5 +198,4 @@
   .ct-legend.ct-legend-inside li {
     margin: 0px -60px;
   }
-
 }

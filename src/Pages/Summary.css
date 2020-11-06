@@ -57,7 +57,6 @@
 }
 
 @media (max-width: 800px) {
-
   .DayPicker {
     display: block;
     font-size: 1rem;
@@ -79,11 +78,9 @@
   .notif-center {
     padding-bottom: 25px;
   }
-
 }
 
 @media only screen and (max-width: 600px) {
-
   .homepage {
     margin-top: 140px;
   }
@@ -91,5 +88,4 @@
   .homepage-table {
     padding-bottom: 25px;
   }
-
 }

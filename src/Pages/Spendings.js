@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 
 import SpendingTable from '../Components/Tables/SpendingTable'; 
-import CreateSpendingModal from '../Components/Modals/CreateSpendingModal';
+import CreateSpendingModal from '../Components/Modals/Spending/CreateSpendingModal';
 import './Spendings.css';
 //import Dropzone from '../Components/Dropzone/Dropzone';
 //import CreateTransaction from '../Components/Spending/CreateTransaction';

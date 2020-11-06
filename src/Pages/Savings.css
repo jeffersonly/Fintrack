@@ -10,7 +10,6 @@
 }
 
 @media only screen and (max-width: 840px) {
-
   .savings-add {
     display: inline;
   }
@@ -18,11 +17,9 @@
   .savings-form {
     display: none;
   }
-
 }
 
 @media only screen and (max-width: 600px) {
-
   .savings {
     margin-top: 125px;
   }
@@ -30,5 +27,4 @@
   .savings-table {
     padding-bottom: 25px;
   }
-
 }

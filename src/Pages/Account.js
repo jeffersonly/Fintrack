@@ -7,6 +7,7 @@ import { Auth } from 'aws-amplify';
 import './Account.css';
 import Profile from '../Components/Cards/Profile';
 import Receipts from '../Components/Cards/Receipts';
+import Goals from '../Components/Cards/Goals';
 import { Navbar, Nav } from 'react-bootstrap';
 
 const theme = createMuiTheme ({
@@ -19,20 +20,20 @@ const theme = createMuiTheme ({
 
 function Account() {
 
-  const [background, setBackground] = useState({prof: "#f5f5f5", notif: "", receipt: "", split: ""});
-  const [page, setPage] = useState({prof: true, notif: false, receipt: false, split: false});
+  const [background, setBackground] = useState({prof: "#f5f5f5", goal: "", receipt: "", split: ""});
+  const [page, setPage] = useState({prof: true, goal: false, receipt: false, split: false});
   const [expanded, setExpanded] = useState(false);
 
   const handleClick = (pg) => {
     var back = {
       "prof": "",
-      "notif": "",
+      "goal": "",
       "receipt": "",
       "split": ""
     }
     var page = {
       "prof": false,
-      "notif": false,
+      "goal": false,
       "receipt": false,
       "split": false
     }
@@ -58,6 +59,11 @@ function Account() {
     if (page["prof"] === true) {
       return (
         <Profile />
+      )
+    }
+    if (page["goal"] == true) {
+      return (
+        <Goals />
       )
     }
     if (page["receipt"] === true) {
@@ -98,12 +104,12 @@ function Account() {
                     className="account-button-top account-button-bottom"
                     fullWidth
                     onClick={() => {
-                      handleClick("notif");
+                      handleClick("goal");
                       setExpanded(false);
                     }}
-                    style={{backgroundColor: background["notif"], outline: "none"}}
+                    style={{backgroundColor: background["goal"], outline: "none"}}
                   >
-                    Notifications
+                    Goals
                   </Button>
                   <Divider />
                   <div className="account-section-pad">

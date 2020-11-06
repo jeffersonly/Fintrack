@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 
 import CreateSaving from '../Components/Cards/CreateSaving';
-import CreateSavingModal from '../Components/Modals/CreateSavingModal';
+import CreateSavingModal from '../Components/Modals/Saving/CreateSavingModal';
 import SavingTable from '../Components/Tables/SavingTable';
 import './Savings.css';
 import '../Components/Cards/Card.css';
