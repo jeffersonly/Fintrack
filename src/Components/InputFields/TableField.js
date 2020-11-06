@@ -9,13 +9,15 @@ const useStyles = makeStyles({
 });
 
 function TableField(props) {
-  
   const classes = useStyles();
 
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : "";
   const customText = props.helperText && meta.touched;
 
+  // Default value is passed as a prop to table field, however it's not being set for textfield...
+  // Bring this issue up in Friday's meeting
+  // console.log(props.defaultValue); 
   return (
     <div className={classes.textfield}>
       <TextField
@@ -32,6 +34,7 @@ function TableField(props) {
         rowsMax={props.rowsMax}
         select={props.select}
         type={props.type}
+        defaultValue={props.defaultValue}
         variant="outlined"
       >
       {props.select 
@@ -54,7 +57,8 @@ TableField.defaultProps = {
   placeholder: "",
   required: true,
   select: false,
-  type: ""
+  type: "",
+  defaultValue: ""
 }
 
 export default TableField;

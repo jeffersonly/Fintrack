@@ -4,7 +4,7 @@ import Webcam from "react-webcam";
 import Predictions from '@aws-amplify/predictions';
 import DropzoneModal from '../Modals/DropzoneModal';
 
-function WebcamCapture() {
+function WebcamCapture(props) {
     const webcamRef = React.useRef(null);
     const [showWebcam, setShowWebcam] = useState(false); //state of whether to show webcam or not
     const [imageWithCost, setImageWithCost] = useState({}); 
@@ -72,12 +72,6 @@ function WebcamCapture() {
 
     return (
         <>
-            {/* {imgSrc && (
-                <img
-                    src={filesWithCost[0].image}
-                />
-            )} */}
-
             <div className="webcam-item-container">
                 {displayWebcam()}
             </div>

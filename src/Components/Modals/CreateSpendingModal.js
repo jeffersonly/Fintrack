@@ -9,10 +9,10 @@ import WebcamCapture from '../Webcam/Webcam';
 
 function CreateSpendingModal(props) {
 
-	const [show, setShow] = useState(props.openCreateSpending);
+	const [showCreateSpendingModal, setShowCreateSpendingModal] = useState(props.openCreateSpending);
 
     useEffect(() => {
-        setShow(props.openCreateSpending);
+        setShowCreateSpendingModal(props.openCreateSpending);
     }, [props.openCreateSpending]);
 
     return (
@@ -20,7 +20,7 @@ function CreateSpendingModal(props) {
             <Modal
                 size="lg"
                 className="profile"
-                show={show}
+                show={showCreateSpendingModal}
                 onHide={props.closeCreateSpending}
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
