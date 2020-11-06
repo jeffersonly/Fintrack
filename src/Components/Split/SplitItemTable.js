@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { 
-  Table, TableBody, TableCell, TableContainer, TableRow, Typography 
-} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
 import TableHeader from '../Tables/TableHeader';
 
 const useStyles = makeStyles({
@@ -29,8 +27,11 @@ const useStyles = makeStyles({
 
 const columnTitles = [
   { id: "SIName", label: "Name", align: "center" },
-  { id: "SIItem", label: "Item", align: "center", size: "small" },
-  { id: "SIAmount", label: "Value ($)", align: "center", size: "small" },
+  { id: "SIItem", label: "Item(s)", align: "center", size: "small" },
+  { id: "SIAmount", label: "Subtotal", align: "center", size: "small" },
+  { id: "SITip", label: "Tip", align: "center", size: "small" },
+  { id: "SITax", label: "Tax", align: "center", size: "small" },
+  { id: "SITotal", label: "Total", align: "center", size: "small" },
 ];
 
 function SplitItemTable ({rows}) {
@@ -53,6 +54,9 @@ function SplitItemTable ({rows}) {
                   <TableCell align="center">{row.SIName}</TableCell>
                   <TableCell align="center">{row.SIItem}</TableCell>
                   <TableCell align="center">{row.SIAmount}</TableCell>
+                  <TableCell align="center">{row.SITip}</TableCell>
+                  <TableCell align="center">{row.SITax}</TableCell>
+                  <TableCell align="center">{row.SITotal}</TableCell>
                 </TableRow>
               );
             })

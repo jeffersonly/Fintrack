@@ -53,15 +53,15 @@ function SplitItem () {
   return (
     <div>
       <Container>
-        <Grid style={{justifyContent: 'space-evenly'}}s container spacing={2}>
-          <Grid item xs={2}>
+        <Grid style={{justifyContent: 'space-evenly'}}s container spacing={3}>
+          <Grid item xs={1}>
             <Button
               className={classes.back}
               onClick={() => history.push('/split')}
               variant="contained"
               disableElevation
               size="large"
-              style={{ width: "100%", fontSize: "16px", marginBottom: "20px" }}
+              style={{ width: "100%", fontSize: "16px", marginBottom: "20px", backgroundColor: "#ace1af" }}
             >
               ← Back
             </Button>
@@ -73,12 +73,20 @@ function SplitItem () {
                   {
                     SIName: data[0],
                     SIItem: data[1],
-                    SIAmount: "$" + data[2]
+                    SIAmount: "$" + data[2],
+                    SITip: "$" + (data[2]*(.01*data[3])).toFixed(2),
+                    SITax: "$" + (data[2]*(.01*data[4])).toFixed(2),
+                    SITotal: "$" + (data[2]
+                                 + (data[2]*(.01*data[3]))
+                                 + (data[2]*(.01*data[4]))).toFixed(2)
                   },
                   ...currentRows
                 ]);
               }}
             />
+            
+          </Grid>
+          <Grid item xs={5}>
             <SplitItemTable rows={rows}/>
           </Grid>
         </Grid>

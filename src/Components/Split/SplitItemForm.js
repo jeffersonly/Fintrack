@@ -1,7 +1,5 @@
 import React from 'react';
-import { 
-  Button, Card, CardContent, makeStyles
- } from '@material-ui/core';
+import { Button, Card, CardContent, makeStyles} from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { Formik, Form } from 'formik';
@@ -50,7 +48,10 @@ function SplitItemForm ({ onSubmit }) {
               initialValues={{
                 SIName: "",
                 SIItem: "",
-                SIAmount: ""
+                SIAmount: "",
+                SITip: "",
+                SITax: "7.25",
+                SITotal: ""
               }}
               validate={values => {
                 const errors = {};
@@ -66,7 +67,7 @@ function SplitItemForm ({ onSubmit }) {
               }}
               onSubmit={(data, { resetForm }) => {
                 console.log(data);
-                const array = [data.SIName, data.SIItem, data.SIAmount];
+                const array = [data.SIName, data.SIItem, data.SIAmount, data.SITip, data.SITax];
                 onSubmit(array);
                 resetForm();
               }}
@@ -79,15 +80,27 @@ function SplitItemForm ({ onSubmit }) {
                     placeholder="Enter Party Member Name"
                   />
                   <TableField
-                    label="Item"
+                    label="Item(s)"
                     name="SIItem"
-                    placeholder="Enter Item Name"
+                    placeholder="Enter Item Name(s)"
                   />
                   <TableField
                     label="Price"
                     name="SIAmount"
                     placeholder="Enter Item Price"
-                    type="float"
+                    type="number"
+                  />
+                  <TableField
+                    label="Tip"
+                    name="SITip"
+                    placeholder="Enter Tip Percentage"
+                    type="number"
+                  />
+                  <TableField
+                    label="Tax"
+                    name="SITax"
+                    placeholder="Enter local tax rate"
+                    type="number"
                   />
                   <Button
                     className={classes.createbutton}

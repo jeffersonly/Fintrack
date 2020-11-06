@@ -45,15 +45,15 @@ function SplitEven () {
   return (
     <div>
       <Container>
-        <Grid style={{justifyContent: 'space-evenly'}}s container spacing={2}>
-          <Grid item xs={2}>
+        <Grid style={{justifyContent: 'space-evenly'}}s container spacing={5}>
+          <Grid item xs={1}>
             <Button
               className={classes.back}
               onClick={() => history.push('/split')}
               variant="contained"
               disableElevation
               size="large"
-              style={{ width: "100%", fontSize: "16px", marginBottom: "20px" }}
+              style={{ width: "100%", fontSize: "16px", marginBottom: "20px", backgroundColor: "#ace1af" }}
             >
               ← Back
             </Button>
@@ -65,13 +65,16 @@ function SplitEven () {
                   {
                     SETotal: "$" + data[0],
                     SEMembers: data[1],
-                    SETip: data[2] + "%",
-                    SESplit: "$" + ((data[0]/data[1])*(1 + (.01 * data[2]))).toFixed(2)
+                    SEIndividualTip: "$" + ((data[0] * ((.01)*data[2]))/data[1]).toFixed(2) ,
+                    SESplitWithoutTip: "$" + (data[0]/data[1]).toFixed(2),
+                    SESplitWithTip: "$" + ((data[0]/data[1])*(1 + (.01 * data[2]))).toFixed(2)
                   },
                   ...currentRows
                 ]);
               }}
             />
+          </Grid>
+          <Grid item xs={5}>
             <SplitEvenTable rows={rows}/>
           </Grid>
         </Grid>

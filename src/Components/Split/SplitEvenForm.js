@@ -1,7 +1,5 @@
 import React from 'react';
-import { 
-  Button, Card, CardContent, makeStyles
- } from '@material-ui/core';
+import { Button, Card, CardContent, makeStyles} from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { Formik, Form } from 'formik';
@@ -76,7 +74,7 @@ function SplitEvenForm ({ onSubmit }) {
                   <TableField
                     label="Price"
                     name="SETotal"
-                    placeholder="Enter Total Bill Price"
+                    placeholder="Enter Total Bill Price With Tax"
                     type="number"
                   />
                   <TableField

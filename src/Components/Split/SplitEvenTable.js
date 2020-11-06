@@ -26,10 +26,11 @@ const useStyles = makeStyles({
 })
 
 const columnTitles = [
-  { id: "SETotal", label: "Total ($)", align: "center" },
+  { id: "SETotal", label: "Total Bill", align: "center" },
   { id: "SEMembers", label: "Party Size", align: "center", size: "small" },
-  { id: "SETip", label: "Tip (%)", align: "center", size: "small" },
-  { id: "SESplit", label: "Split ($)", align: "center", size: "small" },
+  { id: "SEIndividualTip", label: "Individual Tip", align: "center", size: "small" },
+  { id: "SESplitWithoutTip", label: "Split (Without Tip)", align: "center", size: "small" },
+  { id: "SESplitWithTip", label: "Split (With Tip)", align: "center", size: "small" },
 ];
 
 function SplitEvenTable ({rows}) {
@@ -51,8 +52,9 @@ function SplitEvenTable ({rows}) {
                 <TableRow>
                   <TableCell align="center">{row.SETotal}</TableCell>
                   <TableCell align="center">{row.SEMembers}</TableCell>
-                  <TableCell align="center">{row.SETip}</TableCell>
-                  <TableCell align="center">{row.SESplit}</TableCell>
+                  <TableCell align="center">{row.SEIndividualTip}</TableCell>
+                  <TableCell align="center">{row.SESplitWithoutTip}</TableCell>
+                  <TableCell align="center">{row.SESplitWithTip}</TableCell>
                 </TableRow>
               );
             })
