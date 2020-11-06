@@ -9,7 +9,7 @@
 }
 
 .notification-saving {
-  margin-left: -3.7vw;
+  margin-left: -3vw;
 }
 
 .notification-saving-picture {
@@ -18,7 +18,7 @@
 }
 
 .notification-spending {
-  margin-left: -0.8vw;
+  margin-left: -0.5vw;
   width: 13vw;
 }
 
@@ -28,8 +28,8 @@
 }
 
 .notification-weekly {
-  margin-left: 7vw;
-  width: 18vw;
+  margin-left: 6vw;
+  width: 20vw;
 }
 
 .notification-weekly-picture {
@@ -65,11 +65,12 @@
 
 @media only screen and (max-width: 800px) {
   .notification-saving {
+    margin-left: -7vw;
     width: 18vw;
   }
 
   .notification-spending {
-    margin-left: 1vw;
+    margin-left: -2.2vw;
     width: 18vw;
   }
 
@@ -83,6 +84,7 @@
 
   .notification-weekly {
     margin-left: 10vw;
+    width: 25vw;
   }
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { getMonthYear, getWeekSaving, getWeekSpending, weekPeriod } from './NotificationData';
+import { splitDate } from '../../Tables/TableFunctions';
 import WeeklySVG from '../../../Images/weekly.svg';
 import './Notification.css';
 
@@ -15,8 +16,10 @@ function WeeklyNotification () {
     weeklySaving();
     weeklySpending();
     const days = weekPeriod();
-    setStartDate(days[0].substring(0, 4));
-    setEndDate(days[1].substring(0, 4));
+    const start = splitDate(days[0]);
+    const end = splitDate(days[1]);
+    setStartDate(start[0] + "/" + start[1]);
+    setEndDate(end[0] + "/" + end[1]);
   }, []);
 
   async function weeklySaving() {
