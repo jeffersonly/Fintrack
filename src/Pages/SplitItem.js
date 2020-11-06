@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import { withRouter, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, makeStyles, Grid} from '@material-ui/core';
-// Split components
+import { Button, makeStyles, Grid, Box} from '@material-ui/core';
 import SplitItemTable from '../Components/Split/SplitItemTable';
 import SplitItemForm from '../Components/Split/SplitItemForm';
 
@@ -84,10 +83,11 @@ function SplitItem () {
                 ]);
               }}
             />
-            
           </Grid>
           <Grid item xs={5}>
-            <SplitItemTable rows={rows}/>
+            <Box border={1} borderColor="#E1ECF0">
+              <SplitItemTable rows={rows}/>
+            </Box>
           </Grid>
         </Grid>
       </Container>
@@ -95,4 +95,4 @@ function SplitItem () {
   );
 }
   
-  export default withRouter(SplitItem);
+export default withRouter(SplitItem);

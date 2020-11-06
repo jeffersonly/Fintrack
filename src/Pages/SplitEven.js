@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import { withRouter , useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import Grid from '@material-ui/core/Grid';
-import { Button, makeStyles} from '@material-ui/core';
+import { Button, makeStyles, Grid, Box} from '@material-ui/core';
 import SplitEvenForm from '../Components/Split/SplitEvenForm';
 import SplitEvenTable from '../Components/Split/SplitEvenTable';
 
@@ -75,7 +74,9 @@ function SplitEven () {
             />
           </Grid>
           <Grid item xs={5}>
-            <SplitEvenTable rows={rows}/>
+            <Box border={1} borderColor="#E1ECF0">
+              <SplitEvenTable rows={rows}/>
+            </Box>
           </Grid>
         </Grid>
       </Container>
@@ -83,4 +84,4 @@ function SplitEven () {
   );
 }
   
-  export default withRouter(SplitEven);
+export default withRouter(SplitEven);
