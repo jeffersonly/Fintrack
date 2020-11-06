@@ -7,6 +7,7 @@ import { listSpendings } from '../../graphql/queries';
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import './Table.css';
+import '../Graphs/Graphs.css';
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center", size: "small" },
@@ -20,10 +21,10 @@ function QuickTransactionTable () {
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
-  const [spendings, setSpending] = useState([]);
+  const [recent, setRecent] = useState([]);
 
   useEffect(() => {
-    fetchSpending();
+    getMostRecent();
   }, []);
 
   const handleRequestSort = (event, property) => {
@@ -32,22 +33,31 @@ function QuickTransactionTable () {
     setOrderBy(property);
   };
 
-  const fetchSpending = async () => {
+  const getMostRecent = async () => {
     try {
       const spendingData = await API.graphql(graphqlOperation(listSpendings));
+      //const test = await API.graphql(graphqlOperation(sortByDate, {limit: 6}));
+      //console.log("new test", test);
       const spendingList = spendingData.data.listSpendings.items;
       console.log('spending data', spendingList);
-      setSpending(spendingList);
+      const sorted = stableSort(spendingList, getComparator(order, orderBy));
+      const mostRecent = [sorted[0], sorted[1], sorted[2], sorted[3], sorted[4], sorted[5]];
+      setRecent(mostRecent);
     } catch (error) {
-      console.log('Error on fetching spending', error)
+      console.log('Error on fetching spending', error);
     }
   };
   
   return (
     <div>
-      <Typography className="table-title" align="center">
-        Recent Spendings
-      </Typography>
+      <div>
+        <Typography className="table-title" align="center">
+          Recent Spendings
+        </Typography>
+        <Typography className="graphs-table-subtitle" align="center">
+            **Based on Date of Spending
+        </Typography>
+      </div>
       <TableContainer className="table-container">
         <Table stickyHeader>
           <TableHeader
@@ -57,14 +67,14 @@ function QuickTransactionTable () {
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {stableSort(spendings, getComparator(order, orderBy))
+            {stableSort(recent, getComparator(order, orderBy))
               .map((spending) => {
                 return (
                   <TableRow hover key={spending.id}>
                     <TableCell align="center">{formatDate(spending.month, spending.day, spending.year)}</TableCell>
                     <TableCell align="center">{spending.name}</TableCell>
                     <TableCell align="center">{spending.payment}</TableCell>
-                    <TableCell align="center">{spending.value}</TableCell>
+                    <TableCell align="center">${spending.value}</TableCell>
                   </TableRow>
                 );
               })

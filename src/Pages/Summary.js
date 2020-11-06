@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { generate } from 'shortid';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import QuickTransaction from '../Components/Cards/QuickTransaction';
-import NotificationCenter from '../Components/Cards/NotificationCenter';
+import NotificationCenter from '../Components/Cards/Notifications/NotificationCenter';
 import QuickTransactionTable from '../Components/Tables/QuickTransactionTable'; 
 import './Summary.css';
 import { Row, Col } from 'react-bootstrap';
@@ -20,8 +19,6 @@ function Summary () {
     return date;
   }
 
-  const [rows, setRows] = useState([
-  ]);
   const [user, setUser] = useState("");
   const [authError, setAuthError] = useState("");
 
@@ -55,7 +52,7 @@ function Summary () {
           <QuickTransaction />
         </Col>
         <Col xs md={{span: 8, offset: 1}} className="homepage-table">
-          <QuickTransactionTable rows={rows}/>
+          <QuickTransactionTable />
         </Col>
       </Row>
     </div>
