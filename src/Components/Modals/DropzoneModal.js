@@ -25,7 +25,7 @@ export default function DropzoneModal(props) {
                     />
                 </Col>
                 <Col xs={9} md={6}>
-                    <DropzoneInput data={props.data} />
+                    <DropzoneInput data={props.data} from="camera" />
                 </Col>
             </Row>
         );
@@ -44,7 +44,7 @@ export default function DropzoneModal(props) {
                         />
                     </Col>
                     <Col xs={9} md={6}>
-                        <DropzoneInput data={props.data[i]} />
+                        <DropzoneInput data={props.data[i]} from="dropzone" />
                     </Col>
                 </Row>
             );

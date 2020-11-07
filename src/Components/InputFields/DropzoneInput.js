@@ -75,14 +75,12 @@ async function submitNewSpending(data) {
   }
 }
 
+function generateRandomizedString() {
+  return Math.random().toString(36).substring(3);
+}
+
 function DropzoneInput(props) {
-    console.log("hello");
-    console.log(props);
-    console.log(props.data.image);
-    console.log("bye");
-
-
-    const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <div className="card-container card-spendings">
@@ -92,7 +90,7 @@ function DropzoneInput(props) {
             date: new Date(),
             name: "",
             payment: "Cash",
-            value: "",
+            value: props.data.totalCost,
             category: "Food",
             repeat: "Never",
             note: ""
@@ -113,26 +111,51 @@ function DropzoneInput(props) {
             return errors;
           }}
           onSubmit={(data, { resetForm }) => {
-            Storage.put(props.data.image.name, props.data.image, {
-              contentType: props.data.image.type
-            }).then((result) => {
-              const image = {
-                name: props.data.image.name,
-                file: {
-                  bucket: awsExports.aws_user_files_s3_bucket,
-                  region: awsExports.aws_user_files_s3_bucket_region,
-                  key: 'public/' + props.data.image.name
+            if(props.from === "camera") {
+              let randomStr = generateRandomizedString();
+              Storage.put(`picture-taken-from-camera-${randomStr}.jpg`, props.data.image, {
+                contentType: "image/jpeg",
+                ContentEncoding: 'base64'
+              }).then((result) => {
+                const image = {
+                  name: `picture-taken-from-camera-${randomStr}.jpg`,
+                  file: {
+                    bucket: awsExports.aws_user_files_s3_bucket,
+                    region: awsExports.aws_user_files_s3_bucket_region,
+                    key: 'public/' + `picture-taken-from-camera-${randomStr}.jpg`
+                  }
                 }
-              }
-
-              //console.log(data, selectedDate.toLocaleDateString());
-              const formattedDate = splitDate(data.date.toLocaleDateString());
-              const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
-                            data.payment, data.value, data.category, data.repeat, data.note, image.file];
-              submitNewSpending(array);
-              //resetDate();
-              resetForm();
-            })
+  
+                //console.log(data, selectedDate.toLocaleDateString());
+                const formattedDate = splitDate(data.date.toLocaleDateString());
+                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
+                              data.payment, data.value, data.category, data.repeat, data.note, image.file];
+                submitNewSpending(array);
+                //resetDate();
+                resetForm();
+              })
+            } else {
+              Storage.put(props.data.image.name, props.data.image, {
+                contentType: props.data.image.type
+              }).then((result) => {
+                const image = {
+                  name: props.data.image.name,
+                  file: {
+                    bucket: awsExports.aws_user_files_s3_bucket,
+                    region: awsExports.aws_user_files_s3_bucket_region,
+                    key: 'public/' + props.data.image.name
+                  }
+                }
+  
+                //console.log(data, selectedDate.toLocaleDateString());
+                const formattedDate = splitDate(data.date.toLocaleDateString());
+                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
+                              data.payment, data.value, data.category, data.repeat, data.note, image.file];
+                submitNewSpending(array);
+                //resetDate();
+                resetForm();
+              })
+            }
           }}
         >
           {({ errors, setFieldError, setFieldValue, values }) => (
@@ -175,7 +198,6 @@ function DropzoneInput(props) {
                 name="value"
                 placeholder="300"
                 type="number"
-                defaultValue={props.data.totalCost}
               />
               <TableField
                 label="Category"

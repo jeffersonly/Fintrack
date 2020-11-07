@@ -34,7 +34,6 @@ function TableField(props) {
         rowsMax={props.rowsMax}
         select={props.select}
         type={props.type}
-        defaultValue={props.defaultValue}
         variant="outlined"
       >
       {props.select 
@@ -57,8 +56,7 @@ TableField.defaultProps = {
   placeholder: "",
   required: true,
   select: false,
-  type: "",
-  defaultValue: ""
+  type: ""
 }
 
 export default TableField;
