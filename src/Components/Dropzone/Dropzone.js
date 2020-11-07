@@ -12,6 +12,7 @@ function Dropzone(props) {
     async function identifyText(acceptedFiles) {
         let arrayOfObjs = []; 
         acceptedFiles.forEach(async file => {
+            console.log(file);
             // await Predictions.identify({
             //     text: {
             //         source: {

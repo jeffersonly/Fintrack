@@ -1,5 +1,5 @@
 import './Webcam.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Webcam from "react-webcam";
 import Predictions from '@aws-amplify/predictions';
 import DropzoneModal from '../Modals/DropzoneModal';
@@ -10,16 +10,44 @@ function WebcamCapture(props) {
     const [imageWithCost, setImageWithCost] = useState({}); 
     const [showModal, setShowModal] = useState(false); //state of whether to show modal or not w/ images
 
+
+    function convertToImg(imageSrc) {
+        const b64 = imageSrc.split(",")[1];
+        const charCodeArray = [...atob(b64)].map((c) => c.charCodeAt(0));
+        const blobData = [new Uint8Array(charCodeArray)];
+        return new Blob(blobData, { type: "image/jpeg" });
+    }
+
     //function to capture image from webcam
     const capture = React.useCallback(async () => {
         const imageSrc = webcamRef.current.getScreenshot();
         
+        const file = convertToImg(imageSrc);
+        console.log(file);
+
         //identify text within image to find total cost
-        const totalCost = 5;
+        let totalCost = 0;
         let costAndImgObj = {
             totalCost: totalCost,
             image: imageSrc
         };
+
+        await Predictions.identify({
+            text: {
+                source: {
+                    file
+                }
+            }
+        })
+        .then(res => {
+            console.log(res); 
+            totalCost = parseText(res);
+            costAndImgObj = {
+                totalCost: totalCost,
+                image: imageSrc
+            };
+        })
+        .catch(err => console.log(err));
 
         setImageWithCost(costAndImgObj);
         setShowModal(true);

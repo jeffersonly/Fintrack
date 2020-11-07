@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { 
-  Button, makeStyles, TextField, CardContent, InputAdornment
+  Button, makeStyles, InputAdornment
  } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -13,7 +12,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 
 import { Formik, Form } from 'formik';
-import { API, Storage, graphqlOperation } from 'aws-amplify';
+import { API, Storage } from 'aws-amplify';
 import { createSpending } from '../../graphql/mutations';
 import awsExports from '../../aws-exports';
 
