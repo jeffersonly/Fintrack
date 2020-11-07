@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { 
   Button, makeStyles, InputAdornment
@@ -20,6 +20,9 @@ import TableField from './TableField';
 import { repeats, payments, categories } from './TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 import '../Cards/Card.css';
+
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from 'react-loader-spinner'
 
 const Container = styled.div`
   font-family: Roboto;
@@ -48,38 +51,40 @@ const useStyles = makeStyles({
   }
 });
 
-async function submitNewSpending(data) {
-  try {
-    await API.graphql({
-      query: createSpending,
-      variables: {
-        input: {
-          month: data[0],
-          day: data[1],
-          year: data[2],
-          name: data[3],
-          value: data[5],
-          category: data[6],
-          repeat: data[7],
-          note: data[8],
-          payment: data[4],
-          file: data[9]
-        }
-      }
-    })
-    console.log('New spending created!');
-    window.location.reload();
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-function generateRandomizedString() {
-  return Math.random().toString(36).substring(3);
-}
-
 function DropzoneInput(props) {
   const classes = useStyles();
+  const [loaderState, setLoaderState] = useState(false);
+
+  async function submitNewSpending(data) {
+    try {
+      await API.graphql({
+        query: createSpending,
+        variables: {
+          input: {
+            month: data[0],
+            day: data[1],
+            year: data[2],
+            name: data[3],
+            value: data[5],
+            category: data[6],
+            repeat: data[7],
+            note: data[8],
+            payment: data[4],
+            file: data[9]
+          }
+        }
+      })
+      setLoaderState(false);
+      console.log('New spending created!');
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  
+  function generateRandomizedString() {
+    return Math.random().toString(36).substring(3);
+  }
 
   return (
     <div className="card-container card-spendings">
@@ -110,6 +115,8 @@ function DropzoneInput(props) {
             return errors;
           }}
           onSubmit={(data, { resetForm }) => {
+            setLoaderState(true);
+
             if(props.from === "camera") {
               let randomStr = generateRandomizedString();
               Storage.put(`picture-taken-from-camera-${randomStr}.jpg`, props.data.image, {
@@ -228,7 +235,7 @@ function DropzoneInput(props) {
                 type="submit"
                 variant="contained"
               >
-                Create
+                {loaderState ? <Loader type="TailSpin" color="rgb(1, 114, 71)" height={30} width={30} /> : "Create"}                
               </Button>
             </Form>
           )}
