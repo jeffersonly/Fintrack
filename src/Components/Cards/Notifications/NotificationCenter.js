@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Carousel from 'react-bootstrap/Carousel';
 import { generate } from 'shortid';
 import { Row, Col } from 'react-bootstrap';
+
+import { API, graphqlOperation } from "aws-amplify";
+import { listGoals } from '../../../graphql/queries';
 
 import MonthlyExpenses from '../../Tables/MonthlyExpenses';
 import SavingsGraph from '../../Graphs/SavingsGraph';
@@ -24,6 +27,31 @@ const theme = createMuiTheme ({
 
 function NotificationCenter () {
   
+  const [spendingGoal, setSpendingGoal] = useState();
+  const [savingGoal, setSavingGoal] = useState();
+
+  useEffect(() => {
+    getGoalInformation();
+  })
+
+  async function getGoalInformation () {
+    try {
+      const goalData = await API.graphql(graphqlOperation(listGoals));
+      const goalList = goalData.data.listGoals.items;
+      console.log(goalList);
+      if (goalList.length === 0) {
+        setSpendingGoal(0);
+        setSavingGoal(0);
+      }
+      else {
+        setSpendingGoal(goalList[0].spendingsGoal);
+        setSavingGoal(goalList[0].savingsGoal);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="notifcenter-container">
       <Typography className="notifcenter-table-title" align="center">
@@ -42,10 +70,10 @@ function NotificationCenter () {
                     <WeeklyNotification />
                   </Col>
                   <Col>
-                    <SpendingNotification />
+                    <SpendingNotification spending={spendingGoal}/>
                   </Col>
                   <Col>
-                    <SavingNotification />
+                    <SavingNotification saving={savingGoal}/>
                   </Col>
                 </Row>
               </CardContent>

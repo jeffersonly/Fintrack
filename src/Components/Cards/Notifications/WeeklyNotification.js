@@ -44,13 +44,13 @@ function WeeklyNotification () {
         <Typography variant="body2">
           Total Spent:
         </Typography>
-        <b className="notification-emphasis">${weeklySpendings}</b> / $50
+        <b className="notification-emphasis">${weeklySpendings}</b>
         <br />
         <br />
         <Typography variant="body2">
           Total Saved:
         </Typography>
-        <b className="notification-emphasis">${weeklySavings}</b> / $50
+        <b className="notification-emphasis">${weeklySavings}</b>
         <div align="right">
           <img src={WeeklySVG} alt="weekly img" className="notification-weekly-picture"/>
         </div>

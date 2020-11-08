@@ -4,7 +4,7 @@ import { getMonthSavingsTotal, getMonthYear } from './NotificationData';
 import SavingsSVG from '../../../Images/savings.svg';
 import './Notification.css';
 
-function SavingNotification () {
+function SavingNotification (props) {
 
   const [savings, setSavings] = useState();
 
@@ -27,7 +27,7 @@ function SavingNotification () {
         <Typography variant="body2">
           Total Saved:
         </Typography>
-        <b className="notification-emphasis">${savings}</b> / $50
+        <b className="notification-emphasis">${savings}</b> / ${props.saving}
         <div align="center">
           <br />
           <img src={SavingsSVG} alt="saving img" className="notification-saving-picture"/>

@@ -4,7 +4,7 @@ import { getMonthSpendingsTotal, getMonthYear } from './NotificationData';
 import SpendingsSVG from '../../../Images/spendings.svg';
 import './Notification.css';
 
-function SpendingNotification () {
+function SpendingNotification (props) {
 
   const [spendings, setSpendings] = useState();
 
@@ -17,6 +17,8 @@ function SpendingNotification () {
     setSpendings(result);
   }
 
+  const color = spendings > props.spending ? "#ff0000" : "rgb(1, 114, 71)";
+
   return (
     <Card variant="outlined" className="notification-card notification-spending">
       <CardContent>
@@ -27,7 +29,7 @@ function SpendingNotification () {
         <Typography variant="body2">
           Total Spent:
         </Typography>
-        <b className="notification-emphasis">${spendings}</b> / $50
+        <b style={{color: color}}>${spendings}</b> / ${props.spending}
         <div align="center">
           <br />
           <img src={SpendingsSVG} alt="spending img" className="notification-spending-picture"/>

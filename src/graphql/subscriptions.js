@@ -1,6 +1,42 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateGoal = /* GraphQL */ `
+  subscription OnCreateGoal($owner: String!) {
+    onCreateGoal(owner: $owner) {
+      id
+      savingsGoal
+      spendingsGoal
+      owner
+      createdOn
+      updatedOn
+    }
+  }
+`;
+export const onUpdateGoal = /* GraphQL */ `
+  subscription OnUpdateGoal($owner: String!) {
+    onUpdateGoal(owner: $owner) {
+      id
+      savingsGoal
+      spendingsGoal
+      owner
+      createdOn
+      updatedOn
+    }
+  }
+`;
+export const onDeleteGoal = /* GraphQL */ `
+  subscription OnDeleteGoal($owner: String!) {
+    onDeleteGoal(owner: $owner) {
+      id
+      savingsGoal
+      spendingsGoal
+      owner
+      createdOn
+      updatedOn
+    }
+  }
+`;
 export const onCreateSaving = /* GraphQL */ `
   subscription OnCreateSaving($owner: String!) {
     onCreateSaving(owner: $owner) {
@@ -69,6 +105,7 @@ export const onCreateSpending = /* GraphQL */ `
       note
       owner
       payment
+      repeated
       file {
         bucket
         region
@@ -93,6 +130,7 @@ export const onUpdateSpending = /* GraphQL */ `
       note
       owner
       payment
+      repeated
       file {
         bucket
         region
@@ -117,6 +155,7 @@ export const onDeleteSpending = /* GraphQL */ `
       note
       owner
       payment
+      repeated
       file {
         bucket
         region

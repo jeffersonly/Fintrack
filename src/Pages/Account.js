@@ -6,7 +6,6 @@ import { Row, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 import './Account.css';
 import Profile from '../Components/Cards/Profile';
-import Receipts from '../Components/Cards/Receipts';
 import Goals from '../Components/Cards/Goals';
 import { Navbar, Nav } from 'react-bootstrap';
 
@@ -20,21 +19,19 @@ const theme = createMuiTheme ({
 
 function Account() {
 
-  const [background, setBackground] = useState({prof: "#f5f5f5", goal: "", receipt: "", split: ""});
-  const [page, setPage] = useState({prof: true, goal: false, receipt: false, split: false});
+  const [background, setBackground] = useState({prof: "#f5f5f5", goal: "", split: ""});
+  const [page, setPage] = useState({prof: true, goal: false, split: false});
   const [expanded, setExpanded] = useState(false);
 
   const handleClick = (pg) => {
     var back = {
       "prof": "",
       "goal": "",
-      "receipt": "",
       "split": ""
     }
     var page = {
       "prof": false,
       "goal": false,
-      "receipt": false,
       "split": false
     }
     for (var btn in back) {
@@ -61,14 +58,9 @@ function Account() {
         <Profile />
       )
     }
-    if (page["goal"] == true) {
+    if (page["goal"] === true) {
       return (
         <Goals />
-      )
-    }
-    if (page["receipt"] === true) {
-      return (
-        <Receipts />
       )
     }
   }
@@ -115,17 +107,6 @@ function Account() {
                   <div className="account-section-pad">
                     <b className="account-section">HISTORY</b>
                   </div>
-                  <Button 
-                    className="account-button-top"
-                    fullWidth
-                    onClick={() => {
-                      handleClick("receipt");
-                      setExpanded(false);
-                    }}
-                    style={{backgroundColor: background["receipt"], outline: "none"}}
-                  >
-                    Receipts
-                  </Button>
                   <Button 
                     className="account-button-bottom"
                     fullWidth
