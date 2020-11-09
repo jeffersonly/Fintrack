@@ -6,6 +6,13 @@ import ReceiptImg from '../../Images/receipt.svg';
 import DropzoneInput from '../InputFields/DropzoneInput';
 
 export default function DropzoneModal(props) {
+    const [numberOfItems, setNumberOfItems] = useState(props.data.length);
+    const [counter, setCounter] = useState(0);
+     
+    useEffect(() => {
+        setNumberOfItems(props.data.length);
+    }, [props.data.length, counter]);
+
     function generateItems() {
         if(props.from == "webcam") {
             return generateItemsFromWebcam()
@@ -44,7 +51,7 @@ export default function DropzoneModal(props) {
                         />
                     </Col>
                     <Col xs={9} md={6}>
-                        <DropzoneInput data={props.data[i]} from="dropzone" />
+                        <DropzoneInput data={props.data[i]} from="dropzone" numberOfItems={numberOfItems} counter={counter} onCreateTransaction={() => setCounter(counter+1)} />
                     </Col>
                 </Row>
             );

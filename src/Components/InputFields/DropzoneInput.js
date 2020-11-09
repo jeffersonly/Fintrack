@@ -22,7 +22,8 @@ import { splitDate } from '../Tables/TableFunctions';
 import '../Cards/Card.css';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from 'react-loader-spinner'
+import Loader from 'react-loader-spinner';
+import DoneIcon from '@material-ui/icons/Done';
 
 const Container = styled.div`
   font-family: Roboto;
@@ -52,8 +53,10 @@ const useStyles = makeStyles({
 });
 
 function DropzoneInput(props) {
+  console.log(props);
   const classes = useStyles();
   const [loaderState, setLoaderState] = useState(false);
+  const [createdState, setCreatedState] = useState(false);
 
   async function submitNewSpending(data) {
     try {
@@ -75,8 +78,17 @@ function DropzoneInput(props) {
         }
       })
       setLoaderState(false);
-      console.log('New spending created!');
-      window.location.reload();
+      setCreatedState(true);
+
+      if(props.from === 'camera') {
+        window.location.reload();
+      } else {
+        props.onCreateTransaction();
+        if(props.numberOfItems === (props.counter+1)) {
+          window.location.reload();
+        }
+      }
+
     } catch (err) {
       console.log(err);
     }
@@ -230,12 +242,12 @@ function DropzoneInput(props) {
               <Button
                 className={classes.createbutton}
                 disableElevation
-                disabled={!values.name || !values.value || errors.date !== ""}
+                disabled={!values.name || !values.value || errors.date !== "" || createdState}
                 size="large"
                 type="submit"
                 variant="contained"
               >
-                {loaderState ? <Loader type="TailSpin" color="rgb(1, 114, 71)" height={30} width={30} /> : "Create"}                
+                {createdState ? (<>Created <DoneIcon /></>) : (loaderState ? <Loader type="TailSpin" color="rgb(1, 114, 71)" height={30} width={30} /> : "Create") }        
               </Button>
             </Form>
           )}
