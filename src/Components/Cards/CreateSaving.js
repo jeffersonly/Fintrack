@@ -177,7 +177,7 @@ function CreateSaving(props) {
                   <Button
                     className={classes.createbutton}
                     disableElevation
-                    disabled={!values.name || !values.value || errors.date !== ""}
+                    disabled={!values.name || !values.value || errors.date !== "" || createdState}
                     size="large"
                     type="submit"
                     variant="contained"
