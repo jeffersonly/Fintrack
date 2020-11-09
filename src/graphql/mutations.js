@@ -81,6 +81,11 @@ export const createSpending = /* GraphQL */ `
       note
       owner
       payment
+      file {
+        bucket
+        region
+        key
+      }
       createdOn
       updatedOn
     }
@@ -103,6 +108,11 @@ export const updateSpending = /* GraphQL */ `
       note
       owner
       payment
+      file {
+        bucket
+        region
+        key
+      }
       createdOn
       updatedOn
     }
@@ -125,6 +135,11 @@ export const deleteSpending = /* GraphQL */ `
       note
       owner
       payment
+      file {
+        bucket
+        region
+        key
+      }
       createdOn
       updatedOn
     }

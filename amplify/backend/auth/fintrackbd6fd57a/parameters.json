@@ -1,6 +1,6 @@
 {
     "identityPoolName": "fintrackbd6fd57a_identitypool_bd6fd57a",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "fintrabd6fd57a",
     "userPoolName": "fintrackbd6fd57a_userpool_bd6fd57a",
     "autoVerifiedAttributes": [

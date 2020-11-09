@@ -14,6 +14,7 @@ import { payments } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 import CardTitle from './CardTitle';
 import Dropzone from '../Dropzone/Dropzone';
+import WebcamCapture from '../Webcam/Webcam';
 import '../Cards/Card.css';
 
 const theme = createMuiTheme ({
@@ -180,6 +181,7 @@ function QuickTransaction () {
                     type="number"
                   />
                   <Dropzone />
+                  <WebcamCapture />
                   <Button
                     className={classes.createbutton}
                     disableElevation

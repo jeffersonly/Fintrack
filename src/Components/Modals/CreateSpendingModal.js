@@ -5,13 +5,14 @@ import { Row, Col } from 'react-bootstrap';
 import Dropzone from '../../Components/Dropzone/Dropzone';
 import CreateSpending from '../Cards/CreateSpending';
 import '../Cards/Profile.css';
+import WebcamCapture from '../Webcam/Webcam';
 
 function CreateSpendingModal(props) {
 
-	const [show, setShow] = useState(props.openCreateSpending);
+	const [showCreateSpendingModal, setShowCreateSpendingModal] = useState(props.openCreateSpending);
 
     useEffect(() => {
-        setShow(props.openCreateSpending);
+        setShowCreateSpendingModal(props.openCreateSpending);
     }, [props.openCreateSpending]);
 
     return (
@@ -19,7 +20,7 @@ function CreateSpendingModal(props) {
             <Modal
                 size="lg"
                 className="profile"
-                show={show}
+                show={showCreateSpendingModal}
                 onHide={props.closeCreateSpending}
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -34,6 +35,7 @@ function CreateSpendingModal(props) {
                         </Col>
                         <Col xs={6} className="editprofile-textfield">
                             <Dropzone />
+                            <WebcamCapture />
                         </Col>
                     </Row>
                 </Modal.Body>
