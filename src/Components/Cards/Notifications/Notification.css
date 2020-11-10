@@ -1,6 +1,6 @@
 .notification-card {
-  height: 260px;
-  width: 12vw;
+  height: 325px;
+  width: 15vw;
   margin-top: 15px;
 }
 
@@ -9,33 +9,33 @@
 }
 
 .notification-saving {
-  margin-left: -3vw;
+  margin-left: -4vw;
 }
 
 .notification-saving-picture {
-  width: 75%;
-  height: 75%;
+  padding-top: 60px;
+  width: 80%;
+  height: 80%;
 }
 
 .notification-spending {
   margin-left: -0.5vw;
-  width: 13vw;
 }
 
 .notification-spending-picture {
-  width: 55%;
-  height: 55%;
+  padding-top: 65px;
+  width: 60%;
+  height: 60%;
 }
 
 .notification-weekly {
   margin-left: 6vw;
-  width: 20vw;
+  width: 22vw;
 }
 
 .notification-weekly-picture {
-  width: 60%;
-  height: 60%;
-  margin-top: -35px;
+  width: 65%;
+  height: 65%;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -48,14 +48,22 @@
   }
 
   .notification-weekly-picture {
-    width: 50%;
-    height: 50%;
+    width: 60%;
+    height: 60%;
   }
 }
 
 @media only screen and (max-width: 1000px) {
+  .notification-saving {
+    margin-left: -4.7vw;
+  }
+  
   .notification-spending {
-    margin-left: -2.5vw;
+    margin-left: -2.3vw;
+  }
+
+  .notification-weekly {
+    margin-left: 5vw;
   }
 
   .notification-weekly-picture {
@@ -65,17 +73,17 @@
 
 @media only screen and (max-width: 800px) {
   .notification-saving {
-    margin-left: -7vw;
-    width: 18vw;
-  }
-
-  .notification-spending {
-    margin-left: -2.2vw;
-    width: 18vw;
+    margin-left: -6vw;
+    width: 15vw;
   }
 
   .notification-saving-picture {
     display: none;
+  }
+
+  .notification-spending {
+    margin-left: -2.7vw;
+    width: 15vw;
   }
 
   .notification-spending-picture {
@@ -83,35 +91,70 @@
   }
 
   .notification-weekly {
-    margin-left: 10vw;
-    width: 25vw;
+    margin-left: 5vw;
+    width: 18vw;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .notification-saving {
+    width: 20vw;
+  }
+  
+  .notification-spending {
+    margin-left: -1.2vw;
+    width: 20vw;
+  }
+
+  .notification-weekly {
+    margin-left: 8vw;
+    width: 23vw;
   }
 }
 
 @media only screen and (max-width: 600px) {
-  .notification-card {
-    height: 270px;
-  }
-
-  .notification-saving {
-    margin-left: -6vw;
-  }
-
-  .notification-saving-picture {
-    display: none;
-  }
-
   .notification-spending {
-    margin-left: -4vw;
-    width: 20vw;
-  }
-
-  .notification-spending-picture {
-    display: none;
+    margin-left: -3vw;
   }
 
   .notification-weekly {
-    margin-left: 7vw;
-    width: 23vw;
+    margin-left: 6vw;
   }
+}
+
+@media only screen and (max-width: 575px) {
+  .notification-card {
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    height: 140px;
+  }
+
+  .notification-weekly {
+    height: 200px;
+  }
+
+  .overview {
+    margin-top: 400px;
+  }
+
+  /*.notification-saving-picture {
+    display: inline;
+    margin-top: -20px;
+    width: 50%;
+    height: 50%;
+  }
+
+  .notification-spending-picture {
+    display: inline;
+    margin-top: -20px;
+    width: 45%;
+    height: 45%;
+  }
+
+  .notification-weekly-picture {
+    display: inline;
+    width: 65%;
+    height: 65%;
+  }*/
 }

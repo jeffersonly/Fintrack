@@ -14,7 +14,7 @@ function SavingNotification (props) {
 
   async function savingTotal() {
     const result = await getMonthSavingsTotal();
-    setSavings(result);
+    setSavings(result.toFixed(2));
   }
 
   return (
@@ -29,7 +29,6 @@ function SavingNotification (props) {
         </Typography>
         <b className="notification-emphasis">${savings}</b> / ${props.saving}
         <div align="center">
-          <br />
           <img src={SavingsSVG} alt="saving img" className="notification-saving-picture"/>
         </div>
       </CardContent>

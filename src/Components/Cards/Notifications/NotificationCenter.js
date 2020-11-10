@@ -15,6 +15,7 @@ import TransactionsGraph from '../../Graphs/TransactionsGraph';
 import SavingNotification from './SavingNotification';
 import SpendingNotification from './SpendingNotification';
 import WeeklyNotification from './WeeklyNotification';
+import QuickTransactionTable from '../../Tables/QuickTransactionTable';
 import './NotificationCenter.css';
 
 const theme = createMuiTheme ({
@@ -54,15 +55,15 @@ function NotificationCenter () {
 
   return (
     <div className="notifcenter-container">
-      <Typography className="notifcenter-table-title" align="center">
-          Notification Center
-      </Typography>
+      {/*<Typography className="notifcenter-table-title" align="center">
+          Overview
+      </Typography>*/}
       <ThemeProvider theme={theme}>
-        <Carousel>
+        <Carousel className="d-none d-sm-block">
           <Carousel.Item as={Card}>
             <Card className="notifcenter-card" variant="outlined">
               <CardContent>
-                <Typography align="center" style={{fontWeight: "bold", fontSize: "16px"}}>
+                <Typography align="center" style={{fontWeight: "bold", fontSize: "20px", paddingTop: "10px", paddingBottom: "10px"}}>
                   Notifications
                 </Typography>
                 <Row>
@@ -76,6 +77,27 @@ function NotificationCenter () {
                     <SavingNotification saving={savingGoal}/>
                   </Col>
                 </Row>
+              </CardContent>
+            </Card>
+          </Carousel.Item>
+          <Carousel.Item as={Card}>
+            <Card className="notifcenter-card" variant="outlined">
+              <CardContent>
+                <QuickTransactionTable />
+              </CardContent>
+            </Card>
+          </Carousel.Item>
+          <Carousel.Item as={Card}>
+            <Card className="notifcenter-card" variant="outlined">
+              <CardContent>
+                <TransactionsGraph />
+              </CardContent>
+            </Card>
+          </Carousel.Item>
+          <Carousel.Item as={Card}>
+            <Card className="notifcenter-card" variant="outlined">
+              <CardContent>
+                <SavingsGraph />
               </CardContent>
             </Card>
           </Carousel.Item>
@@ -105,21 +127,46 @@ function NotificationCenter () {
               </CardContent>
             </Card>
           </Carousel.Item>
-          <Carousel.Item as={Card}>
-            <Card className="notifcenter-card" variant="outlined">
-              <CardContent>
-                <TransactionsGraph />
-              </CardContent>
-            </Card>
-          </Carousel.Item>
-          <Carousel.Item as={Card}>
-            <Card className="notifcenter-card" variant="outlined">
-              <CardContent>
-                <SavingsGraph />
-              </CardContent>
-            </Card>
-          </Carousel.Item>
         </Carousel>
+        <div className="d-block d-sm-none">
+          <Typography align="center" style={{fontWeight: "bold", fontSize: "16px"}}>
+            Notifications
+          </Typography>
+          <div className="notification-card">
+            <WeeklyNotification />
+            <SpendingNotification spending={spendingGoal}/>
+            <SavingNotification saving={savingGoal}/>
+          </div>
+          <div className="overview">
+            <QuickTransactionTable />
+            <br />
+            <br />
+            <TransactionsGraph />
+            <br />
+            <SavingsGraph />
+            < br />
+            <MonthlyExpenses rows={[
+              {
+                id: generate(),
+                date: "10/13/20",
+                expense: "Credit Card",
+                value: 300
+              },
+              {
+                id: generate(),
+                date: "10/15/20",
+                expense: "Phone",
+                value: 125
+              },
+              {
+                id: generate(),
+                date: "10/31/20",
+                expense: "Rent",
+                value: 600
+              },
+            ]}/>
+          </div>
+        </div>
       </ThemeProvider>
     </div>
   );

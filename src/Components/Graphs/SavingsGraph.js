@@ -11,13 +11,14 @@ function SavingsGraph () {
     <div align="center">
       <div className="graphs-graph">
         <Typography className="graphs-table-title" align="center">
-          Savings ({today.getFullYear()})
+          Savings Graph ({today.getFullYear()})
         </Typography>
-        <br />
+        <div className="graphs-saving">
         {/*<Typography className="graphs-table-subtitle" align="center">
           [ <b>x-axis</b>: months, <b>y-axis</b>: $ ]
         </Typography>*/}
-        <Graphs data="savings"/>
+          <Graphs data="savings"/>
+        </div>
       </div>
     </div>
   );

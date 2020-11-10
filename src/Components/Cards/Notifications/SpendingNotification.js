@@ -9,12 +9,12 @@ function SpendingNotification (props) {
   const [spendings, setSpendings] = useState();
 
   useEffect(() => {
-    spendingTotal()
+    spendingTotal();
   }, []);
 
   async function spendingTotal() {
     const result = await getMonthSpendingsTotal();
-    setSpendings(result);
+    setSpendings(result.toFixed(2));
   }
 
   const color = spendings > props.spending ? "#ff0000" : "rgb(1, 114, 71)";
@@ -31,7 +31,6 @@ function SpendingNotification (props) {
         </Typography>
         <b style={{color: color}}>${spendings}</b> / ${props.spending}
         <div align="center">
-          <br />
           <img src={SpendingsSVG} alt="spending img" className="notification-spending-picture"/>
         </div>
       </CardContent>

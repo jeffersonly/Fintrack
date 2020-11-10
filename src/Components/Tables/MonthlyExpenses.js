@@ -11,11 +11,6 @@ const useStyles = makeStyles({
     paddingRight: "4.861vw",
     paddingBottom: "30px"
   },
-  tableTitle: {
-    fontWeight: "bold",
-    fontSize: "16px",
-    paddingBottom: "15px"
-  },
 })
 
 const columnTitles = [
@@ -29,7 +24,7 @@ function MonthlyExpenses ({rows}) {
   const classes = useStyles();
   return (
     <div>
-      <Typography className={classes.tableTitle} align="center">
+      <Typography align="center" style={{fontWeight: "bold", fontSize: "20px", paddingTop: "10px", paddingBottom: "25px"}}>
         Monthly Expenses
       </Typography>
       <TableContainer className={classes.container}>
