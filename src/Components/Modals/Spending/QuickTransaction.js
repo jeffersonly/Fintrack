@@ -1,29 +1,23 @@
-import React from 'react';
-import { Button, Card, CardContent, InputAdornment, makeStyles } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import React, { useState, useEffect } from 'react';
+import { Button, InputAdornment, makeStyles } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import DoneIcon from '@material-ui/icons/Done';
 import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
+import Modal from 'react-bootstrap/Modal';
+import Loader from 'react-loader-spinner';
 
 import { API } from 'aws-amplify';
-import { createSpending } from '../../graphql/mutations';
+import { createSpending } from '../../../graphql/mutations';
 
-import TableField from '../InputFields/TableField';
-import { payments } from '../InputFields/TableFieldSelects';
-import { splitDate } from '../Tables/TableFunctions';
-import CardTitle from './CardTitle';
-import Dropzone from '../Dropzone/Dropzone';
-import WebcamCapture from '../Webcam/Webcam';
-import '../Cards/Card.css';
+import TableField from '../../InputFields/TableField';
+import { payments } from '../../InputFields/TableFieldSelects';
+import { splitDate } from '../../Tables/TableFunctions';
+import Dropzone from '../../Dropzone/Dropzone';
+import '../../Cards/Card.css';
+import '../../Cards/Profile.css';
 
-const theme = createMuiTheme ({
-  palette: {
-    primary: {
-      main: "rgb(1, 114, 71)",
-    },
-  },
-});
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const useStyles = makeStyles({
   container: {
@@ -43,9 +37,18 @@ const useStyles = makeStyles({
   }
 });
 
-function QuickTransaction () {
+function QuickTransaction (props) {
   
   const classes = useStyles();
+
+  const [show, setShow] = useState(props.openQuick);
+
+  const [loaderState, setLoaderState] = useState(false);
+  const [createdState, setCreatedState] = useState(false);
+
+  useEffect(() => {
+    setShow(props.openQuick);
+  }, [props.openQuick]);
 
   //const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -75,6 +78,8 @@ function QuickTransaction () {
           }
         }
       })
+      setLoaderState(false);
+      setCreatedState(true);
       console.log('New spending created!');
       window.location.reload();
     } catch (err) {
@@ -84,28 +89,37 @@ function QuickTransaction () {
 
   return (
     <div className={classes.container}>
-      <Card className="card-fintrack" variant="outlined">
-        <CardContent>
-          <CardTitle title="+ Quick-Create Spending" />
-          {/*<DayPickerInput
-            formatDate={formatDate}
-            parseDate={parseDate}
-            placeholder={`${formatDate(new Date())}`}
-            dayPickerProps={{todayButton: 'Go to Today'}}
-            style={{ 
-            }}
-          />*/}
-          <ThemeProvider theme={theme}>
-            {/*<TextField
-              className={classes.textfield}
-              id="date"
-              variant="outlined"
-              label="Date"
-              type="date"
-              fullWidth
-              defaultValue={new Date()}
-              InputLabelProps={{shrink: true}}
-            />*/}
+      <Modal
+        show={show}
+        onHide={props.closeQuick}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Quick-Create Spending
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="editprofile-textfield">
+            {/*<DayPickerInput
+              formatDate={formatDate}
+              parseDate={parseDate}
+              placeholder={`${formatDate(new Date())}`}
+              dayPickerProps={{todayButton: 'Go to Today'}}
+              style={{ 
+              }}
+            />
+              <TextField
+                className={classes.textfield}
+                id="date"
+                variant="outlined"
+                label="Date"
+                type="date"
+                fullWidth
+                defaultValue={new Date()}
+                InputLabelProps={{shrink: true}}
+              />*/}
             <Formik
               initialValues={{
                 date: new Date(),
@@ -130,6 +144,7 @@ function QuickTransaction () {
                 return errors;
               }}
               onSubmit={(data, { resetForm }) => {
+                setLoaderState(true);
                 //console.log(data.date.toLocaleDateString())
                 //console.log(data, selectedDate.toLocaleDateString());
                 const formattedDate = splitDate(data.date.toLocaleDateString());
@@ -181,23 +196,22 @@ function QuickTransaction () {
                     type="number"
                   />
                   <Dropzone />
-                  <WebcamCapture />
                   <Button
                     className={classes.createbutton}
                     disableElevation
-                    disabled={!values.name || !values.value || errors.date !== ""}
+                    disabled={!values.name || !values.value || errors.date !== "" || createdState}
                     size="large"
                     type="submit"
                     variant="contained"
                   >
-                    Create
+                    {createdState ? (<>Created <DoneIcon /></>) : (loaderState ? <Loader type="TailSpin" color="rgb(1, 114, 71)" height={30} width={30} /> : "Create") }
                   </Button>
                 </Form>
               )}
             </Formik>
-          </ThemeProvider>
-        </CardContent>
-      </Card>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

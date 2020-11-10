@@ -134,7 +134,7 @@ function Account() {
           </Navbar>
         </Col>
         <Col xs={1} md={1} className="account-left-panel account-divider">
-          <Divider orientation="vertical"/>
+          <Divider className="d-none d-lg-block" orientation="vertical"/>
         </Col>
         <Col xs={8} md={9} className="account-right-panel" >
           {getCard()}

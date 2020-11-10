@@ -17,11 +17,11 @@ import ConfirmDelete from '../Modals/ConfirmDelete';
 import './Table.css';
 
 const columnTitles = [
-  { id: "date", label: "Date", align: "center", minWidth: 50 },
-  { id: "name", label: "Savings Name", align: "center", minWidth: 150 },
-  { id: "value", label: "Value", align: "center", minWidth: 100, numeric: true },
-  { id: "repeat", label: "Repeat", align: "center", minWidth: 100 },
-  { id: "info", label: "More Information", align: "center", minWidth: 50 },
+  { id: "date", label: "Date", align: "center" },
+  { id: "name", label: "Savings Name", align: "center" },
+  { id: "value", label: "Value", align: "center", numeric: true },
+  { id: "repeat", label: "Repeat", align: "center", style: "d-none d-md-table-cell" },
+  { id: "info", label: "More Information", align: "center" },
 ];
 
 function SavingTable() {
@@ -151,7 +151,7 @@ function SavingTable() {
                     <TableCell align="center">{formatDate(saving.month, saving.day, saving.year)}</TableCell>
                     <TableCell align="center">{saving.name}</TableCell>
                     <TableCell align="center">${saving.value}</TableCell>
-                    <TableCell align="center">{saving.repeat}</TableCell>
+                    <TableCell className="d-none d-md-table-cell" align="center">{saving.repeat}</TableCell>
                     <TableCell align="center">   
                       <IconButton 
                         className="table-icon" 
