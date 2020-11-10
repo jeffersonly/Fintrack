@@ -14,6 +14,7 @@ import TableField from '../../InputFields/TableField';
 import { payments } from '../../InputFields/TableFieldSelects';
 import { splitDate } from '../../Tables/TableFunctions';
 import Dropzone from '../../Dropzone/Dropzone';
+import WebcamCapture from '../../Webcam/Webcam';
 import '../../Cards/Card.css';
 import '../../Cards/Profile.css';
 
@@ -196,6 +197,7 @@ function QuickTransaction (props) {
                     type="number"
                   />
                   <Dropzone />
+                  <WebcamCapture />
                   <Button
                     className={classes.createbutton}
                     disableElevation
