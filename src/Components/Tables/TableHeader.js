@@ -13,10 +13,10 @@ function TableHeader(props) {
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
+            className={headCell.style}
             key={headCell.id}
             align="center"
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{width: headCell.width}}
           >
             <TableSortLabel
               active={orderBy === headCell.id}

@@ -39,12 +39,10 @@
 }
 
 @media only screen and (max-width: 840px) {
-  
   .card-savings {
     padding-bottom: 10px;
     padding-top: 10px;
     padding-left: 15px;
     padding-right: 15px;
   }
-
 }

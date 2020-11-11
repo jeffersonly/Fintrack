@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 //import { Divider, Grid } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
-import CreateSaving from '../Cards/CreateSaving';
-import '../Cards/Profile.css';
-import '../Cards/Card.css';
+import CreateSaving from '../../Cards/CreateSaving';
+import '../../Cards/Profile.css';
+import '../../Cards/Card.css';
 
 function CreateSavingModal(props) {
 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Button, Divider } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
-import TableField from '../InputFields/TableField';
+import TableField from '../../InputFields/TableField';
 import { Auth } from 'aws-amplify';
-import '../Cards/Profile.css';
+import '../../Cards/Profile.css';
 
 function ConfirmProfile(props) {
 

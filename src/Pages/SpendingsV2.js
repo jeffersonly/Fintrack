@@ -9,7 +9,7 @@ import { ArrowBack } from '@material-ui/icons';
 import {
   IconButton
 } from '@material-ui/core';
-import CreateSpendingModal from '../Components/Modals/CreateSpendingModal';
+import CreateSpendingModal from '../Components/Modals/Spending/CreateSpendingModal';
 
 const Container = styled.div`
   margin-left: 35px;

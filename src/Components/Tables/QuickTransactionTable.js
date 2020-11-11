@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
 
 import { API, graphqlOperation } from "aws-amplify";
 import { listSpendings } from '../../graphql/queries';
 
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
+import QuickTransaction from '../Modals/Spending/QuickTransaction';
 import './Table.css';
+import '../Graphs/Graphs.css';
 
 const columnTitles = [
-  { id: "date", label: "Date", align: "center", size: "small" },
+  { id: "date", label: "Date", align: "center" },
   { id: "name", label: "Spendings Name", align: "center" },
-  { id: "payment", label: "Form of Payment", align: "center", size: "small" },
-  { id: "value", label: "Value", align: "center", size: "small", numeric: true },
+  { id: "payment", label: "Form of Payment", align: "center", style: "d-none d-md-block" },
+  { id: "value", label: "Value", align: "center", numeric: true },
 ];
 
 function QuickTransactionTable () {
@@ -20,10 +22,11 @@ function QuickTransactionTable () {
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
-  const [spendings, setSpending] = useState([]);
+  const [recent, setRecent] = useState([]);
+  const [add, setAdd] = useState(false);
 
   useEffect(() => {
-    fetchSpending();
+    getMostRecent();
   }, []);
 
   const handleRequestSort = (event, property) => {
@@ -32,24 +35,33 @@ function QuickTransactionTable () {
     setOrderBy(property);
   };
 
-  const fetchSpending = async () => {
+  const getMostRecent = async () => {
     try {
       const spendingData = await API.graphql(graphqlOperation(listSpendings));
+      //const test = await API.graphql(graphqlOperation(sortByDate, {limit: 6}));
+      //console.log("new test", test);
       const spendingList = spendingData.data.listSpendings.items;
       console.log('spending data', spendingList);
-      setSpending(spendingList);
+      const sorted = stableSort(spendingList, getComparator(order, orderBy));
+      const mostRecent = [sorted[0], sorted[1], sorted[2], sorted[3], sorted[4], sorted[5], sorted[6]];
+      setRecent(mostRecent);
     } catch (error) {
-      console.log('Error on fetching spending', error)
+      console.log('Error on fetching spending', error);
     }
   };
   
   return (
     <div>
-      <Typography className="table-title" align="center">
-        Recent Spendings
-      </Typography>
-      <TableContainer className="table-container">
-        <Table stickyHeader>
+      <div>
+        <Typography align="center" style={{fontWeight: "bold", fontSize: "20px", paddingTop: "10px"}}>
+          <b>Recent Spendings</b>
+        </Typography>
+        <Typography className="graphs-table-subtitle" align="center">
+            **Based on Date of Spending
+        </Typography>
+      </div>
+      <TableContainer className="table-quicktransaction">
+        <Table stickyHeader size="small">
           <TableHeader
             headCells={columnTitles}
             order={order}
@@ -57,14 +69,14 @@ function QuickTransactionTable () {
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {stableSort(spendings, getComparator(order, orderBy))
+            {stableSort(recent, getComparator(order, orderBy))
               .map((spending) => {
                 return (
                   <TableRow hover key={spending.id}>
                     <TableCell align="center">{formatDate(spending.month, spending.day, spending.year)}</TableCell>
                     <TableCell align="center">{spending.name}</TableCell>
-                    <TableCell align="center">{spending.payment}</TableCell>
-                    <TableCell align="center">{spending.value}</TableCell>
+                    <TableCell className="d-none d-md-block" align="center">{spending.payment}</TableCell>
+                    <TableCell align="center">${spending.value}</TableCell>
                   </TableRow>
                 );
               })
@@ -72,6 +84,18 @@ function QuickTransactionTable () {
           </TableBody>
         </Table>
       </TableContainer>
+      <div align="center">
+        <Button 
+          className="table-quicktransaction-button"
+          onClick={() => setAdd(true)}
+        >
+          + Create
+        </Button>
+      </div>
+      <QuickTransaction 
+        closeQuick={() => setAdd(!add)}
+        openQuick={add}
+      />
     </div>
   );
 }

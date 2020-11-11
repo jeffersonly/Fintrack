@@ -88,8 +88,8 @@ function Graphs (props) {
                 return index % 1 === 0 ? value : null;
               }
             },
-            width: 650,
-            height: 230,
+            width: 750,
+            height: 285,
             low: 0,
             high: 1500,
             chartPadding: {
@@ -121,6 +121,22 @@ function Graphs (props) {
             ]
           },
           responsiveOptions: [
+            [
+              "screen and (max-width: 420px)",
+              {
+                seriesBarDistance: 5,
+                axisX: {
+                  labelInterpolationFnc: function(value) {
+                    return value[0];
+                  }
+                },
+                width: 150,
+                chartPadding: {
+                  right: 130,
+                  left: 10
+                },
+              }
+            ],
             [
               "screen and (max-width: 640px)",
               {
@@ -266,8 +282,8 @@ function Graphs (props) {
             ]
           },
           options: {
-            width: "220px",
-            height: "220px",
+            width: "260px",
+            height: "260px",
             total: categoryData[0],
             ignoreEmptyValues: true,
             showLabel: false,
@@ -286,10 +302,24 @@ function Graphs (props) {
           },
           responsiveOptions: [
             [
+              "screen and (max-width: 420px)",
+              {
+                width: "130px",
+                height: "130px"
+              }
+            ],
+            [
               "screen and (max-width: 600px)",
               {
                 width: "170px",
                 height: "170px"
+              }
+            ],
+            [
+              "screen and (max-width: 767px)",
+              {
+                width: "200px",
+                height: "200px"
               }
             ]
           ],
@@ -358,8 +388,8 @@ function Graphs (props) {
                 return index % 1 === 0 ? value : null;
               }
             },
-            width: 650,
-            height: 270,
+            width: 750,
+            height: 320,
             low: 0,
             high: 2500,
             chartPadding: {
@@ -391,6 +421,22 @@ function Graphs (props) {
             ]
           },
           responsiveOptions: [
+            [
+              "screen and (max-width: 420px)",
+              {
+                seriesBarDistance: 5,
+                axisX: {
+                  labelInterpolationFnc: function(value) {
+                    return value[0];
+                  }
+                },
+                width: 150,
+                chartPadding: {
+                  right: 130,
+                  left: 10
+                },
+              }
+            ],
             [
               "screen and (max-width: 640px)",
               {

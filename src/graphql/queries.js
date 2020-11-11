@@ -1,6 +1,37 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getGoal = /* GraphQL */ `
+  query GetGoal($id: ID!) {
+    getGoal(id: $id) {
+      id
+      savingsGoal
+      spendingsGoal
+      owner
+      createdOn
+      updatedOn
+    }
+  }
+`;
+export const listGoals = /* GraphQL */ `
+  query ListGoals(
+    $filter: ModelGoalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGoals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        savingsGoal
+        spendingsGoal
+        owner
+        createdOn
+        updatedOn
+      }
+      nextToken
+    }
+  }
+`;
 export const getSaving = /* GraphQL */ `
   query GetSaving($id: ID!) {
     getSaving(id: $id) {
@@ -58,6 +89,7 @@ export const getSpending = /* GraphQL */ `
       note
       owner
       payment
+      repeated
       file {
         bucket
         region
@@ -87,6 +119,7 @@ export const listSpendings = /* GraphQL */ `
         note
         owner
         payment
+        repeated
         file {
           bucket
           region
@@ -163,6 +196,7 @@ export const spendingsByOwner = /* GraphQL */ `
         note
         owner
         payment
+        repeated
         file {
           bucket
           region

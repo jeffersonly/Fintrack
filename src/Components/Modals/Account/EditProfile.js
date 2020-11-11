@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, Divider, Link } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
-import TableField from '../InputFields/TableField';
-import '../Cards/Profile.css';
+import TableField from '../../InputFields/TableField';
+import '../../Cards/Profile.css';
 
 function EditProfile(props) {
 

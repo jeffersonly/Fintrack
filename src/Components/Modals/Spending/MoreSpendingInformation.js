@@ -7,71 +7,69 @@ import DateFnsUtils from '@date-io/date-fns';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
-//import { deleteSaving } from '../../graphql/mutations';
 import { API } from "aws-amplify";
-//import { getSaving } from '../../graphql/queries';
-import { updateSaving } from '../../graphql/mutations';
+//import { getSpending } from '../../graphql/queries';
+import { updateSpending } from '../../../graphql/mutations';
 
-import TableField from '../InputFields/TableField';
-import { repeats } from '../InputFields/TableFieldSelects';
-import { formatDate, splitDate } from '../Tables/TableFunctions';
+import TableField from '../../InputFields/TableField';
+import { repeats, payments, categories } from '../../InputFields/TableFieldSelects';
+import { formatDate, splitDate } from '../../Tables/TableFunctions';
 
-import '../Cards/Profile.css';
-import '../Cards/Card.css';
+import '../../Cards/Profile.css';
+import '../../Cards/Card.css';
 
 const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "rgb(1, 114, 71)",
+    palette: {
+      primary: {
+        main: "rgb(1, 114, 71)",
+      },
+      secondary: {
+        main: "#ff6666"
+      },
     },
-    secondary: {
-      main: "#ff6666"
-    },
-  },
-});
+  });
 
-function MoreSavingInformation(props) {
+function MoreSpendingInformation(props) {
 
-  const [show, setShow] = useState(props.openMore);
-  //const [itemID, setItemID] = useState(props.itemID);
-  //const [data, setData] = useState([]);
-  //const [selectedDate, setSelectedDate] = useState(Date());
-  const [changedDate, setChangedDate] = useState(false);
-
-  //const [showConfirmDelete, setConfirmDelete] = useState(false);
+    const [show, setShow] = useState(props.openMore);
+    //const [itemID, setItemID] = useState(props.itemID);
+    //const [data, setData] = useState([]);
+    //const [selectedDate, setSelectedDate] = useState(Date());
+    const [changedDate, setChangedDate] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
     //setItemID(props.itemID);
     //getData(props.item);
-  }, [props.openMore]); //, [props.itemID]);
+  }, [props.openMore]); //, [props.item]);
 
-  /*async function getData(item) {
-    //console.log(props.data.name);
-    const itemData = await API.graphql(graphqlOperation(getSaving, { id: item }));
-    const itemName = itemData.data.getSaving;
+  /*
+  async function getData(item) {
+    const itemData = await API.graphql(graphqlOperation(getSpending, { id: item }));
+    const itemName = itemData.data.getSpending;
     setData(itemName);
   }
+  
 
-  /*async function handleDelete(event) {
+  async function handleDelete(event) {
     try {
       const id = {
         id: event
       }
-      await API.graphql(graphqlOperation(deleteSaving, { input: id }));
-      console.log('Deleted saving')
-      props.closeMore();
+      await API.graphql(graphqlOperation(deleteSpending, { input: id }));
+      console.log('Deleted spending')
+      setShow(props.closeMore);
       window.location.reload();
     }
     catch (error) {
-      console.log('Error on delete saving', error)
+      console.log('Error on delete spending', error)
     }
   }*/
 
-  async function editSaving(data) {
+  async function editSpending(data) {
     try {
       await API.graphql({
-        query: updateSaving,
+        query: updateSpending,
         variables: {
           input: {
             id: props.itemID,
@@ -79,51 +77,52 @@ function MoreSavingInformation(props) {
             day: data[1],
             year: data[2],
             name: data[3],
-            value: data[4],
-            repeat: data[5],
-            note: data[6]
+            value: data[5],
+            category: data[6],
+            repeat: data[7],
+            note: data[8],
+            payment: data[4]
           }
         }
       })
-      console.log('Saving updated!');
+      console.log('Spending updated!');
       window.location.reload();
     } catch (err) {
       console.log(err);
     }
   }
 
-  /*const handleDateChange = (date) => {
+  /*
+  const handleDateChange = (date) => {
     setSelectedDate(date);
     setChangedDate(true);
   };
-  
-  /*function handleShowConfirmDelete() {
-    setConfirmDelete(true);
-  }*/
+*/
 
   return (
-    <div>
-      {/*{data && Object.entries(data).map((key, value) => (*/}
-      {/*{props.itemData && Object.entries(props.itemData).map((key, value) => (*/}
-      <Modal
-        className="profile"
-        show={show}
-        onHide={props.closeMore}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-        //key={value}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">Entry Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="editprofile-textfield">
+    <div >
+      {/*data && Object.entries(data).map((key, value) => (*/}
+        <Modal
+          className="profile"
+          show={show}
+          onHide={props.closeMore}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          //key={value}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">Entry Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="editprofile-textfield">
             <ThemeProvider theme={theme}>
               <Formik
                 initialValues={{
                   date: formatDate(props.itemData.month, props.itemData.day, props.itemData.year),
                   name: props.itemData.name,
+                  payment: props.itemData.payment,
                   value: props.itemData.value,
+                  category: props.itemData.category,
                   repeat: props.itemData.repeat,
                   note: props.itemData.note,
                 }}
@@ -142,7 +141,6 @@ function MoreSavingInformation(props) {
                 onSubmit={(info) => {
                   if (changedDate){
                     //console.log(data, selectedDate.toLocaleDateString());
-                    //console.log(data.date.toLocaleDateString());
                     const formattedDate = splitDate(info.date.toLocaleDateString());
                     console.log(formattedDate);
                     var array = [formattedDate[0], formattedDate[1], formattedDate[2]];
@@ -150,8 +148,8 @@ function MoreSavingInformation(props) {
                   else {
                     array = [props.itemData.month, props.itemData.day, props.itemData.year];
                   }
-                  array.push(info.name, info.value, info.repeat, info.note);
-                  editSaving(array);
+                  array.push(info.name, info.payment, info.value, info.category, info.repeat, info.note);
+                  editSpending(array);
                 }}
               >
                 {({ errors, setFieldError, setFieldValue, values }) => (
@@ -186,13 +184,25 @@ function MoreSavingInformation(props) {
                     </MuiPickersUtilsProvider>
                     <TableField 
                       label="Savings Name"
-                      name="name" 
+                      name="name"  
+                    />
+                    <TableField
+                      label="Form of Payment"
+                      name="payment"
+                      options={payments}
+                      select={true}
                     />
                     <TableField
                       InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}
                       label="Value"
                       name="value"
                       type="number"
+                    />
+                    <TableField
+                      label="Category"
+                      name="category"
+                      options={categories}
+                      select={true}
                     />
                     <TableField
                       label="Repeat"
@@ -235,12 +245,12 @@ function MoreSavingInformation(props) {
                   </Form>
                 )}
               </Formik>
-            </ThemeProvider>
-          </div>
-        </Modal.Body>
-      </Modal>
+              </ThemeProvider>
+            </div>
+          </Modal.Body>
+        </Modal>
     </div>
   );
 }
 
-export default MoreSavingInformation;
+export default MoreSpendingInformation;

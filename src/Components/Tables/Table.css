@@ -2,12 +2,38 @@
   max-height: 380px;
 }
 
-.table-search {
-  margin-bottom : 35px !important;
-}
-
 .table-icon:focus {
   outline: none;
+}
+
+.table-imageError {
+  color: red;
+  font-size: 12px;
+}
+
+.table-quicktransaction {
+  max-height: 280px;
+  padding-left: 6.5vw;
+  padding-right: 6.5vw;
+  padding-top: 5px;
+}
+
+.table-quicktransaction-button {
+  background-color: #ace1af !important;
+  /*margin-top: 20px !important;*/
+  top: 20px;
+}
+
+.table-quicktransaction-button:focus {
+  outline: none;
+}
+
+.table-quicktransaction-button:hover {
+  opacity: 0.8;
+}
+
+.table-search {
+  margin-bottom : 35px !important;
 }
 
 .table-snackbar {
@@ -33,9 +59,12 @@
 }
 
 @media only screen and (max-width: 600px) {
-
   .table-search {
     margin-bottom: 25px !important;
   }
 
+  .table-quicktransaction {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

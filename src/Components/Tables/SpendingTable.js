@@ -12,17 +12,17 @@ import { deleteSpending } from '../../graphql/mutations';
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
-import MoreSpendingInformation from '../Modals/MoreSpendingInformation';
+import MoreSpendingInformation from '../Modals/Spending/MoreSpendingInformation';
 import ConfirmDelete from '../Modals/ConfirmDelete';
 import './Table.css';
 
 const columnTitles = [
-  { id: "date", label: "Date", align: "center", width: 50 },
-  { id: "name", label: "Spendings Name", align: "center", width: 200 },
-  { id: "payment", label: "Form of Payment", align: "center", width: 50 },
-  { id: "value", label: "Value", align: "center", width: 100, numeric: true },
-  { id: "category", label: "Category", align: "center", width: 150 },
-  { id: "info", label: "More Information", align: "center", width: 50 },
+  { id: "date", label: "Date", align: "center" },
+  { id: "name", label: "Spendings Name", align: "center" },
+  { id: "payment", label: "Form of Payment", align: "center", style: "d-none d-md-table-cell" },
+  { id: "value", label: "Value", align: "center", numeric: true },
+  { id: "category", label: "Category", align: "center", style: "d-none d-md-table-cell" },
+  { id: "info", label: "More Information", align: "center" },
 ];
 
 function SpendingTable() {
@@ -151,9 +151,9 @@ function SpendingTable() {
                   <TableRow hover key={spending.id}>
                     <TableCell align="center">{formatDate(spending.month, spending.day, spending.year)}</TableCell>
                     <TableCell align="center">{spending.name}</TableCell>
-                    <TableCell align="center">{spending.payment}</TableCell>
+                    <TableCell className="d-none d-md-table-cell" align="center">{spending.payment}</TableCell>
                     <TableCell align="center">${spending.value}</TableCell>
-                    <TableCell align="center">{spending.category}</TableCell>
+                    <TableCell className="d-none d-md-table-cell" align="center">{spending.category}</TableCell>
                     <TableCell align="center">   
                     <IconButton 
                         className="table-icon" 

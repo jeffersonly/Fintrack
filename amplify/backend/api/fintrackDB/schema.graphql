@@ -1,3 +1,12 @@
+type Goal @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
+@auth(rules: [{ allow: owner }])
+{
+  id: ID!
+  savingsGoal: Float!
+  spendingsGoal: Float!
+  owner: String
+}
+
 type Saving @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
 @auth(rules: [{ allow: owner }])
 @key (
@@ -37,6 +46,7 @@ type Spending @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"}
   note: String!
   owner: String
   payment: String!
+  repeated: Boolean
 
   # Reference the S3Object type from a field
   file: S3Object

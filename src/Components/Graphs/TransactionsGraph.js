@@ -51,7 +51,7 @@ function TransactionsGraph () {
   function showTransGraph() {
     if (transGraph) {
       return (
-        <div>
+        <div className="graphs-transaction">
           {/*<Typography className="graphs-table-title" align="center">
             Transactions ({today.getFullYear()})
           </Typography>
@@ -59,7 +59,6 @@ function TransactionsGraph () {
           <Typography className="graphs-table-subtitle" align="center">
             [ <b>x-axis</b>: months, <b>y-axis</b>: $ ]
           </Typography>*/}
-          <br />
           <Graphs data="trans" />
         </div>
       );
@@ -110,7 +109,7 @@ function TransactionsGraph () {
     <div align="center">
       <div className="graphs-graph">
         <Typography className="graphs-table-title" align="center">
-          Transactions ({today.getFullYear()})
+          Spendings Graph ({today.getFullYear()})
         </Typography>
         {showTransGraph()}
         {showCategoryGraph()}

@@ -18,17 +18,28 @@
 }
 
 .graphs-pie {
-  padding-bottom: 4px !important;
+  margin-top: 8px;
+  padding-bottom: 32px !important;
+}
+
+.graphs-saving {
+  padding-top: 30px !important;
 }
 
 .graphs-table-subtitle {
-  font-size: 10px !important;
+  font-size: 12px !important;
   padding-bottom: 15px;
 }
 
 .graphs-table-title {
   font-weight: bold !important;
-  margin-top: -20px !important;
+  font-size: 20px !important;
+  margin-top: -10px !important;
+}
+
+.graphs-transaction {
+  padding-top: 30px !important;
+  padding-bottom: 15px !important;
 }
 
 .ct-chart {
@@ -36,7 +47,7 @@
 }
 
 .ct-pie {
-  margin-right: 200px;
+  margin-right: 240px;
 }
 
 .ct-legend {
@@ -74,7 +85,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding-top: 15px;
+  padding-top: 30px;
 }
 
 .ct-legend.ct-legend-inside li{
@@ -166,38 +177,7 @@
   border-color: #86797d;
 }
 
-@media only screen and (max-width: 600px) {
-
-  .ct-pie {
-    padding-top: 20px;
-    padding-bottom: 30px;
-  }
-
-  .ct-legend.ct-legend-inside {
-    margin: 0px -50px !important;
-    padding-right: -200px;
-  }
-
-}
-
-@media only screen and (max-width: 850px) {
-
-  .ct-legend.ct-legend-inside {
-    margin: 0px 25px;
-  }
-
-}
-
-@media only screen and (max-width: 900px) {
-
-  .ct-pie {
-    margin-right: 170px;
-  }
-
-}
-
-@media only screen and (max-width: 1100px) {
-
+@media only screen and (max-width: 1150px) {
   .ct-pie {
     margin-right: 140px;
   }
@@ -205,5 +185,43 @@
   .ct-legend.ct-legend-inside li {
     margin: 0px -60px;
   }
+}
 
+@media only screen and (max-width: 850px) {
+  .ct-legend.ct-legend-inside {
+    margin: 0px -35px !important;
+  }
+}
+
+@media only screen and (min-width: 767px) {
+  .ct-pie {
+    margin-right: 140px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .ct-pie {
+    padding-top: 20px;
+    padding-bottom: 35px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .ct-legend.ct-legend-inside {
+    margin: 0px -90px !important;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .ct-pie {
+    padding-top: 20px;
+    padding-bottom: 30px;
+    margin-left: -20px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .ct-legend.ct-legend-inside {
+    margin: 0px -110px !important;
+  }
 }

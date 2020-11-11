@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 //import { Divider, Grid } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Row, Col } from 'react-bootstrap';
-import Dropzone from '../../Components/Dropzone/Dropzone';
-import CreateSpending from '../Cards/CreateSpending';
-import '../Cards/Profile.css';
-import WebcamCapture from '../Webcam/Webcam';
+import WebcamCapture from '../../Webcam/Webcam';
+import Dropzone from '../../Dropzone/Dropzone';
+import CreateSpending from '../../Cards/CreateSpending';
+import '../../Cards/Profile.css';
 
 function CreateSpendingModal(props) {
 

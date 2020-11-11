@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { generate } from 'shortid';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
-import QuickTransaction from '../Components/Cards/QuickTransaction';
-import NotificationCenter from '../Components/Cards/NotificationCenter';
+import QuickTransaction from '../Components/Modals/Spending/QuickTransaction';
+import NotificationCenter from '../Components/Cards/Notifications/NotificationCenter';
 import QuickTransactionTable from '../Components/Tables/QuickTransactionTable'; 
 import './Summary.css';
 import { Row, Col } from 'react-bootstrap';
@@ -20,8 +19,6 @@ function Summary () {
     return date;
   }
 
-  const [rows, setRows] = useState([
-  ]);
   const [user, setUser] = useState("");
   const [authError, setAuthError] = useState("");
 
@@ -35,7 +32,7 @@ function Summary () {
     <div className="homepage">
       {getUser()}
       <Row>
-        <Col xs={12} md={4}>
+        <Col xs={12} md={3}>
           {authError && (<p className="homepage-error">{authError}</p>)}
           <h2 className="homepage-welcome">Welcome {user}!</h2>
           <h5 className="homepage-todaydate">Today: {getTodayDate()}</h5>
@@ -46,18 +43,18 @@ function Summary () {
             />
           </div>
         </Col>
-        <Col xs={12} md={8} className="notif-center">
+        <Col xs={12} md={9} className="notif-center">
           <NotificationCenter />
         </Col>
       </Row>
-      <Row>
+      {/*<Row>
         <Col xs md={3}>
           <QuickTransaction />
         </Col>
         <Col xs md={{span: 8, offset: 1}} className="homepage-table">
-          <QuickTransactionTable rows={rows}/>
+          <QuickTransactionTable />
         </Col>
-      </Row>
+      </Row>*/}
     </div>
   );
 }
