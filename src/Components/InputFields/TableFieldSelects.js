@@ -17,6 +17,37 @@ export const repeats = [
   },
 ];
 
+export const repeatingItems = [
+  {
+    value: 'Never',
+    label: 'Never',
+  },
+  {
+    value: 'Weekly',
+    label: 'Weekly',
+  },
+  {
+    value: 'Monthly',
+    label: 'Monthly',
+  },
+  {
+    value: 'Yearly',
+    label: 'Yearly',
+  },
+  {
+    value: 'Repeating weekly',
+    label: 'Repeating weekly',
+  },
+  {
+    value: 'Repeating monthly',
+    label: 'Repeating monthly',
+  },
+  {
+    value: 'Repeating yearly',
+    label: 'Repeating yearly',
+  },
+];
+
 export const payments = [
   {
     value: 'Cash',
