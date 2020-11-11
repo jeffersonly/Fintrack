@@ -12,7 +12,7 @@ import { API } from "aws-amplify";
 import { updateSpending } from '../../../graphql/mutations';
 
 import TableField from '../../InputFields/TableField';
-import { repeats, payments, categories } from '../../InputFields/TableFieldSelects';
+import { repeatingItems, payments, categories } from '../../InputFields/TableFieldSelects';
 import { formatDate, splitDate } from '../../Tables/TableFunctions';
 
 import '../../Cards/Profile.css';
@@ -50,7 +50,6 @@ function MoreSpendingInformation(props) {
     setData(itemName);
   }
   
-
   async function handleDelete(event) {
     try {
       const id = {
@@ -207,7 +206,7 @@ function MoreSpendingInformation(props) {
                     <TableField
                       label="Repeat"
                       name="repeat"
-                      options={repeats}
+                      options={repeatingItems}
                       select={true}
                     />
                     <TableField

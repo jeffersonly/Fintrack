@@ -13,7 +13,7 @@ import { API } from "aws-amplify";
 import { updateSaving } from '../../../graphql/mutations';
 
 import TableField from '../../InputFields/TableField';
-import { repeats } from '../../InputFields/TableFieldSelects';
+import { repeatingItems } from '../../InputFields/TableFieldSelects';
 import { formatDate, splitDate } from '../../Tables/TableFunctions';
 
 import '../../Cards/Profile.css';
@@ -52,7 +52,6 @@ function MoreSavingInformation(props) {
     const itemName = itemData.data.getSaving;
     setData(itemName);
   }
-
   /*async function handleDelete(event) {
     try {
       const id = {
@@ -197,7 +196,7 @@ function MoreSavingInformation(props) {
                     <TableField
                       label="Repeat"
                       name="repeat"
-                      options={repeats}
+                      options={repeatingItems}
                       select={true}
                     />
                     <TableField
