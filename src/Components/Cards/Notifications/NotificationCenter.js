@@ -3,7 +3,6 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Carousel from 'react-bootstrap/Carousel';
-import { generate } from 'shortid';
 import { Row, Col } from 'react-bootstrap';
 
 import { API, graphqlOperation } from "aws-amplify";
@@ -80,6 +79,7 @@ function NotificationCenter () {
               </CardContent>
             </Card>
           </Carousel.Item>
+          {/** */}
           <Carousel.Item as={Card}>
             <Card className="notifcenter-card" variant="outlined">
               <CardContent>
@@ -87,6 +87,7 @@ function NotificationCenter () {
               </CardContent>
             </Card>
           </Carousel.Item>
+           
           <Carousel.Item as={Card}>
             <Card className="notifcenter-card" variant="outlined">
               <CardContent>
@@ -104,26 +105,7 @@ function NotificationCenter () {
           <Carousel.Item as={Card}>
             <Card className="notifcenter-card" variant="outlined">
               <CardContent>
-                <MonthlyExpenses rows={[
-                  {
-                    id: generate(),
-                    date: "10/13/20",
-                    expense: "Credit Card",
-                    value: 300
-                  },
-                  {
-                    id: generate(),
-                    date: "10/15/20",
-                    expense: "Phone",
-                    value: 125
-                  },
-                  {
-                    id: generate(),
-                    date: "10/31/20",
-                    expense: "Rent",
-                    value: 600
-                  },
-                ]}/>
+                <MonthlyExpenses />
               </CardContent>
             </Card>
           </Carousel.Item>
@@ -138,33 +120,16 @@ function NotificationCenter () {
             <SavingNotification saving={savingGoal}/>
           </div>
           <div className="overview">
+            {/** */}
             <QuickTransactionTable />
+            
             <br />
             <br />
             <TransactionsGraph />
             <br />
             <SavingsGraph />
             < br />
-            <MonthlyExpenses rows={[
-              {
-                id: generate(),
-                date: "10/13/20",
-                expense: "Credit Card",
-                value: 300
-              },
-              {
-                id: generate(),
-                date: "10/15/20",
-                expense: "Phone",
-                value: 125
-              },
-              {
-                id: generate(),
-                date: "10/31/20",
-                expense: "Rent",
-                value: 600
-              },
-            ]}/>
+            <MonthlyExpenses />
           </div>
         </div>
       </ThemeProvider>
