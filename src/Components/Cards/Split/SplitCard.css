@@ -1,0 +1,161 @@
+.itemize-button:focus {
+  outline: none !important;
+}
+
+.itemize-button:hover {
+  opacity: 0.8;
+}
+
+.itemize-button-container {
+  position: absolute !important;
+  top: 375px;
+  width: 71%;
+}
+
+.itemize-card {
+  height: 435px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.itemize-cardcontent {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.itemize-textfield {
+  position: absolute !important;
+  top: 300px;
+}
+
+.itemize-textfield-tip {
+  margin-top: 75px !important;
+}
+
+.splitcard {
+  font-family: Roboto;
+}
+
+.spliteven-card {
+  height: 460px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.spliteven-form {
+  margin-bottom: 20px;
+  min-height: 460px;
+  width: 100%;
+}
+
+.spliteven-horizontaldivider {
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+}
+
+.spliteven-intropicture {
+  width: 75%;
+  height: 75%;
+  margin-left: 7.5vw;
+  margin-top: 20px;
+}
+
+.spliteven-picture {
+  height: 100%;
+  margin-left: -60px;
+  margin-top: -5px;
+  width: 100%;
+}
+
+.spliteven-result {
+  margin-left: -4.172vw !important;
+}
+
+.spliteven-result-text {
+  color: rgb(1, 114, 71);
+  font-size: 20px;
+}
+
+.spliteven-result-title {
+  padding-bottom: 10px;
+}
+
+.spliteven-verticaldivider {
+  margin-left: -15px !important;
+}
+
+.splititem-addbutton {
+  padding-bottom: 20px;
+}
+
+.splititem-bottomcontainer {
+  margin-left: 1.8vw !important;
+}
+
+.splititem-clearbutton {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.splititem-errortext {
+  color: red;
+  font-size: 12px;
+  padding-bottom: 15px;
+}
+
+.splititem-form {
+  margin-bottom: 20px;
+  min-height: 355px;
+}
+
+.splititem-horizontaldivider {
+  margin-bottom: 15px !important;
+  margin-left: 6.945vw !important;
+}
+
+.splititem-intropicture {
+  width: 75%;
+  height: 75%;
+  margin-left: 4.75vw;
+  margin-top: 20px;
+}
+
+.splititem-result {
+  margin-bottom: 20px;
+  min-height: 510px;
+}
+
+.splititem-row {
+  position: absolute !important;
+  top: 300px;
+}
+
+.splititem-textfield {
+  padding-left: 0px !important;
+}
+
+@media only screen and (max-width: 991px) {
+  .spliteven-picture {
+    display: none;
+  }
+
+  .splititem-bottomcontainer {
+    margin-left: 0vw !important;
+  }
+
+  .splititem-textfield {
+    padding-left: 15px !important;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .itemize-button-container {
+    width: 85%;
+  }
+}
+
+@media only screen and (max-width: 455px) {
+  .itemize-button-container {
+    width: 71%;
+  }
+}

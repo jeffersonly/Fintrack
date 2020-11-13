@@ -6,6 +6,10 @@
   outline: none;
 }
 
+.table-search {
+  margin-bottom : 35px !important;
+}
+
 .table-imageError {
   color: red;
   font-size: 12px;
@@ -34,6 +38,10 @@
 
 .table-search {
   margin-bottom : 35px !important;
+}
+
+.table-split {
+  max-height: 218px;
 }
 
 .table-snackbar {
