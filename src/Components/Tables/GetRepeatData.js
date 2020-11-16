@@ -147,7 +147,7 @@ export async function getSavingRepeat() {
               if (diffMonths < 0) {
                 diff--;
               }
-              else if (diffMonths == 0) {
+              else if (diffMonths === 0) {
                 if (diffDays < 0) {
                   diff--;
                 }
@@ -292,7 +292,7 @@ export async function getSavingRepeat() {
             if (diffMonths < 0) {
               diff--;
             }
-            else if (diffMonths == 0) {
+            else if (diffMonths === 0) {
               if (diffDays < 0) {
                 diff--;
               }
@@ -489,7 +489,7 @@ export async function getSpendingRepeat() {
               if (diffMonths < 0) {
                 diff--;
               }
-              else if (diffMonths == 0) {
+              else if (diffMonths === 0) {
                 if (diffDays < 0) {
                   diff--;
                 }
@@ -640,7 +640,7 @@ export async function getSpendingRepeat() {
             if (diffMonths < 0) {
               diff--;
             }
-            else if (diffMonths == 0) {
+            else if (diffMonths === 0) {
               if (diffDays < 0) {
                 diff--;
               }

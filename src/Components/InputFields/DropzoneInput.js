@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react'; 
 import { 
   Button, makeStyles, InputAdornment
  } from '@material-ui/core';
@@ -10,24 +9,17 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-
 import { Formik, Form } from 'formik';
 import { API, Storage } from 'aws-amplify';
 import { createSpending } from '../../graphql/mutations';
 import awsExports from '../../aws-exports';
-
 import TableField from './TableField';
 import { repeats, payments, categories } from './TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 import '../Cards/Card.css';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from 'react-loader-spinner';
 import DoneIcon from '@material-ui/icons/Done';
-
-const Container = styled.div`
-  font-family: Roboto;
-`;
 
 const theme = createMuiTheme ({
   palette: {
@@ -140,16 +132,13 @@ function DropzoneInput(props) {
                   file: {
                     bucket: awsExports.aws_user_files_s3_bucket,
                     region: awsExports.aws_user_files_s3_bucket_region,
-                    key: 'public/' + `picture-taken-from-camera-${randomStr}.jpg`
+                    key: `public/picture-taken-from-camera-${randomStr}.jpg`
                   }
                 }
-  
-                //console.log(data, selectedDate.toLocaleDateString());
                 const formattedDate = splitDate(data.date.toLocaleDateString());
-                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
-                              data.payment, data.value, data.category, data.repeat, data.note, image.file];
-                submitNewSpending(array);
-                //resetDate();
+                const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, 
+                data.payment, data.value, data.category, data.repeat, data.note, image.file];
+                submitNewSpending(array); 
                 resetForm();
               })
             } else {
@@ -163,14 +152,11 @@ function DropzoneInput(props) {
                     region: awsExports.aws_user_files_s3_bucket_region,
                     key: 'public/' + props.data.image.name
                   }
-                }
-  
-                //console.log(data, selectedDate.toLocaleDateString());
+                } 
                 const formattedDate = splitDate(data.date.toLocaleDateString());
                 const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
                               data.payment, data.value, data.category, data.repeat, data.note, image.file];
-                submitNewSpending(array);
-                //resetDate();
+                submitNewSpending(array); 
                 resetForm();
               })
             }

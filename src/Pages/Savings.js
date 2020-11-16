@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Card, CardContent, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { withRouter } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap';
-
-//import CreateSaving from '../Components/Cards/CreateSaving';
+import { Row, Col } from 'react-bootstrap'; 
 import CreateSavingModal from '../Components/Modals/Saving/CreateSavingModal';
 import SavingTable from '../Components/Tables/SavingTable';
 import './Savings.css';
@@ -38,15 +36,6 @@ function Savings() {
         <Col className="savings-table">
           <SavingTable />
         </Col>
-        {/** 
-        <Col md={3} className="savings-form">
-          <Card className="card-fintrack" variant="outlined">
-            <CardContent>
-              <CreateSaving title={true}/> 
-            </CardContent>
-          </Card>
-        </Col>
-        */}
       </Row>
       <CreateSavingModal
         closeCreateSaving={() => setCreateSaving(!showCreateSaving)}

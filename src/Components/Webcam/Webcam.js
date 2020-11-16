@@ -22,8 +22,7 @@ function WebcamCapture(props) {
     const capture = React.useCallback(async () => {
         const imageSrc = webcamRef.current.getScreenshot();
         
-        const file = convertToImg(imageSrc);
-        console.log(file);
+        const file = convertToImg(imageSrc); 
 
         //identify text within image to find total cost
         let totalCost = 0;
@@ -40,7 +39,6 @@ function WebcamCapture(props) {
             }
         })
         .then(res => {
-            console.log(res); 
             totalCost = parseText(res);
             costAndImgObj = {
                 totalCost: totalCost,
@@ -58,7 +56,7 @@ function WebcamCapture(props) {
     function parseText(data) {
         const textArr = data.text.words;
         var maxCost = 0;
-        textArr.map(textObj => {
+        textArr.forEach(textObj => {
             var text = textObj.text;
             if(text.includes("$")) {
                 text = text.replace(/\s/g, ''); //remove white space

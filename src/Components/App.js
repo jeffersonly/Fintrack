@@ -16,22 +16,22 @@ function App() {
     const [userAuthenticated, setUserAuthenticated] = useState(false);
 
     useEffect(() => {
-        onLoad();
-    }, []);
-
-    //check if user is logged in
-    async function onLoad() {
-        try {
-            await Auth.currentSession();
-            setUserAuthenticated(true);
-        }
-        catch(err) {
-            if(err !== 'No current user') {
-                alert(err);
+        //check if user is logged in
+        async function onLoad() {
+            try {
+                await Auth.currentSession();
+                setUserAuthenticated(true);
             }
+            catch(err) {
+                if(err !== 'No current user') {
+                    alert(err);
+                }
+            }
+            setIsAuthenticating(false);
         }
-        setIsAuthenticating(!isAuthenticating);
-    }
+
+        onLoad();
+    }, [isAuthenticating]);
 
     function renderHomeNav() {
         if(userAuthenticated) {

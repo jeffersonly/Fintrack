@@ -1,5 +1,5 @@
 .table-container {
-  max-height: 380px;
+  max-height: 100%;
 }
 
 .table-icon:focus {
@@ -58,7 +58,17 @@
   width: 1
 }
 
+@media only screen and (max-width: 900px) {
+  .table-container {
+    max-height: 65vh;
+  }
+}
+
 @media only screen and (max-width: 600px) {
+  .table-container {
+    max-height: 370px; 
+  }
+
   .table-search {
     margin-bottom: 25px !important;
   }
@@ -66,5 +76,11 @@
   .table-quicktransaction {
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+@media only screen and (max-height: 800px) {
+  .table-container {
+    max-height: 220px;
   }
 }

@@ -1363,7 +1363,7 @@ function SpendingTable() {
     <div>
       <Row>
         {/**/}
-        <Col md={1}>
+        <Col md={2}>
           <h5>Filter</h5>
           <div>
             <FormControl component="fieldset">
@@ -1386,7 +1386,7 @@ function SpendingTable() {
           </div>
         </Col>
 
-        <Col md={11}>
+        <Col md={10}>
           <TextField
             className="table-search"
             fullWidth
