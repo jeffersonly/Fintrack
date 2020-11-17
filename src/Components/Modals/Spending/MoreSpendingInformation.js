@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Divider, InputAdornment } from '@material-ui/core';
-import Modal from 'react-bootstrap/Modal';
-import { Formik, Form } from 'formik';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import Modal from 'react-bootstrap/Modal';
+import { Formik, Form } from 'formik';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { API } from "aws-amplify";
-//import { getSpending } from '../../graphql/queries';
 import { updateSpending } from '../../../graphql/mutations';
 
 import TableField from '../../InputFields/TableField';
@@ -33,37 +32,13 @@ function MoreSpendingInformation(props) {
 
     const [show, setShow] = useState(props.openMore);
     //const [itemID, setItemID] = useState(props.itemID);
-    //const [data, setData] = useState([]);
     //const [selectedDate, setSelectedDate] = useState(Date());
     const [changedDate, setChangedDate] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
     //setItemID(props.itemID);
-    //getData(props.item);
   }, [props.openMore]); //, [props.item]);
-
-  /*
-  async function getData(item) {
-    const itemData = await API.graphql(graphqlOperation(getSpending, { id: item }));
-    const itemName = itemData.data.getSpending;
-    setData(itemName);
-  }
-  
-  async function handleDelete(event) {
-    try {
-      const id = {
-        id: event
-      }
-      await API.graphql(graphqlOperation(deleteSpending, { input: id }));
-      console.log('Deleted spending')
-      setShow(props.closeMore);
-      window.location.reload();
-    }
-    catch (error) {
-      console.log('Error on delete spending', error)
-    }
-  }*/
 
   async function editSpending(data) {
     try {
@@ -85,18 +60,18 @@ function MoreSpendingInformation(props) {
         }
       })
       console.log('Spending updated!');
-      window.location.reload();
+      props.closeMore();
+      props.update();
+      //window.location.reload();
     } catch (err) {
       console.log(err);
     }
   }
 
-  /*
-  const handleDateChange = (date) => {
+  /*const handleDateChange = (date) => {
     setSelectedDate(date);
     setChangedDate(true);
-  };
-*/
+  };*/
 
   return (
     <div >
@@ -143,6 +118,7 @@ function MoreSpendingInformation(props) {
                     const formattedDate = splitDate(info.date.toLocaleDateString());
                     console.log(formattedDate);
                     var array = [formattedDate[0], formattedDate[1], formattedDate[2]];
+                    setChangedDate(false);
                   }
                   else {
                     array = [props.itemData.month, props.itemData.day, props.itemData.year];
@@ -201,6 +177,7 @@ function MoreSpendingInformation(props) {
                       label="Category"
                       name="category"
                       options={categories}
+                      required={false}
                       select={true}
                     />
                     <TableField
@@ -235,7 +212,6 @@ function MoreSpendingInformation(props) {
                           props.closeMore();
                           props.confirmDelete();
                         }}
-                        //onClick={() => handleDelete(itemID)}
                         variant="contained"
                       >
                         Delete
