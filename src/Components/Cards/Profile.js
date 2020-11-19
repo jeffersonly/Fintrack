@@ -20,7 +20,6 @@ const theme = createMuiTheme ({
 })
 
 function Profile() {
-
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [showEditProfile, setEditProfile] = useState(false);
@@ -41,7 +40,6 @@ function Profile() {
         setUsername(data.username);
         setEmail(data.attributes.email);
         setConfirmed(data.attributes.email_verified);
-        console.log(data)
       })
       .catch(err => setError(err));
   };

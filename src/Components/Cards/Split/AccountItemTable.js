@@ -3,7 +3,6 @@ import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material
 
 import { API, graphqlOperation } from "aws-amplify";
 import { listSplitItems } from '../../../graphql/queries';
-
 import TableHeader from '../../Tables/TableHeader';
 import { formatDate, stableSort, getComparator } from '../../Tables/TableFunctions';
 
@@ -37,8 +36,6 @@ function AccountEvenTable() {
     try {
       const splitItemData = await API.graphql(graphqlOperation(listSplitItems));
       const list = splitItemData.data.listSplitItems.items;
-      console.log(list);
-
       for (var i = 0; i < list.length; i++){
         list[i].names = (list[i].names).split(" ").join("\n");
         list[i].total = (list[i].total).split(" ").join("\n");

@@ -5,10 +5,8 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
 import Loader from 'react-loader-spinner';
-
 import { API } from 'aws-amplify';
 import { createSpending } from '../../graphql/mutations';
-
 import TableField from '../InputFields/TableField';
 import { repeats, payments, categories } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
@@ -34,21 +32,9 @@ const useStyles = makeStyles({
 });
 
 function CreateSpending () {
-  
   const classes = useStyles();
-
   const [loaderState, setLoaderState] = useState(false);
-  const [createdState, setCreatedState] = useState(false);
-  
-  /*const [selectedDate, setSelectedDate] = useState(new Date());
-  
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const resetDate = () => {
-    setSelectedDate(new Date());
-  };*/
+  const [createdState, setCreatedState] = useState(false); 
 
  async function submitNewSpending(data) {
   try {
@@ -70,7 +56,6 @@ function CreateSpending () {
     })
     setLoaderState(false);
     setCreatedState(true);
-    console.log('New spending created!');
     window.location.reload();
   } catch (err) {
     console.log(err);
@@ -105,13 +90,11 @@ function CreateSpending () {
           return errors;
         }}
         onSubmit={(data, { resetForm }) => {
-          setLoaderState(true);
-          //console.log(data, selectedDate.toLocaleDateString());
+          setLoaderState(true); 
           const formattedDate = splitDate(data.date.toLocaleDateString());
           const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
                         data.payment, data.value, data.category, data.repeat, data.note];
-          submitNewSpending(array);
-          //resetDate();
+          submitNewSpending(array); 
           resetForm();
         }}
       >

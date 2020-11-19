@@ -26,8 +26,6 @@ async function submitSplitItem(data) {
         }
       }
     })
-    console.log('Split item saved');
-    //window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -98,8 +96,6 @@ function ItemResult (props) {
       );
       result.push(item);
       partyResult.push(finalResult);
-      console.log(partyResult[0].props.children[0].props.children[0])
-      console.log(partyResult[0].props.children[1].props.children[1])
     }
     return result;
   }
@@ -113,13 +109,11 @@ function ItemResult (props) {
     let byPerson = "";
     prices = prices.map(p => '$' + p);
     for (var i = 0; i < partyResult.length; i++) {
-      console.log(partyResult.length)
       ppl += partyResult[i].props.children[0].props.children[0];
       ppl += " "
       byPerson += ('$' + partyResult[i].props.children[1].props.children[1]);
       byPerson += " "
     }
-    console.log((today.getMonth()+1), today.getDate(), today.getFullYear(), prices.join(' '), tax, tip, ppl, byPerson);
     let array = [(today.getMonth()+1), today.getDate(), today.getFullYear(), prices.join(' '), tax, tip, ppl, byPerson];
     submitSplitItem(array);
   }

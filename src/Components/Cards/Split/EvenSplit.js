@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Button, Card, CardContent, InputAdornment, makeStyles} from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import { Row, Col } from 'react-bootstrap';
-
-
 import TableField from '../../InputFields/TableField';
 import EvenResult from './EvenResult';
 import CardTitle from '../CardTitle';
@@ -26,12 +24,8 @@ const useStyles = makeStyles({
   }
 });
 
-
-
 function EvenSplit() {
-
   const classes = useStyles();
-
   const [partySize, setPartySize] = useState();
   const [billTotal, setBillTotal] = useState();
   const [tax, setTax] = useState();
@@ -75,7 +69,6 @@ function EvenSplit() {
                   return errors;
                 }}
                 onSubmit={(data, { resetForm }) => {
-                  console.log(data);
                   const array = [data.partySize, data.total, data.tax, data.tip];
                   submitForm(array);
                   resetForm();

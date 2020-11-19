@@ -5,7 +5,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { Row, Col } from 'react-bootstrap';
 import { generate } from 'shortid';
 import * as yup from 'yup';
-
 import TableField from '../../InputFields/TableField';
 import ItemTableCard from './ItemTableCard';
 import ItemResult from './ItemResult';
@@ -74,21 +73,17 @@ function ItemSplit () {
   }
 
   function createData (dataName, dataItems) {
-    console.log(data);
     const exists = data.some(function(obj) {
       return obj.name === dataName; 
     })
     if (exists) {
       const arr = data.find(item => item.name === dataName);
-      console.log("exists");
-      console.log(arr['items']);
       for (var i = 0; i < dataItems.length; i++) {
         arr['items'].push({
           itemName: dataItems[i].itemName,
           price: dataItems[i].price
         });
       }
-      console.log("pushed", arr['items']);
     }
     else {
       setData(currentRows => [
@@ -146,8 +141,6 @@ function ItemSplit () {
                       {({ push, remove }) => (
                         <div>
                           {values.items.map((i, index) => {
-                            //const item = `items[${index}].itemName`;
-                            //const errorMessage = getIn(errors, item);
                             return (
                               <Row key={index}>
                                 <Col md={12} lg={6}>

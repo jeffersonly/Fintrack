@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Auth } from 'aws-amplify';
 import Modal from 'react-bootstrap/Modal';
 import InputField from '../InputFields/InputField';
+import Loader from 'react-loader-spinner';
 
 function LoginRegisterModal(props) {
     //modal related states
@@ -11,6 +12,7 @@ function LoginRegisterModal(props) {
     const [registerTabSelected, setRegisterTabSelected] = useState(props.registerModalShown);
     const [confirmAccountTabSelected, setConfirmAcountTabSelected] = useState(props.confirmAccountModalShown);
     const [resetConfirmCodeTabSelected, setResetConfirmCodeTabSelected] = useState(props.resendConfirmCodeModalShown);
+    const [loaderState, setLoaderState] = useState(false); //loader state
 
     //Handle Modal Events 
     function closeModal() {
@@ -101,14 +103,19 @@ function LoginRegisterModal(props) {
         }
 
         if(!isValid) {
+            setLoaderState(false);
             return;
         }
 
         //if no errors => do actions on form submit based on what modal is active (Login, Register, Confirm)
         if(loginTabSelected) {
+            setLoaderState(true);
             //log in user
             Auth.signIn(data.username, data.password)
-            .then(res => window.location = "/summary")
+            .then(res => {
+                setLoaderState(false);
+                window.location = "/summary";
+            })
             .catch(err => setAuthError(err.message));
         }
 
@@ -157,7 +164,9 @@ function LoginRegisterModal(props) {
             return (
                 <>
                     <button className="modal-link-btn" type="button" onClick={openForgotResetPwdModal}>Forgot Password</button>
-                    <button className="modal-action-btn" type="submit">Login</button>
+                    <button className="modal-action-btn" type="submit">
+                        {loaderState ? <Loader type="TailSpin" color="white" height={24} width={20} />:"Login"}
+                    </button>
                 </>
             )
         }

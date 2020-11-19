@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Button, Divider, InputAdornment } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
-
 import { API } from "aws-amplify";
 import { createGoal, updateGoal } from '../../../graphql/mutations';
-
 import TableField from '../../InputFields/TableField';
 import { onKeyDown } from '../../Cards/Split/SplitFunctions';
 import '../../Cards/Profile.css';
 
 function EditGoals(props) {
-
   const [show, setShow] = useState(props.openEdit);
 
   useEffect(() => {
@@ -89,7 +86,6 @@ function EditGoals(props) {
                 return errors;
               }}
               onSubmit={(data) => {
-                console.log(data);
                 editGoals(data.spendings, data.savings);
                 props.updateGoals(data.spendings, data.savings);
                 props.closeEdit();

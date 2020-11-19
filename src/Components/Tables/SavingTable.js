@@ -6,11 +6,9 @@ import {
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, FilterList, Info, Search } from '@material-ui/icons';
 import { Row, Col } from 'react-bootstrap';
-
 import { API, graphqlOperation } from 'aws-amplify';
 import { listSavings} from '../../graphql/queries';
 import { deleteSaving } from '../../graphql/mutations';
-
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
@@ -28,7 +26,6 @@ const columnTitles = [
 ];
 
 function SavingTable() {
-
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
@@ -56,6 +53,11 @@ function SavingTable() {
   }, [filter]);
 
   useEffect(() => {
+    async function getSavingsRepeat() {
+      await getSavingRepeat();
+      updateSavingResult();
+    }
+
     getSavingsRepeat();
   }, []);
 
@@ -63,11 +65,6 @@ function SavingTable() {
     const savingData = await API.graphql(graphqlOperation(listSavings));
     const savingList = savingData.data.listSavings.items;
     setSaving(savingList);
-  }
-
-  async function getSavingsRepeat() {
-    await getSavingRepeat();
-    updateSavingResult();
   }
 
   const handleRequestSort = (event, property) => {
@@ -144,17 +141,6 @@ function SavingTable() {
       fetchFiltered(savingList);
     }
     else {
-      /*
-      const owner = await Auth.currentAuthenticatedUser();
-      const input = {
-        owner: owner.username,
-        name: {
-          beginsWith: search,
-        },
-      };
-      const savingData = await API.graphql(graphqlOperation(savingsByOwner, input));
-      const savingList = savingData.data.savingsByOwner.items;
-      */
       let filter = {
         or: [
           {
@@ -193,9 +179,7 @@ function SavingTable() {
         id: event
       }
       await API.graphql(graphqlOperation(deleteSaving, { input: id }));
-      console.log('Deleted saving');
       updateSavingResult();
-      //window.location.reload();
     }
     catch (error) {
       console.log('Error on delete saving', error);

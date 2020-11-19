@@ -6,14 +6,11 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { Modal, Row, Col } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import DateFnsUtils from '@date-io/date-fns';
-
 import { API } from "aws-amplify";
 import { updateSpending } from '../../../graphql/mutations';
-
 import TableField from '../../InputFields/TableField';
 import { repeatingItems, payments, categories } from '../../InputFields/TableFieldSelects';
 import { formatDate, splitDate } from '../../Tables/TableFunctions';
-
 import '../../Cards/Profile.css';
 import '../../Cards/Card.css';
 
@@ -29,16 +26,12 @@ const theme = createMuiTheme({
   });
 
 function MoreSpendingInformation(props) {
-
     const [show, setShow] = useState(props.openMore);
-    //const [itemID, setItemID] = useState(props.itemID);
-    //const [selectedDate, setSelectedDate] = useState(Date());
     const [changedDate, setChangedDate] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
-    //setItemID(props.itemID);
-  }, [props.openMore]); //, [props.item]);
+  }, [props.openMore]);
 
   async function editSpending(data) {
     try {
@@ -58,20 +51,13 @@ function MoreSpendingInformation(props) {
             payment: data[4]
           }
         }
-      })
-      console.log('Spending updated!');
+      }) 
       props.closeMore();
-      props.update();
-      //window.location.reload();
+      props.update(); 
     } catch (err) {
       console.log(err);
     }
-  }
-
-  /*const handleDateChange = (date) => {
-    setSelectedDate(date);
-    setChangedDate(true);
-  };*/
+  } 
 
   function generateForm(errors, setFieldError, values, setFieldValue) {
     return (
@@ -162,8 +148,7 @@ function MoreSpendingInformation(props) {
   }
 
   return (
-    <div >
-      {/*data && Object.entries(data).map((key, value) => (*/}
+    <div>
         <Modal
           className="profile"
           show={show}
@@ -171,7 +156,6 @@ function MoreSpendingInformation(props) {
           aria-labelledby="contained-modal-title-vcenter"
           size={props.itemData.url ? "lg" : "md"}
           centered
-          //key={value}
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">Entry Details</Modal.Title>
@@ -203,9 +187,7 @@ function MoreSpendingInformation(props) {
                 }}
                 onSubmit={(info) => {
                   if (changedDate){
-                    //console.log(data, selectedDate.toLocaleDateString());
                     const formattedDate = splitDate(info.date.toLocaleDateString());
-                    console.log(formattedDate);
                     var array = [formattedDate[0], formattedDate[1], formattedDate[2]];
                     setChangedDate(false);
                   }

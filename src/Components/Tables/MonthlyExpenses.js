@@ -17,7 +17,6 @@ const useStyles = makeStyles({
 })
 
 const columnTitles = [
-  //{ id: "id", label: "ID", align: "center", size: "small" },
   { id: "date", label: "Due", align: "center", size: "small" },
   { id: "expense", label: "Expense", align: "center" },
   { id: "value", label: "Value ($)", align: "center", size: "small" },
@@ -29,32 +28,30 @@ function MonthlyExpenses() {
   const [expense, setExpense] = useState([])
 
   useEffect(() => {
-    fetchMonthlyExpenses();
-  }, [])
-
-  async function fetchMonthlyExpenses() {
-    try {
-      let filter = {
-        or: [
-          { repeat: { eq: "Monthly" } },
-          { repeat: { eq: "Repeating monthly" } },
-        ]
-      };
-      const spendingData = await API.graphql(graphqlOperation(listSpendings, { filter: filter }));
-      const spendingList = spendingData.data.listSpendings.items;
-      for (var i = spendingList.length - 1; i >= 0; i--) {
-        if (spendingList[i].month == (today.getMonth()+1)) {
+    async function fetchMonthlyExpenses() {
+      try {
+        let filter = {
+          or: [
+            { repeat: { eq: "Monthly" } },
+            { repeat: { eq: "Repeating monthly" } },
+          ]
+        };
+        const spendingData = await API.graphql(graphqlOperation(listSpendings, { filter: filter }));
+        const spendingList = spendingData.data.listSpendings.items;
+        for (var i = spendingList.length - 1; i >= 0; i--) {
+          let currMonth = (today.getMonth()+1).toString();
+          if (spendingList[i].month !== currMonth) {
+            spendingList.splice(i, 1)
+          }
         }
-        else {
-          spendingList.splice(i, 1)
-        }
+        setExpense([...spendingList])
+      } catch (error) {
+        return "Error getting monthly expenses";
       }
-      setExpense([...spendingList])
-  } catch (error) {
-    return "Error getting monthly expenses";
-  }
-  }
+    }
 
+    fetchMonthlyExpenses();
+  }, [today])
 
   return (
     <div>
@@ -75,7 +72,6 @@ function MonthlyExpenses() {
           <TableBody>
             {expense.map(row => (
               <TableRow key={row.id}>
-                {/*<TableCell align="center">{row.id}</TableCell>*/}
                 <TableCell align="center">{formatDate(row.month, row.day, row.year)}</TableCell>
                 <TableCell align="center">{row.name}</TableCell>
                 <TableCell align="center">{row.value}</TableCell>

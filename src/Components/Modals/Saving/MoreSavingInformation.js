@@ -6,14 +6,11 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
 import DateFnsUtils from '@date-io/date-fns';
-
 import { API } from "aws-amplify";
 import { updateSaving } from '../../../graphql/mutations';
-
 import TableField from '../../InputFields/TableField';
 import { repeatingItems } from '../../InputFields/TableFieldSelects';
 import { formatDate, splitDate } from '../../Tables/TableFunctions';
-
 import '../../Cards/Profile.css';
 import '../../Cards/Card.css';
 
@@ -29,16 +26,12 @@ const theme = createMuiTheme({
 });
 
 function MoreSavingInformation(props) {
-
   const [show, setShow] = useState(props.openMore);
-  //const [itemID, setItemID] = useState(props.itemID);
-  //const [selectedDate, setSelectedDate] = useState(Date());
   const [changedDate, setChangedDate] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
-    //setItemID(props.itemID);
-  }, [props.openMore]); //, [props.itemID]);
+  }, [props.openMore]);
 
   async function editSaving(data) {
     try {
@@ -57,31 +50,21 @@ function MoreSavingInformation(props) {
           }
         }
       })
-      console.log('Saving updated!');
       props.closeMore();
       props.update();
-      //window.location.reload();
     } catch (err) {
       console.log(err);
     }
   }
 
-  /*const handleDateChange = (date) => {
-    setSelectedDate(date);
-    setChangedDate(true);
-  };*/
-
   return (
     <div>
-      {/*{data && Object.entries(data).map((key, value) => (*/}
-      {/*{props.itemData && Object.entries(props.itemData).map((key, value) => (*/}
       <Modal
         className="profile"
         show={show}
         onHide={props.closeMore}
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        //key={value}
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">Entry Details</Modal.Title>
@@ -111,10 +94,7 @@ function MoreSavingInformation(props) {
                 }}
                 onSubmit={(info) => {
                   if (changedDate){
-                    //console.log(data, selectedDate.toLocaleDateString());
-                    //console.log(data.date.toLocaleDateString());
                     const formattedDate = splitDate(info.date.toLocaleDateString());
-                    console.log(formattedDate);
                     var array = [formattedDate[0], formattedDate[1], formattedDate[2]];
                     setChangedDate(false);
                   }
