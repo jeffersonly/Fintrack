@@ -94,6 +94,10 @@
   width: 1
 }
 
+.withpre {
+  white-space: pre;
+}
+
 @media only screen and (max-width: 616px) {
   .table-filter {
     margin-top: 5px !important;
@@ -105,4 +109,11 @@
   .table-search {
     margin-bottom: 25px !important;
   }
+
+  .table-splititem {
+    margin-left: -9vw;
+    width: 82vw !important;
+    margin-bottom: 20px;
+  }
+
 }

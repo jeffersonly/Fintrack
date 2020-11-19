@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
 
 import { API, graphqlOperation } from "aws-amplify";
 import { listSplitItems } from '../../../graphql/queries';
 
 import TableHeader from '../../Tables/TableHeader';
 import { formatDate, stableSort, getComparator } from '../../Tables/TableFunctions';
+
 import '../../Tables/Table.css';
-import '../../Graphs/Graphs.css';
-
-
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center" },
   { id: "tax", label: "Tax", align: "center", numeric: true },
   { id: "tip", label: "Tip", align: "center", numeric: true },
-  { id: "names", label: "Names", align: "center", numeric: true },
+  { id: "names", label: "Party", align: "center", numeric: true },
   { id: "total", label: "Subtotal", align: "center", numeric: true },
   { id: "split", label: "Total", align: "center", numeric: true },
 ];
-
 
 function AccountEvenTable() {
   const [order, setOrder] = useState('desc');
@@ -40,13 +37,13 @@ function AccountEvenTable() {
     try {
       const splitItemData = await API.graphql(graphqlOperation(listSplitItems));
       const list = splitItemData.data.listSplitItems.items;
-      /**/
-      for (var i = 0; i < list.length; i++){
-        list[i].names = (list[i].names).split(" ").join("\n")
-        list[i].total = (list[i].total).split(" ").join("\n")
-        list[i].split = (list[i].split).split(" ").join("\n")
-      }
       console.log(list);
+
+      for (var i = 0; i < list.length; i++){
+        list[i].names = (list[i].names).split(" ").join("\n");
+        list[i].total = (list[i].total).split(" ").join("\n");
+        list[i].split = (list[i].split).split(" ").join("\n");
+      }
       setItems(list);
     } catch (error) {
       console.log(error);
@@ -55,8 +52,8 @@ function AccountEvenTable() {
 
   return (
     <div>
-      <TableContainer className="table-quicktransaction">
-        <Table stickyHeader size="small">
+      <TableContainer className="table-splititem">
+        <Table stickyHeader>
           <TableHeader
             headCells={columnTitles}
             order={order}
@@ -71,7 +68,7 @@ function AccountEvenTable() {
                     <TableCell align="center">{formatDate(split.month, split.day, split.year)}</TableCell>
                     <TableCell align="center">{split.tax}%</TableCell>
                     <TableCell align="center">{split.tip}%</TableCell>
-                    <TableCell align="center" >{split.names}</TableCell>
+                    <TableCell align="center">{split.names}</TableCell>
                     <TableCell align="center">{split.total}</TableCell>
                     <TableCell align="center">{split.split}</TableCell>
                   </TableRow>
