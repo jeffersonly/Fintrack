@@ -11,27 +11,45 @@ function Dropzone(props) {
 
     async function identifyText(acceptedFiles) {
         let arrayOfObjs = []; 
-        acceptedFiles.forEach(async file => { 
-            await Predictions.identify({
-                text: {
-                    source: {
-                        file
+        var wait = new Promise((resolve, reject) => {
+            let count = 0;
+            acceptedFiles.forEach(async file => { 
+                await Predictions.identify({
+                    text: {
+                        source: {
+                            file
+                        }
                     }
-                }
-            })
-            .then(res => {
-                const totalCost = parseText(res);
-                let costAndImgObj = {
-                    totalCost: totalCost,
-                    image: file
-                };
-                arrayOfObjs.push(costAndImgObj);
-            })
-            .catch(err => console.log(err)); 
+                })
+                .then(res => {
+                    const totalCost = parseText(res);
+                    let costAndImgObj = {
+                        totalCost: totalCost,
+                        image: file
+                    };
+                    arrayOfObjs.push(costAndImgObj);
+                    count++;
+                    if(count === acceptedFiles.length) {
+                        resolve();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    reject();
+                }); 
+            });
         });
-        setFilesWithCost(arrayOfObjs);
-        setShowModal(true);
+
+        wait.then(() => {
+            setFilesWithCost(arrayOfObjs);
+        });
     }
+
+    useEffect(() => {
+        if(filesWithCost.length > 0) {
+            setShowModal(true);
+        }
+    }, [filesWithCost]);
 
     //function to parse text recognized by rekognition to find total cost
     function parseText(data) {
@@ -66,7 +84,7 @@ function Dropzone(props) {
     useEffect(() => () => {
         // Make sure to revoke the data uris to avoid memory leaks
         files.forEach(file => URL.revokeObjectURL(file.preview));
-    }, [files, filesWithCost]);
+    }, [files]);
 
     return (
         <>
