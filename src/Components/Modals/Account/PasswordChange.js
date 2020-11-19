@@ -3,6 +3,7 @@ import { Button, Divider } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
 import TableField from '../../InputFields/TableField';
+import { onKeyDown } from '../../Cards/Split/SplitFunctions';
 import { Auth } from 'aws-amplify';
 
 /*const useStyles = makeStyles({
@@ -91,7 +92,7 @@ function PasswordChange(props) {
               }}
             >
               {({ values, errors }) => (
-                <Form>
+                <Form onKeyDown={onKeyDown}>
                   <TableField
                     helperText={error ? error : null}
                     label="Current Password"

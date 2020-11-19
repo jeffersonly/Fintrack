@@ -9,7 +9,6 @@ export async function getSavingRepeat() {
   const weekly = "Repeating weekly";
   const yearly = "Repeating yearly";
 
-
   try {
     let filter = {
       or: [
@@ -20,7 +19,6 @@ export async function getSavingRepeat() {
         { repeat: { eq: "Repeating monthly" } },
         { repeat: { eq: "Repeating yearly" } },
       ]
-
     };
 
     const savingsData = await API.graphql(graphqlOperation(listSavings, { filter: filter }));
@@ -28,7 +26,6 @@ export async function getSavingRepeat() {
     var dataDate = new Date();
     var diff, diffDays, diffMonths;
     var i, j
-
 
     for ( i = 0; i < savingsList.length; i++) {
       switch (savingsList[i].repeat) {
@@ -678,18 +675,13 @@ export async function getSpendingRepeat() {
                 }
               }
             }
-
           }
           break;
-
         default:
           console.log('Not repeating');
       }
     }
-    
-
   } catch (error) {
     return "Error getting spending repeat";
   }
-  
 }
