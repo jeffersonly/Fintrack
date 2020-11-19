@@ -1,10 +1,13 @@
 import React from 'react';
 import { Button, Card, CardContent, Divider, Typography } from '@material-ui/core';
 import { Row, Col } from 'react-bootstrap';
+
+import { API } from 'aws-amplify';
+import { createSplitItem } from '../../../graphql/mutations';
+
 import { calculateTaxTip, calculateTotal } from './SplitFunctions';
 import './SplitCard.css';
-import {API} from 'aws-amplify';
-import { createSplitItem } from '../../../graphql/mutations';
+import '../Profile.css';
 
 async function submitSplitItem(data) {
   try {
@@ -26,7 +29,7 @@ async function submitSplitItem(data) {
     console.log('Split item saved');
     //window.location.reload();
   } catch (err) {
-    console.log({ err });
+    console.log(err);
   }
 }
 
@@ -51,7 +54,7 @@ function ItemResult (props) {
 
   const today = new Date();
   const names = getNamesTotal().names;
-  const prices = getNamesTotal().total;
+  let prices = getNamesTotal().total;
   const tax = props.tax ? props.tax : 0;
   const tip = props.tip ? props.tip : 0;
   let partyResult = [];
@@ -106,18 +109,19 @@ function ItemResult (props) {
   }
 
   function saveResults () {
-    let ppl = ""
-    let byPerson = ""
+    let ppl = "";
+    let byPerson = "";
+    prices = prices.map(p => '$' + p);
     for (var i = 0; i < partyResult.length; i++) {
       console.log(partyResult.length)
-      ppl += partyResult[i].props.children[0].props.children[0]
+      ppl += partyResult[i].props.children[0].props.children[0];
       ppl += " "
-      byPerson += partyResult[i].props.children[1].props.children[1]
+      byPerson += ('$' + partyResult[i].props.children[1].props.children[1]);
       byPerson += " "
     }
-    console.log((today.getMonth()+1), today.getDate(), today.getFullYear(), prices.join(' '), tax, tip, ppl, byPerson)
+    console.log((today.getMonth()+1), today.getDate(), today.getFullYear(), prices.join(' '), tax, tip, ppl, byPerson);
     let array = [(today.getMonth()+1), today.getDate(), today.getFullYear(), prices.join(' '), tax, tip, ppl, byPerson];
-    submitSplitItem(array)
+    submitSplitItem(array);
   }
 
   return (
@@ -132,19 +136,19 @@ function ItemResult (props) {
               {printResults()}
               <div align="right" className="splititem-clearbutton">
                 <Button
-                  disableElevation
-                  onClick={props.clearTable}
-                  variant="contained"
-                >
-                  Clear
-                </Button>
-                <p></p>
-                <Button
+                  className="profile-button splititem-save"
                   disableElevation
                   onClick={saveResults}
                   variant="contained"
                 >
                   Save
+                </Button>
+                <Button
+                  disableElevation
+                  onClick={props.clearTable}
+                  variant="contained"
+                >
+                  Clear
                 </Button>
               </div>              
               <Divider className="spliteven-horizontaldivider"/>

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { MenuItem, TextField } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { withRouter } from 'react-router-dom';
 
 import AccountEvenTable from '../Cards/Split/AccountEvenTable';
 import AccountItemTable from '../Cards/Split/AccountItemTable';
+import './Profile.css';
 
 const theme = createMuiTheme ({
     palette: {
@@ -33,7 +33,7 @@ const theme = createMuiTheme ({
       }
     ]
   
-    function showSplitForm () {
+    function showSplitTable () {
       if (split === "Evenly") {
         return (
           <div>
@@ -53,7 +53,9 @@ const theme = createMuiTheme ({
     }
   
     return (
-      <div className="split">
+      <div className="profile">
+        <h4 className="profile-title">Bill Splits</h4>
+        <br />
         <ThemeProvider theme={theme}>
           <TextField
             defaultValue={split}
@@ -72,10 +74,10 @@ const theme = createMuiTheme ({
               </MenuItem>
             ))}
           </TextField>
-          {showSplitForm()}
+          {showSplitTable()}
         </ThemeProvider>
       </div>
     )
   }
   
-  export default withRouter(BillSplits);
+  export default BillSplits;
