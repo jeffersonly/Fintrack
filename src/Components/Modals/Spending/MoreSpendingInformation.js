@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Divider, InputAdornment } from '@material-ui/core';
-import Modal from 'react-bootstrap/Modal';
-import { Formik, Form } from 'formik';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { Modal, Row, Col } from 'react-bootstrap';
+import { Formik, Form } from 'formik';
+import DateFnsUtils from '@date-io/date-fns';
 import { API } from "aws-amplify";
-//import { getSpending } from '../../graphql/queries';
 import { updateSpending } from '../../../graphql/mutations';
-
 import TableField from '../../InputFields/TableField';
 import { repeatingItems, payments, categories } from '../../InputFields/TableFieldSelects';
 import { formatDate, splitDate } from '../../Tables/TableFunctions';
-
 import '../../Cards/Profile.css';
 import '../../Cards/Card.css';
 
@@ -30,40 +26,12 @@ const theme = createMuiTheme({
   });
 
 function MoreSpendingInformation(props) {
-
     const [show, setShow] = useState(props.openMore);
-    //const [itemID, setItemID] = useState(props.itemID);
-    //const [data, setData] = useState([]);
-    //const [selectedDate, setSelectedDate] = useState(Date());
     const [changedDate, setChangedDate] = useState(false);
 
   useEffect(() => {
     setShow(props.openMore);
-    //setItemID(props.itemID);
-    //getData(props.item);
-  }, [props.openMore]); //, [props.item]);
-
-  /*
-  async function getData(item) {
-    const itemData = await API.graphql(graphqlOperation(getSpending, { id: item }));
-    const itemName = itemData.data.getSpending;
-    setData(itemName);
-  }
-  
-  async function handleDelete(event) {
-    try {
-      const id = {
-        id: event
-      }
-      await API.graphql(graphqlOperation(deleteSpending, { input: id }));
-      console.log('Deleted spending')
-      setShow(props.closeMore);
-      window.location.reload();
-    }
-    catch (error) {
-      console.log('Error on delete spending', error)
-    }
-  }*/
+  }, [props.openMore]);
 
   async function editSpending(data) {
     try {
@@ -83,31 +51,111 @@ function MoreSpendingInformation(props) {
             payment: data[4]
           }
         }
-      })
-      console.log('Spending updated!');
-      window.location.reload();
+      }) 
+      props.closeMore();
+      props.update(); 
     } catch (err) {
       console.log(err);
     }
+  } 
+
+  function generateForm(errors, setFieldError, values, setFieldValue) {
+    return (
+      <>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            autoOk
+            className="card-datepicker"
+            format="MM/dd/yyyy"
+            fullWidth
+            InputAdornmentProps={{ position: "end" }}
+            inputVariant="outlined"
+            label="Date"
+            name="date"
+            onChange={date => {
+              setFieldValue("date", date, true);
+              setChangedDate(true);
+            }}
+            onError={err => {
+              if (err !== errors.date) {
+                setFieldError("date", err);
+              }
+            }}
+            required
+            value={
+              !changedDate
+                ? formatDate(props.itemData.month, props.itemData.day, props.itemData.year)
+                : values.date
+            }
+            variant="inline"
+          />
+        </MuiPickersUtilsProvider>
+        <TableField 
+          label="Savings Name"
+          name="name"  
+        />
+        <TableField
+          label="Form of Payment"
+          name="payment"
+          options={payments}
+          select={true}
+        />
+        <TableField
+          InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}
+          label="Value"
+          name="value"
+          type="number"
+        />
+        <TableField
+          label="Category"
+          name="category"
+          options={categories}
+          select={true}
+        />
+        <TableField
+          label="Repeat"
+          name="repeat"
+          options={repeatingItems}
+          select={true}
+        />
+        <TableField
+          label="Notes"
+          multiline={true}
+          name="note"
+          required={false}
+          rowsMax={3}
+        />
+      </>
+    );
   }
 
-  /*
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    setChangedDate(true);
-  };
-*/
+  function generateModalContent(errors, setFieldError, values, setFieldValue) {
+    if (props.itemData.url !== "") {
+      return (
+        <Row>
+          <Col xs={12} md={6}>
+            {generateForm(errors, setFieldError, values, setFieldValue)}
+          </Col>
+          <Col xs={12} md={6}>
+            <img src={props.itemData.url} align="center" alt="receipt" className="morespending-img"/>
+          </Col>
+        </Row>
+      );
+    }
+    else {
+      return generateForm(errors, setFieldError, values, setFieldValue);
+    }
+  }
 
   return (
-    <div >
-      {/*data && Object.entries(data).map((key, value) => (*/}
+    <div>
         <Modal
           className="profile"
           show={show}
           onHide={props.closeMore}
           aria-labelledby="contained-modal-title-vcenter"
+          size={props.itemData.url ? "lg" : "md"}
           centered
-          //key={value}
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">Entry Details</Modal.Title>
@@ -139,10 +187,9 @@ function MoreSpendingInformation(props) {
                 }}
                 onSubmit={(info) => {
                   if (changedDate){
-                    //console.log(data, selectedDate.toLocaleDateString());
                     const formattedDate = splitDate(info.date.toLocaleDateString());
-                    console.log(formattedDate);
                     var array = [formattedDate[0], formattedDate[1], formattedDate[2]];
+                    setChangedDate(false);
                   }
                   else {
                     array = [props.itemData.month, props.itemData.day, props.itemData.year];
@@ -153,69 +200,7 @@ function MoreSpendingInformation(props) {
               >
                 {({ errors, setFieldError, setFieldValue, values }) => (
                   <Form>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        autoOk
-                        className="card-datepicker"
-                        format="MM/dd/yyyy"
-                        fullWidth
-                        InputAdornmentProps={{ position: "end" }}
-                        inputVariant="outlined"
-                        label="Date"
-                        name="date"
-                        onChange={date => {
-                          setFieldValue("date", date, true);
-                          setChangedDate(true);
-                        }}
-                        onError={err => {
-                          if (err !== errors.date) {
-                            setFieldError("date", err);
-                          }
-                        }}
-                        required
-                        value={
-                          !changedDate
-                            ? formatDate(props.itemData.month, props.itemData.day, props.itemData.year)
-                            : values.date
-                        }
-                        variant="inline"
-                      />
-                    </MuiPickersUtilsProvider>
-                    <TableField 
-                      label="Savings Name"
-                      name="name"  
-                    />
-                    <TableField
-                      label="Form of Payment"
-                      name="payment"
-                      options={payments}
-                      select={true}
-                    />
-                    <TableField
-                      InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}
-                      label="Value"
-                      name="value"
-                      type="number"
-                    />
-                    <TableField
-                      label="Category"
-                      name="category"
-                      options={categories}
-                      select={true}
-                    />
-                    <TableField
-                      label="Repeat"
-                      name="repeat"
-                      options={repeatingItems}
-                      select={true}
-                    />
-                    <TableField
-                      label="Notes"
-                      multiline={true}
-                      name="note"
-                      required={false}
-                      rowsMax={3}
-                    />
+                    {generateModalContent(errors, setFieldError, values, setFieldValue)}
                     <Divider className="editprofile-divider" />
                     <div align="right">
                       <Button
@@ -235,7 +220,6 @@ function MoreSpendingInformation(props) {
                           props.closeMore();
                           props.confirmDelete();
                         }}
-                        //onClick={() => handleDelete(itemID)}
                         variant="contained"
                       >
                         Delete
@@ -244,10 +228,10 @@ function MoreSpendingInformation(props) {
                   </Form>
                 )}
               </Formik>
-              </ThemeProvider>
-            </div>
-          </Modal.Body>
-        </Modal>
+            </ThemeProvider>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

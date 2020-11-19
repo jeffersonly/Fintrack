@@ -1,26 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, InputAdornment, makeStyles } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { Formik, Form } from 'formik';
+import DoneIcon from '@material-ui/icons/Done';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-
+import { Formik, Form } from 'formik';
+import Loader from 'react-loader-spinner';
 import { API } from 'aws-amplify';
 import { createSpending } from '../../graphql/mutations';
-
 import TableField from '../InputFields/TableField';
 import { repeats, payments, categories } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
+import Dropzone from '../Dropzone/Dropzone';
+import WebcamCapture from '../Webcam/Webcam';
 import '../Cards/Card.css';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "rgb(1, 114, 71)",
-    }
-  },
-});
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const useStyles = makeStyles({
   createbutton: {
@@ -37,7 +31,12 @@ const useStyles = makeStyles({
   }
 });
 
-async function submitNewSpending(data) {
+function CreateSpending () {
+  const classes = useStyles();
+  const [loaderState, setLoaderState] = useState(false);
+  const [createdState, setCreatedState] = useState(false); 
+
+ async function submitNewSpending(data) {
   try {
     await API.graphql({
       query: createSpending,
@@ -55,144 +54,130 @@ async function submitNewSpending(data) {
         }
       }
     })
-    console.log('New spending created!');
+    setLoaderState(false);
+    setCreatedState(true);
     window.location.reload();
   } catch (err) {
     console.log(err);
   }
 }
 
-function CreateSpending () {
-  
-  const classes = useStyles();
-
-  /*
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const resetDate = () => {
-    setSelectedDate(new Date());
-  };
-  */
-
   return (
     <div className="card-container card-spendings">
-      <ThemeProvider theme={theme}>
-        <Formik
-          initialValues={{ 
-            date: new Date(),
-            name: "",
-            payment: "Cash",
-            value: "",
-            category: "Food",
-            repeat: "Never",
-            note: ""
-          }}
-          validate={values => {
-            const errors = {};
+      <Formik
+        initialValues={{ 
+          date: new Date(),
+          name: "",
+          payment: "Cash",
+          value: "",
+          category: "Food",
+          repeat: "Never",
+          note: ""
+        }}
+        validate={values => {
+          const errors = {};
 
-            if (!values.date) {
-              errors.date = "Required";
-            }
-            if (!values.name) {
-              errors.name = "Required";
-            }
-            if (!values.value) {
-              errors.value = "Required";
-            }
+          if (!values.date) {
+            errors.date = "Required";
+          }
+          if (!values.name) {
+            errors.name = "Required";
+          }
+          if (!values.value) {
+            errors.value = "Required";
+          }
 
-            return errors;
-          }}
-          onSubmit={(data, { resetForm }) => {
-            //console.log(data, selectedDate.toLocaleDateString());
-            const formattedDate = splitDate(data.date.toLocaleDateString());
-            const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
-                          data.payment, data.value, data.category, data.repeat, data.note];
-            submitNewSpending(array);
-            //resetDate();
-            resetForm();
-          }}
-        >
-          {({ errors, setFieldError, setFieldValue, values }) => (
-            <Form>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  autoOk
-                  className="card-datepicker"
-                  format="MM/dd/yyyy"
-                  fullWidth
-                  InputAdornmentProps={{ position: "end" }}
-                  inputVariant="outlined"
-                  label="Date"
-                  name="date"
-                  onChange={date => setFieldValue("date", date, true)}
-                  onError={err => {
-                    if (err !== errors.date) {
-                      setFieldError("date", err);
-                    }
-                  }}
-                  required
-                  value={values.date}
-                  variant="inline"
-                />
-              </MuiPickersUtilsProvider>
-              <TableField
-                label="Spendings Name"
-                name="name"
-                placeholder="Costco"
+          return errors;
+        }}
+        onSubmit={(data, { resetForm }) => {
+          setLoaderState(true); 
+          const formattedDate = splitDate(data.date.toLocaleDateString());
+          const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
+                        data.payment, data.value, data.category, data.repeat, data.note];
+          submitNewSpending(array); 
+          resetForm();
+        }}
+      >
+        {({ errors, setFieldError, setFieldValue, values }) => (
+          <Form>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                autoOk
+                className="card-datepicker"
+                format="MM/dd/yyyy"
+                fullWidth
+                InputAdornmentProps={{ position: "end" }}
+                inputVariant="outlined"
+                label="Date"
+                name="date"
+                onChange={date => setFieldValue("date", date, true)}
+                onError={err => {
+                  if (err !== errors.date) {
+                    setFieldError("date", err);
+                  }
+                }}
+                required
+                value={values.date}
+                variant="inline"
               />
-              <TableField
-                label="Form of Payment"
-                name="payment"
-                options={payments}
-                select={true}
-              />
-              <TableField
-                InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
-                label="Value"
-                name="value"
-                placeholder="300"
-                type="number"
-              />
-              <TableField
-                label="Category"
-                name="category"
-                options={categories}
-                select={true}
-              />
-              <p className="card-text">Please select the category.</p>
-              <TableField
-                label="Repeat"
-                name="repeat"
-                options={repeats}
-                select={true}
-              />
-              <p className="card-text">Please select how often the spending reoccurs.</p>
-              <TableField
-                label="Notes"
-                multiline={true}
-                name="note"
-                placeholder="12 hours"
-                required={false}
-                rowsMax={3}
-              />
-              <Button
-                className={classes.createbutton}
-                disableElevation
-                disabled={!values.name || !values.value || errors.date !== ""}
-                size="large"
-                type="submit"
-                variant="contained"
-              >
-                Create
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </ThemeProvider>
+            </MuiPickersUtilsProvider>
+            <TableField
+              label="Spendings Name"
+              name="name"
+              placeholder="Costco"
+            />
+            <TableField
+              label="Form of Payment"
+              name="payment"
+              options={payments}
+              select={true}
+            />
+            <TableField
+              InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
+              label="Value"
+              name="value"
+              placeholder="300"
+              type="number"
+            />
+            <TableField
+              label="Category"
+              name="category"
+              options={categories}
+              select={true}
+            />
+            <p className="card-text">Please select the category.</p>
+            <TableField
+              label="Repeat"
+              name="repeat"
+              options={repeats}
+              select={true}
+            />
+            <p className="card-text">Please select how often the spending reoccurs.</p>
+            <TableField
+              label="Notes"
+              multiline={true}
+              name="note"
+              placeholder="12 hours"
+              required={false}
+              rowsMax={3}
+            />
+            <div className="d-md-none">
+              <Dropzone />
+              <WebcamCapture />
+            </div>
+            <Button
+              className={classes.createbutton}
+              disableElevation
+              disabled={!values.name || !values.value || errors.date !== "" || createdState}
+              size="large"
+              type="submit"
+              variant="contained"
+            >
+              {createdState ? (<>Created <DoneIcon /></>) : (loaderState ? <Loader type="TailSpin" color="rgb(1, 114, 71)" height={30} width={30} /> : "Create") }
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }

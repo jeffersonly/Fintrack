@@ -6,6 +6,7 @@ import HomeNav from './NavBar/HomeNav';
 import Summary from '../Pages/Summary';
 import Savings from '../Pages/Savings';
 import Spendings from '../Pages/Spendings';
+import Split from '../Pages/Split';
 import Account from '../Pages/Account';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
@@ -16,22 +17,22 @@ function App() {
     const [userAuthenticated, setUserAuthenticated] = useState(false);
 
     useEffect(() => {
-        onLoad();
-    }, []);
-
-    //check if user is logged in
-    async function onLoad() {
-        try {
-            await Auth.currentSession();
-            setUserAuthenticated(true);
-        }
-        catch(err) {
-            if(err !== 'No current user') {
-                alert(err);
+        //check if user is logged in
+        async function onLoad() {
+            try {
+                await Auth.currentSession();
+                setUserAuthenticated(true);
             }
+            catch(err) {
+                if(err !== 'No current user') {
+                    alert(err);
+                }
+            }
+            setIsAuthenticating(false);
         }
-        setIsAuthenticating(!isAuthenticating);
-    }
+
+        onLoad();
+    }, [isAuthenticating]);
 
     function renderHomeNav() {
         if(userAuthenticated) {
@@ -60,6 +61,7 @@ function App() {
                     <AuthenticatedRoute exact path="/summary" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/spendings" component={Spendings} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/savings" component={Savings} appProps={{userAuthenticated, setUserAuthenticated}} />
+                    <AuthenticatedRoute exact path="/split" component={Split} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/account" component={Account} appProps={{userAuthenticated, setUserAuthenticated}} />
                 </Switch>
             </Router>

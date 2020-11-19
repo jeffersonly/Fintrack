@@ -5,10 +5,8 @@ import { ThemeProvider } from '@material-ui/styles';
 import { Row, Col } from 'react-bootstrap';
 import EditGoals from '../Modals/Account/EditGoals';
 import GoalSVG from '../../Images/goals.svg';
-
 import { API, graphqlOperation } from "aws-amplify";
 import { listGoals } from '../../graphql/queries';
-
 import './Profile.css';
 
 const theme = createMuiTheme ({
@@ -35,7 +33,6 @@ function Goals () {
     try {
       const goalData = await API.graphql(graphqlOperation(listGoals));
       const goalList = goalData.data.listGoals.items;
-      console.log(goalList);
       if (goalList.length === 0) {
         setSpendingGoal(0);
         setSavingGoal(0);

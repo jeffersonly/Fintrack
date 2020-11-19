@@ -3,10 +3,10 @@ import { Button, Divider, Link } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
 import TableField from '../../InputFields/TableField';
+import { onKeyDown } from '../../Cards/Split/SplitFunctions';
 import '../../Cards/Profile.css';
 
 function EditProfile(props) {
-
   const [show, setShow] = useState(props.openEdit);
 
   //used in email validation - RFC 2822 standard
@@ -17,13 +17,6 @@ function EditProfile(props) {
   useEffect(() => {
     setShow(props.openEdit);
   }, [props.openEdit]);
-
-  //prevent submitting form when hit "enter" on edit email modal
-  function onKeyDown(keyEvent) {
-    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
-      keyEvent.preventDefault();
-    }
-  }
 
   return (
     <div>
@@ -62,7 +55,6 @@ function EditProfile(props) {
                 return errors;
               }}
               onSubmit={(data) => {
-                console.log(data);
                 props.updateEmail(data.email);
               }}
             >
@@ -75,7 +67,10 @@ function EditProfile(props) {
                   <Link 
                     className="editprofile-passwordLink"
                     component="button" 
-                    onClick={props.selectPassword}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props.selectPassword();
+                    }}
                   >
                     Change Password?
                   </Link>

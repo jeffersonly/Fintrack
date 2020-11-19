@@ -1,7 +1,6 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { listSavings, listSpendings } from '../../../graphql/queries';
 import { startOfWeek, lastDayOfWeek } from 'date-fns';
-//import addWeeks from 'date-fns/addWeeks';
 
 const today = new Date();
 
@@ -53,7 +52,6 @@ export function getMonthYear () {
 export function weekPeriod () {
   var start = startOfWeek(today).toLocaleDateString();
   var end = lastDayOfWeek(today).toLocaleDateString();
-  //console.log(addWeeks(today, -1));
   return [start, end];
 }
 

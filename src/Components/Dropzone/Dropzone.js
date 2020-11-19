@@ -11,42 +11,51 @@ function Dropzone(props) {
 
     async function identifyText(acceptedFiles) {
         let arrayOfObjs = []; 
-        acceptedFiles.forEach(async file => {
-            console.log(file);
-            // await Predictions.identify({
-            //     text: {
-            //         source: {
-            //             file
-            //         }
-            //     }
-            // })
-            // .then(res => {
-            //     console.log(res);
-            //     console.log("here");
-            //     const totalCost = parseText(res);
-            //     let costAndImgObj = {
-            //         totalCost: totalCost,
-            //         image: file
-            //     };
-            //     arrayOfObjs.push(costAndImgObj);
-            // })
-            // .catch(err => console.log(err));
-            const totalCost = 5;
-            let costAndImgObj = {
-                totalCost: totalCost,
-                image: file
-            };
-            arrayOfObjs.push(costAndImgObj);
+        var wait = new Promise((resolve, reject) => {
+            let count = 0;
+            acceptedFiles.forEach(async file => { 
+                await Predictions.identify({
+                    text: {
+                        source: {
+                            file
+                        }
+                    }
+                })
+                .then(res => {
+                    const totalCost = parseText(res);
+                    let costAndImgObj = {
+                        totalCost: totalCost,
+                        image: file
+                    };
+                    arrayOfObjs.push(costAndImgObj);
+                    count++;
+                    if(count === acceptedFiles.length) {
+                        resolve();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    reject();
+                }); 
+            });
         });
-        setFilesWithCost(arrayOfObjs);
-        setShowModal(true);
+
+        wait.then(() => {
+            setFilesWithCost(arrayOfObjs);
+        });
     }
+
+    useEffect(() => {
+        if(filesWithCost.length > 0) {
+            setShowModal(true);
+        }
+    }, [filesWithCost]);
 
     //function to parse text recognized by rekognition to find total cost
     function parseText(data) {
         const textArr = data.text.words;
         var maxCost = 0;
-        textArr.map(textObj => {
+        textArr.forEach(textObj => {
             var text = textObj.text;
             if(text.includes("$")) {
                 text = text.replace(/\s/g, ''); //remove white space
@@ -75,8 +84,7 @@ function Dropzone(props) {
     useEffect(() => () => {
         // Make sure to revoke the data uris to avoid memory leaks
         files.forEach(file => URL.revokeObjectURL(file.preview));
-        //console.log(filesWithCost);
-    }, [files, filesWithCost]);
+    }, [files]);
 
     return (
         <>

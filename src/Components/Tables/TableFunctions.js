@@ -2,10 +2,11 @@ const formatDate = (month, day, year) => {
   return month + "/" + day + "/" + year;
 }
 
+// Table Sort
+
 function descendingComparator(a, b, orderBy) {
   if (orderBy === "date") {
     let bdate = new Date(formatDate(b.month, b.day, b.year));
-    //console.log(b.month);
     let adate = new Date(formatDate(a.month, a.day, a.year));
     if (bdate < adate) {
       return -1;

@@ -9,7 +9,6 @@ export async function getSavingRepeat() {
   const weekly = "Repeating weekly";
   const yearly = "Repeating yearly";
 
-
   try {
     let filter = {
       or: [
@@ -20,7 +19,6 @@ export async function getSavingRepeat() {
         { repeat: { eq: "Repeating monthly" } },
         { repeat: { eq: "Repeating yearly" } },
       ]
-
     };
 
     const savingsData = await API.graphql(graphqlOperation(listSavings, { filter: filter }));
@@ -28,7 +26,6 @@ export async function getSavingRepeat() {
     var dataDate = new Date();
     var diff, diffDays, diffMonths;
     var i, j
-
 
     for ( i = 0; i < savingsList.length; i++) {
       switch (savingsList[i].repeat) {
@@ -39,7 +36,6 @@ export async function getSavingRepeat() {
           if (today.getTime() > dataDate.getTime()) {
             if (!savingsList[i].repeated) {
               diff = Math.round((today.getTime() - dataDate.getTime()) / (1000 * 60 * 60 * 24 * 7))
-              console.log(diff, 'ello')
               try {
                 await API.graphql({
                   query: updateSaving,
@@ -50,7 +46,6 @@ export async function getSavingRepeat() {
                     }
                   }
                 })
-                console.log('Saving repeated updated!');
               } catch (err) {
                 console.log('Saving repeated could not update', err);
               }
@@ -72,7 +67,6 @@ export async function getSavingRepeat() {
                       }
                     }
                   })
-                  console.log('Repeating weekly created');
                 } catch (err) {
                   console.log({ err });
                 }
@@ -103,7 +97,6 @@ export async function getSavingRepeat() {
                     }
                   }
                 })
-                console.log('Saving repeated updated!');
               } catch (err) {
                 console.log('Saving repeated could not update', err);
               }
@@ -125,7 +118,6 @@ export async function getSavingRepeat() {
                       }
                     }
                   })
-                  console.log('Repeating monthly created');
                 } catch (err) {
                   console.log({ err });
                 }
@@ -147,12 +139,11 @@ export async function getSavingRepeat() {
               if (diffMonths < 0) {
                 diff--;
               }
-              else if (diffMonths == 0) {
+              else if (diffMonths === 0) {
                 if (diffDays < 0) {
                   diff--;
                 }
               }
-              console.log(diff)
               try {
                 await API.graphql({
                   query: updateSaving,
@@ -163,7 +154,6 @@ export async function getSavingRepeat() {
                     }
                   }
                 })
-                console.log('Saving repeated updated!');
               } catch (err) {
                 console.log('Saving repeated could not update', err);
               }
@@ -185,7 +175,6 @@ export async function getSavingRepeat() {
                       }
                     }
                   })
-                  console.log('Repeating year created');
                 } catch (err) {
                   console.log({ err });
                 }
@@ -202,7 +191,6 @@ export async function getSavingRepeat() {
           if (today.getTime() > dataDate.getTime()) {
             diff = Math.round((today.getTime() - dataDate.getTime()) / (1000 * 60 * 60 * 24 * 7))
             if (((savingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-              console.log('repeated already')
             }
             else {
               if (diff > 0) {
@@ -224,7 +212,6 @@ export async function getSavingRepeat() {
                         }
                       }
                     })
-                    console.log('CREATE');
                   } catch (err) {
                     console.log({ err });
                   }
@@ -247,7 +234,6 @@ export async function getSavingRepeat() {
               diff--;
             }
             if (((savingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-              console.log('repeated already')
             }
             else {
               if (diff > 0) {
@@ -269,7 +255,6 @@ export async function getSavingRepeat() {
                         }
                       }
                     })
-                    console.log('CREATE');
                   } catch (err) {
                     console.log({ err });
                   }
@@ -292,13 +277,12 @@ export async function getSavingRepeat() {
             if (diffMonths < 0) {
               diff--;
             }
-            else if (diffMonths == 0) {
+            else if (diffMonths === 0) {
               if (diffDays < 0) {
                 diff--;
               }
             }
             if (((savingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-              console.log('repeated already')
             }
             else {
               if (diff > 0) {
@@ -320,7 +304,6 @@ export async function getSavingRepeat() {
                         }
                       }
                     })
-                    console.log('CREATE');
                   } catch (err) {
                     console.log({ err });
                   }
@@ -388,7 +371,6 @@ export async function getSpendingRepeat() {
                     }
                   }
                 })
-                console.log('spending repeated updated!');
               } catch (err) {
                 console.log('spending repeated could not update', err);
               }
@@ -412,7 +394,6 @@ export async function getSpendingRepeat() {
                       }
                     }
                   })
-                  console.log('Repeating weekly created');
                 } catch (err) {
                   console.log({ err });
                 }
@@ -443,7 +424,6 @@ export async function getSpendingRepeat() {
                     }
                   }
                 })
-                console.log('spending repeated updated!');
               } catch (err) {
                 console.log('spending repeated could not update', err);
               }
@@ -467,7 +447,6 @@ export async function getSpendingRepeat() {
                       }
                     }
                   })
-                  console.log('Repeating monthly created');
                 } catch (err) {
                   console.log({ err });
                 }
@@ -489,7 +468,7 @@ export async function getSpendingRepeat() {
               if (diffMonths < 0) {
                 diff--;
               }
-              else if (diffMonths == 0) {
+              else if (diffMonths === 0) {
                 if (diffDays < 0) {
                   diff--;
                 }
@@ -505,7 +484,6 @@ export async function getSpendingRepeat() {
                     }
                   }
                 })
-                console.log('Spending repeated updated!');
               } catch (err) {
                 console.log('Spending repeated could not update', err);
               }
@@ -529,7 +507,6 @@ export async function getSpendingRepeat() {
                       }
                     }
                   })
-                  console.log('Repeating year created');
                 } catch (err) {
                   console.log({ err });
                 }
@@ -546,7 +523,6 @@ export async function getSpendingRepeat() {
           if (today.getTime() > dataDate.getTime()) {
             diff = Math.round((today.getTime() - dataDate.getTime()) / (1000 * 60 * 60 * 24 * 7))
             if (((spendingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-              console.log('repeated already')
             }
             else {
               if (diff > 0) {
@@ -593,7 +569,6 @@ export async function getSpendingRepeat() {
               diff--;
             }
             if (((spendingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-              console.log('repeated already')
             }
             else {
               if (diff > 0) {
@@ -640,13 +615,12 @@ export async function getSpendingRepeat() {
             if (diffMonths < 0) {
               diff--;
             }
-            else if (diffMonths == 0) {
+            else if (diffMonths === 0) {
               if (diffDays < 0) {
                 diff--;
               }
             }
             if (((spendingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-              console.log('repeated already')
             }
             else {
               if (diff > 0) {
@@ -670,7 +644,6 @@ export async function getSpendingRepeat() {
                         }
                       }
                     })
-                    console.log('CREATE');
                   } catch (err) {
                     console.log({ err });
                   }
@@ -678,18 +651,13 @@ export async function getSpendingRepeat() {
                 }
               }
             }
-
           }
           break;
-
         default:
           console.log('Not repeating');
       }
     }
-    
-
   } catch (error) {
     return "Error getting spending repeat";
   }
-  
 }

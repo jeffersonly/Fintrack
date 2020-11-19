@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, InputAdornment, makeStyles } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import DoneIcon from '@material-ui/icons/Done';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
-
+import Loader from 'react-loader-spinner';
 import { API } from 'aws-amplify';
 import { createSaving } from '../../graphql/mutations';
-
 import TableField from '../InputFields/TableField';
 import { repeats } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 import CardTitle from './CardTitle';
 import '../Cards/Card.css';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const theme = createMuiTheme({
   palette: {
@@ -38,47 +39,37 @@ const useStyles = makeStyles({
   }
 });
 
-async function submitNewSaving(data) {
-  try {
-    await API.graphql({
-      query: createSaving,
-      variables: {
-        input: {
-          month: data[0],
-          day: data[1],
-          year: data[2],
-          name: data[3],
-          value: data[4],
-          repeat: data[5],
-          note: data[6]
-        }
-      }
-    })
-    console.log('New saving created!');
-    window.location.reload();
-  } catch (err) {
-    console.log({ err });
-  }
-}
-
 function CreateSaving(props) {
-
   const classes = useStyles();
+  const [loaderState, setLoaderState] = useState(false);
+  const [createdState, setCreatedState] = useState(false); 
 
-  /*const [selectedDate, setSelectedDate] = useState(new Date());
-  
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const resetDate = () => {
-    setSelectedDate(new Date());
-  };*/
+  async function submitNewSaving(data) {
+    try {
+      await API.graphql({
+        query: createSaving,
+        variables: {
+          input: {
+            month: data[0],
+            day: data[1],
+            year: data[2],
+            name: data[3],
+            value: data[4],
+            repeat: data[5],
+            note: data[6]
+          }
+        }
+      })
+      setLoaderState(false);
+      setCreatedState(true);
+      window.location.reload();
+    } catch (err) {
+      console.log({ err });
+    }
+  }
   
   return (
     <div className="card-container card-savings">
-      {/*<Card className="card-fintrack" variant="outlined">
-        <CardContent>*/}
           {props.title && <CardTitle title="Create New Savings" />}
           <ThemeProvider theme={theme}>
             <Formik
@@ -106,11 +97,10 @@ function CreateSaving(props) {
                 return errors;
               }}
               onSubmit={(data, { resetForm }) => {
-                //console.log(data, selectedDate.toLocaleDateString());
+                setLoaderState(true); 
                 const formattedDate = splitDate(data.date.toLocaleDateString());
                 const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.repeat, data.note];
-                submitNewSaving(array);
-                //resetDate();
+                submitNewSaving(array); 
                 resetForm();
               }}
             >
@@ -167,19 +157,17 @@ function CreateSaving(props) {
                   <Button
                     className={classes.createbutton}
                     disableElevation
-                    disabled={!values.name || !values.value || errors.date !== ""}
+                    disabled={!values.name || !values.value || errors.date !== "" || createdState}
                     size="large"
                     type="submit"
                     variant="contained"
                   >
-                    Create
+                    {createdState ? (<>Created <DoneIcon /></>) : (loaderState ? <Loader type="TailSpin" color="rgb(1, 114, 71)" height={30} width={30} /> : "Create") }
                   </Button>
                 </Form>
               )}
             </Formik>
           </ThemeProvider>
-        {/*</CardContent>
-      </Card>*/}
     </div>
   );
 }

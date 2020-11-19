@@ -32,6 +32,92 @@ export const listGoals = /* GraphQL */ `
     }
   }
 `;
+export const getSplitEven = /* GraphQL */ `
+  query GetSplitEven($id: ID!) {
+    getSplitEven(id: $id) {
+      id
+      month
+      day
+      year
+      size
+      total
+      tax
+      tip
+      evenSplit
+      createdOn
+      updatedOn
+      owner
+    }
+  }
+`;
+export const listSplitEvens = /* GraphQL */ `
+  query ListSplitEvens(
+    $filter: ModelSplitEvenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSplitEvens(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        month
+        day
+        year
+        size
+        total
+        tax
+        tip
+        evenSplit
+        createdOn
+        updatedOn
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getSplitItem = /* GraphQL */ `
+  query GetSplitItem($id: ID!) {
+    getSplitItem(id: $id) {
+      id
+      month
+      day
+      year
+      total
+      tax
+      tip
+      names
+      split
+      createdOn
+      updatedOn
+      owner
+    }
+  }
+`;
+export const listSplitItems = /* GraphQL */ `
+  query ListSplitItems(
+    $filter: ModelSplitItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSplitItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        month
+        day
+        year
+        total
+        tax
+        tip
+        names
+        split
+        createdOn
+        updatedOn
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const getSaving = /* GraphQL */ `
   query GetSaving($id: ID!) {
     getSaving(id: $id) {
