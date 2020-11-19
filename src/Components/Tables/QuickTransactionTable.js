@@ -27,6 +27,7 @@ function QuickTransactionTable () {
 
   useEffect(() => {
     getMostRecent();
+    
   }, []);
 
   const handleRequestSort = (event, property) => {

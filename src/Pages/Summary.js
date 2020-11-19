@@ -4,7 +4,6 @@ import { Row, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
-
 import NotificationCenter from '../Components/Cards/Notifications/NotificationCenter';
 import './Summary.css';
 
