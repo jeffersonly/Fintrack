@@ -30,10 +30,10 @@ function CreateSpendingModal(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col xs={6}>
+                        <Col xs={12} md={6}>
                             <CreateSpending />
                         </Col>
-                        <Col xs={6} className="editprofile-textfield">
+                        <Col md={6} className="editprofile-textfield d-none d-md-block">
                             <Dropzone />
                             <WebcamCapture />
                         </Col>

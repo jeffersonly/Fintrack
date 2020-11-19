@@ -3,7 +3,7 @@ import { Button, Divider, InputAdornment } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import Modal from 'react-bootstrap/Modal';
+import { Modal, Row, Col } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -73,6 +73,94 @@ function MoreSpendingInformation(props) {
     setChangedDate(true);
   };*/
 
+  function generateForm(errors, setFieldError, values, setFieldValue) {
+    return (
+      <>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            autoOk
+            className="card-datepicker"
+            format="MM/dd/yyyy"
+            fullWidth
+            InputAdornmentProps={{ position: "end" }}
+            inputVariant="outlined"
+            label="Date"
+            name="date"
+            onChange={date => {
+              setFieldValue("date", date, true);
+              setChangedDate(true);
+            }}
+            onError={err => {
+              if (err !== errors.date) {
+                setFieldError("date", err);
+              }
+            }}
+            required
+            value={
+              !changedDate
+                ? formatDate(props.itemData.month, props.itemData.day, props.itemData.year)
+                : values.date
+            }
+            variant="inline"
+          />
+        </MuiPickersUtilsProvider>
+        <TableField 
+          label="Savings Name"
+          name="name"  
+        />
+        <TableField
+          label="Form of Payment"
+          name="payment"
+          options={payments}
+          select={true}
+        />
+        <TableField
+          InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}
+          label="Value"
+          name="value"
+          type="number"
+        />
+        <TableField
+          label="Category"
+          name="category"
+          options={categories}
+          select={true}
+        />
+        <TableField
+          label="Repeat"
+          name="repeat"
+          options={repeatingItems}
+          select={true}
+        />
+        <TableField
+          label="Notes"
+          multiline={true}
+          name="note"
+          required={false}
+          rowsMax={3}
+        />
+      </>
+    );
+  }
+
+  function generateModalContent(errors, setFieldError, values, setFieldValue) {
+    if (props.itemData.url !== "") {
+      return (
+        <Row>
+          <Col xs={12} md={6}>
+            {generateForm(errors, setFieldError, values, setFieldValue)}
+          </Col>
+          <Col xs={12} md={6}>
+            <img src={props.itemData.url} align="center" alt="receipt" className="morespending-img"/>
+          </Col>
+        </Row>
+      );
+    }
+    else {
+      return generateForm(errors, setFieldError, values, setFieldValue);
+    }
+  }
+
   return (
     <div >
       {/*data && Object.entries(data).map((key, value) => (*/}
@@ -81,6 +169,7 @@ function MoreSpendingInformation(props) {
           show={show}
           onHide={props.closeMore}
           aria-labelledby="contained-modal-title-vcenter"
+          size={props.itemData.url ? "lg" : "md"}
           centered
           //key={value}
         >
@@ -129,70 +218,7 @@ function MoreSpendingInformation(props) {
               >
                 {({ errors, setFieldError, setFieldValue, values }) => (
                   <Form>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        autoOk
-                        className="card-datepicker"
-                        format="MM/dd/yyyy"
-                        fullWidth
-                        InputAdornmentProps={{ position: "end" }}
-                        inputVariant="outlined"
-                        label="Date"
-                        name="date"
-                        onChange={date => {
-                          setFieldValue("date", date, true);
-                          setChangedDate(true);
-                        }}
-                        onError={err => {
-                          if (err !== errors.date) {
-                            setFieldError("date", err);
-                          }
-                        }}
-                        required
-                        value={
-                          !changedDate
-                            ? formatDate(props.itemData.month, props.itemData.day, props.itemData.year)
-                            : values.date
-                        }
-                        variant="inline"
-                      />
-                    </MuiPickersUtilsProvider>
-                    <TableField 
-                      label="Savings Name"
-                      name="name"  
-                    />
-                    <TableField
-                      label="Form of Payment"
-                      name="payment"
-                      options={payments}
-                      select={true}
-                    />
-                    <TableField
-                      InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}
-                      label="Value"
-                      name="value"
-                      type="number"
-                    />
-                    <TableField
-                      label="Category"
-                      name="category"
-                      options={categories}
-                      required={false}
-                      select={true}
-                    />
-                    <TableField
-                      label="Repeat"
-                      name="repeat"
-                      options={repeatingItems}
-                      select={true}
-                    />
-                    <TableField
-                      label="Notes"
-                      multiline={true}
-                      name="note"
-                      required={false}
-                      rowsMax={3}
-                    />
+                    {generateModalContent(errors, setFieldError, values, setFieldValue)}
                     <Divider className="editprofile-divider" />
                     <div align="right">
                       <Button
@@ -220,10 +246,10 @@ function MoreSpendingInformation(props) {
                   </Form>
                 )}
               </Formik>
-              </ThemeProvider>
-            </div>
-          </Modal.Body>
-        </Modal>
+            </ThemeProvider>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

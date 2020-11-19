@@ -14,7 +14,7 @@ export default function DropzoneModal(props) {
     }, [props.data.length, counter]);
 
     function generateItems() {
-        if(props.from == "webcam") {
+        if(props.from === "webcam") {
             return generateItemsFromWebcam()
         } else {
             return generateItemsFromDropzone()
