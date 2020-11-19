@@ -3,6 +3,7 @@ import { Button, Card, CardContent, InputAdornment, makeStyles} from '@material-
 import { Formik, Form } from 'formik';
 import { Row, Col } from 'react-bootstrap';
 
+
 import TableField from '../../InputFields/TableField';
 import EvenResult from './EvenResult';
 import CardTitle from '../CardTitle';
@@ -25,6 +26,8 @@ const useStyles = makeStyles({
   }
 });
 
+
+
 function EvenSplit() {
 
   const classes = useStyles();
@@ -34,13 +37,16 @@ function EvenSplit() {
   const [tax, setTax] = useState();
   const [tip, setTip] = useState();
   const [submitted, setSubmitted] = useState(false);
+  const [show, setShow] = useState(false);
   
   function submitForm (data) {
     setPartySize(data[0]);
     setBillTotal(data[1]);
     setTax(data[2]);
     setTip(data[3]);
+    setShow(true);
     setSubmitted(true);
+    setSubmitted(false);
   }
 
   return (
@@ -125,15 +131,16 @@ function EvenSplit() {
         </div>
       </Col>
       <Col>
-        {!submitted && (
+        {!show && (
           <img src={SplitEvenSVG} align="center" alt="spliteven" className="spliteven-intropicture d-none d-md-block" />
         )}
         <EvenResult 
-          party={partySize}
           submitted={submitted}
+          party={partySize}
           tax={tax}
           tip={tip}
           total={billTotal}
+          show = {show}
         />
       </Col>
     </Row>

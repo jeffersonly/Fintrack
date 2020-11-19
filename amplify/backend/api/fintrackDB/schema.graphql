@@ -7,6 +7,34 @@ type Goal @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
   owner: String
 }
 
+type SplitEven @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
+@auth(rules: [{ allow: owner }])
+{
+  id: ID!
+  month: String!
+  day: String!
+  year: String!
+  size: String!
+  total: Float!
+  tax: Float!
+  tip: Float!
+  evenSplit: Float!
+}
+
+type SplitItem @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
+@auth(rules: [{ allow: owner }])
+{
+  id: ID!
+  month: String!
+  day: String!
+  year: String!
+  total: String!
+  tax: Float!
+  tip: Float!
+  names: String!
+  split: String!
+}
+
 type Saving @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
 @auth(rules: [{ allow: owner }])
 @key (

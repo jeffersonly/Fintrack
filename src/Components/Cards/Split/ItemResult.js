@@ -3,6 +3,32 @@ import { Button, Card, CardContent, Divider, Typography } from '@material-ui/cor
 import { Row, Col } from 'react-bootstrap';
 import { calculateTaxTip, calculateTotal } from './SplitFunctions';
 import './SplitCard.css';
+import {API} from 'aws-amplify';
+import { createSplitItem } from '../../../graphql/mutations';
+
+async function submitSplitItem(data) {
+  try {
+    await API.graphql({
+      query: createSplitItem,
+      variables: {
+        input: {
+          month: data[0],
+          day: data[1],
+          year: data[2],
+          total: data[3],
+          tax: data[4],
+          tip: data[5],
+          names: data[6],
+          split: data[7]
+        }
+      }
+    })
+    console.log('Split item saved');
+    //window.location.reload();
+  } catch (err) {
+    console.log({ err });
+  }
+}
 
 function ItemResult (props) {
   
@@ -23,6 +49,7 @@ function ItemResult (props) {
     };
   }
 
+  const today = new Date();
   const names = getNamesTotal().names;
   const prices = getNamesTotal().total;
   const tax = props.tax ? props.tax : 0;
@@ -68,12 +95,29 @@ function ItemResult (props) {
       );
       result.push(item);
       partyResult.push(finalResult);
+      console.log(partyResult[0].props.children[0].props.children[0])
+      console.log(partyResult[0].props.children[1].props.children[1])
     }
     return result;
   }
 
   function printResults () {
     return partyResult;
+  }
+
+  function saveResults () {
+    let ppl = ""
+    let byPerson = ""
+    for (var i = 0; i < partyResult.length; i++) {
+      console.log(partyResult.length)
+      ppl += partyResult[i].props.children[0].props.children[0]
+      ppl += " "
+      byPerson += partyResult[i].props.children[1].props.children[1]
+      byPerson += " "
+    }
+    console.log((today.getMonth()+1), today.getDate(), today.getFullYear(), prices.join(' '), tax, tip, ppl, byPerson)
+    let array = [(today.getMonth()+1), today.getDate(), today.getFullYear(), prices.join(' '), tax, tip, ppl, byPerson];
+    submitSplitItem(array)
   }
 
   return (
@@ -93,6 +137,14 @@ function ItemResult (props) {
                   variant="contained"
                 >
                   Clear
+                </Button>
+                <p></p>
+                <Button
+                  disableElevation
+                  onClick={saveResults}
+                  variant="contained"
+                >
+                  Save
                 </Button>
               </div>              
               <Divider className="spliteven-horizontaldivider"/>

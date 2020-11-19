@@ -4,8 +4,36 @@ import { Row, Col } from 'react-bootstrap';
 import CalculationSVG from '../../../Images/calculator.svg';
 import { calculateTaxTip, calculateTotal } from './SplitFunctions';
 import './SplitCard.css';
+import {API} from 'aws-amplify';
+import { createSplitEven } from '../../../graphql/mutations';
+
+async function submitEvenSplit(data) {
+  try {
+    await API.graphql({
+      query: createSplitEven,
+      variables: {
+        input: {
+          month: data[0],
+          day: data[1],
+          year: data[2],
+          size: data[3],
+          total: data[4],
+          tax: data[5],
+          tip: data[6],
+          evenSplit: data[7]
+        }
+      }
+    })
+    console.log('Even split saved');
+    //window.location.reload();
+  } catch (err) {
+    console.log({ err });
+  }
+}
 
 function EvenResult (props) {
+  
+  const today = new Date();
 
   function perPerson (total, people) {
     return Number((total / people).toFixed(2));
@@ -17,10 +45,15 @@ function EvenResult (props) {
   const payTip = calculateTaxTip(props.total, props.tip);
   const finalTotal = calculateTotal(props.total, payTax, payTip);
   const byPerson = perPerson(finalTotal, props.party)
-
+  
+  if(props.submitted){
+    let array = [(today.getMonth()+1), today.getDate(), today.getFullYear(), props.party, props.total, tax, tip, byPerson];
+    submitEvenSplit(array);
+  }
+  
   return (
     <div>
-      {props.submitted && (
+      {props.show && (
         <Card className="spliteven-card" variant="outlined">
           <CardContent>
             <div>
