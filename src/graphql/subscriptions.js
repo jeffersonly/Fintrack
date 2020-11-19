@@ -37,6 +37,114 @@ export const onDeleteGoal = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSplitEven = /* GraphQL */ `
+  subscription OnCreateSplitEven($owner: String!) {
+    onCreateSplitEven(owner: $owner) {
+      id
+      month
+      day
+      year
+      size
+      total
+      tax
+      tip
+      evenSplit
+      createdOn
+      updatedOn
+      owner
+    }
+  }
+`;
+export const onUpdateSplitEven = /* GraphQL */ `
+  subscription OnUpdateSplitEven($owner: String!) {
+    onUpdateSplitEven(owner: $owner) {
+      id
+      month
+      day
+      year
+      size
+      total
+      tax
+      tip
+      evenSplit
+      createdOn
+      updatedOn
+      owner
+    }
+  }
+`;
+export const onDeleteSplitEven = /* GraphQL */ `
+  subscription OnDeleteSplitEven($owner: String!) {
+    onDeleteSplitEven(owner: $owner) {
+      id
+      month
+      day
+      year
+      size
+      total
+      tax
+      tip
+      evenSplit
+      createdOn
+      updatedOn
+      owner
+    }
+  }
+`;
+export const onCreateSplitItem = /* GraphQL */ `
+  subscription OnCreateSplitItem($owner: String!) {
+    onCreateSplitItem(owner: $owner) {
+      id
+      month
+      day
+      year
+      total
+      tax
+      tip
+      names
+      split
+      createdOn
+      updatedOn
+      owner
+    }
+  }
+`;
+export const onUpdateSplitItem = /* GraphQL */ `
+  subscription OnUpdateSplitItem($owner: String!) {
+    onUpdateSplitItem(owner: $owner) {
+      id
+      month
+      day
+      year
+      total
+      tax
+      tip
+      names
+      split
+      createdOn
+      updatedOn
+      owner
+    }
+  }
+`;
+export const onDeleteSplitItem = /* GraphQL */ `
+  subscription OnDeleteSplitItem($owner: String!) {
+    onDeleteSplitItem(owner: $owner) {
+      id
+      month
+      day
+      year
+      total
+      tax
+      tip
+      names
+      split
+      createdOn
+      updatedOn
+      owner
+    }
+  }
+`;
 export const onCreateSaving = /* GraphQL */ `
   subscription OnCreateSaving($owner: String!) {
     onCreateSaving(owner: $owner) {

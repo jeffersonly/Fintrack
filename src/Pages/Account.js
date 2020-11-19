@@ -7,6 +7,7 @@ import { Auth } from 'aws-amplify';
 import './Account.css';
 import Profile from '../Components/Cards/Profile';
 import Goals from '../Components/Cards/Goals';
+import BillSplits from '../Components/Cards/BillSplits';
 import { Navbar, Nav } from 'react-bootstrap';
 
 const theme = createMuiTheme ({
@@ -61,6 +62,11 @@ function Account() {
     if (page["goal"] === true) {
       return (
         <Goals />
+      )
+    }
+    if (page["split"] === true) {
+      return (
+        <BillSplits />
       )
     }
   }

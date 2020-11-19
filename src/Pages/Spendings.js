@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { makeStyles, rgbToHex } from '@material-ui/core';
+import { Fab, makeStyles, rgbToHex } from '@material-ui/core';
 //import Create from '@material-ui/icons/Create';
-import Fab from '@material-ui/core/Fab';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { withRouter } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
@@ -11,6 +12,17 @@ import CreateSpendingModal from '../Components/Modals/Spending/CreateSpendingMod
 import './Spendings.css';
 //import Dropzone from '../Components/Dropzone/Dropzone';
 //import CreateTransaction from '../Components/Spending/CreateTransaction';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "rgb(1, 114, 71)",
+    },
+    secondary: {
+      main: "#0000EE"
+    }
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -36,36 +48,38 @@ function Spendings() {
   
   return (
     <div>
-      <div className="spendings spendings-table">
-        <Row>
-          {/*}
-          <Col md={1}>
-            <IconButton className="table-icon" onClick={() => setCreateSpending(true) /*history.push('/spendings')}>
-              <Create />
-            </IconButton>
-          </Col>
+      <ThemeProvider theme={theme}>
+        <div className="spendings spendings-table">
+          <Row>
+            {/*}
+            <Col md={1}>
+              <IconButton className="table-icon" onClick={() => setCreateSpending(true) /*history.push('/spendings')}>
+                <Create />
+              </IconButton>
+            </Col>
+            */}
+            <Col md={12}>
+              <SpendingTable />
+            </Col>
+          </Row>
+          {/* 
+          <Grid item xs>
+            <Dropzone />
+            <CreateTransaction />
+          </Grid>
           */}
-          <Col md={12}>
-            <SpendingTable />
-          </Col>
-        </Row>
-        {/* 
-        <Grid item xs>
-          <Dropzone />
-          <CreateTransaction />
-        </Grid>
-        */}
-      </div>
-      <CreateSpendingModal
-        closeCreateSpending={() => setCreateSpending(!showCreateSpending)} 
-        openCreateSpending={showCreateSpending}
-      />
-      <Fab 
-        className={classes.fab}
-        onClick={() => setCreateSpending(true)}
-      >
-        <AddIcon />
-      </Fab>
+        </div>
+        <CreateSpendingModal
+          closeCreateSpending={() => setCreateSpending(!showCreateSpending)} 
+          openCreateSpending={showCreateSpending}
+        />
+        <Fab 
+          className={classes.fab}
+          onClick={() => setCreateSpending(true)}
+        >
+          <AddIcon />
+        </Fab>
+      </ThemeProvider>
    </div>
   );
 }

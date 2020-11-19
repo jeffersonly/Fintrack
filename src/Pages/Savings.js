@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Card, CardContent, makeStyles } from '@material-ui/core';
-import Fab from '@material-ui/core/Fab';
+import { Fab, makeStyles } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { withRouter } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
@@ -9,7 +10,15 @@ import { Row, Col } from 'react-bootstrap';
 import CreateSavingModal from '../Components/Modals/Saving/CreateSavingModal';
 import SavingTable from '../Components/Tables/SavingTable';
 import './Savings.css';
-import '../Components/Cards/Card.css';
+//import '../Components/Cards/Card.css';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "rgb(1, 114, 71)",
+    }
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -34,32 +43,34 @@ function Savings() {
 
   return (
     <div className="savings">
-      <Row>
-        <Col className="savings-table">
-          <SavingTable />
-        </Col>
-        {/** 
-        <Col md={3} className="savings-form">
-          <Card className="card-fintrack" variant="outlined">
-            <CardContent>
-              <CreateSaving title={true}/> 
-            </CardContent>
-          </Card>
-        </Col>
-        */}
-      </Row>
-      <CreateSavingModal
-        closeCreateSaving={() => setCreateSaving(!showCreateSaving)}
-        openCreateSaving={showCreateSaving}
-      />
-      <div className="savings-add">
-        <Fab 
-          className={classes.fab}
-          onClick={() => setCreateSaving(true)}
-        >
-          <AddIcon />
-        </Fab>
-      </div>
+      <ThemeProvider theme={theme}>
+        <Row>
+          <Col className="savings-table">
+            <SavingTable />
+          </Col>
+          {/** 
+          <Col md={3} className="savings-form">
+            <Card className="card-fintrack" variant="outlined">
+              <CardContent>
+                <CreateSaving title={true}/> 
+              </CardContent>
+            </Card>
+          </Col>
+          */}
+        </Row>
+        <CreateSavingModal
+          closeCreateSaving={() => setCreateSaving(!showCreateSaving)}
+          openCreateSaving={showCreateSaving}
+        />
+        <div className="savings-add">
+          <Fab 
+            className={classes.fab}
+            onClick={() => setCreateSaving(true)}
+          >
+            <AddIcon />
+          </Fab>
+        </div>
+      </ThemeProvider>
     </div>
   );
 }

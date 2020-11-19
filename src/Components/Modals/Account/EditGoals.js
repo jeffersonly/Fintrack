@@ -7,6 +7,7 @@ import { API } from "aws-amplify";
 import { createGoal, updateGoal } from '../../../graphql/mutations';
 
 import TableField from '../../InputFields/TableField';
+import { onKeyDown } from '../../Cards/Split/SplitFunctions';
 import '../../Cards/Profile.css';
 
 function EditGoals(props) {
@@ -16,13 +17,6 @@ function EditGoals(props) {
   useEffect(() => {
     setShow(props.openEdit);
   }, [props.openEdit]);
-
-  //prevent submitting form when hit "enter" on edit email modal
-  function onKeyDown(keyEvent) {
-    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
-      keyEvent.preventDefault();
-    }
-  }
 
   async function editGoals(spending, saving) {
     if (props.spendings === 0 && props.savings === 0) {
