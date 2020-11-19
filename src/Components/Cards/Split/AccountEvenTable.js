@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
-
+import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
 import { API, graphqlOperation } from "aws-amplify";
 import { listSplitEvens } from '../../../graphql/queries';
-
 import TableHeader from '../../Tables/TableHeader';
 import { formatDate, stableSort, getComparator } from '../../Tables/TableFunctions';
 import '../../Tables/Table.css';
@@ -17,7 +15,6 @@ const columnTitles = [
   { id: "tip", label: "Tip", align: "center", numeric: true },
   { id: "result", label: "Per Person", align: "center", numeric: true },
 ];
-
 
 function AccountEvenTable() {
   const [order, setOrder] = useState('desc');

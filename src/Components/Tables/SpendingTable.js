@@ -6,11 +6,9 @@ import {
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, FilterList, Info, Search } from '@material-ui/icons';
 import { Row, Col } from 'react-bootstrap';
-
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { listSpendings} from '../../graphql/queries';
 import { deleteSpending } from '../../graphql/mutations';
-
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
@@ -25,7 +23,6 @@ const columnTitles = [
   { id: "payment", label: "Form of Payment", align: "center", style: "d-none d-md-table-cell" },
   { id: "value", label: "Value", align: "center", numeric: true },
   { id: "category", label: "Category", align: "center", style: "d-none d-md-table-cell" },
-  //{ id: "receipt", label: "Uploaded Receipt", align: "center", style: "d-none d-md-table-cell" },
   { id: "info", label: "More Information", align: "center" },
 ];
 
@@ -40,8 +37,6 @@ function SpendingTable() {
   const [search, setSearch] = useState("");
   const [status, setStatusBase] = useState("");
   const [btnFilter, setBtnFilter] = useState(false);
-  //const [webcamPic, setWebcamPic] = useState(false);
-  //const [dropzonePic, setDropzonePic] = useState(false);
 
   const [openAlert, setOpenAlert] = useState(true);
 
@@ -60,6 +55,11 @@ function SpendingTable() {
   }, [filter]);
 
   useEffect(() => {
+    async function getSpendingsRepeat() {
+      await getSpendingRepeat();
+      updateSpendingsResult();
+    }
+
     getSpendingsRepeat();
   }, []);
 
@@ -68,11 +68,6 @@ function SpendingTable() {
     const spendingList = spendingData.data.listSpendings.items;
     await fetchImageLink(spendingList);
     setSpending(spendingList);
-  }
-
-  async function getSpendingsRepeat() {
-    await getSpendingRepeat();
-    updateSpendingsResult();
   }
 
   const handleRequestSort = (event, property) => {
@@ -215,17 +210,6 @@ function SpendingTable() {
       }
     }
     else {
-      /*
-      const owner = await Auth.currentAuthenticatedUser();
-      const input = {
-        owner: owner.username,
-        name: {
-          contains: search,
-        },
-      };
-      const spendingData = await API.graphql(graphqlOperation(spendingsByOwner, input));
-      const spendingList = spendingData.data.spendingsByOwner.items;
-      */
       let filter = {
         or: [
           { 
@@ -289,7 +273,6 @@ function SpendingTable() {
       await API.graphql(graphqlOperation(deleteSpending, { input: id }));
       console.log('Deleted spending');
       updateSpendingsResult();
-      //window.location.reload();
     }
     catch (error) {
       console.log('Error on delete spending', error);

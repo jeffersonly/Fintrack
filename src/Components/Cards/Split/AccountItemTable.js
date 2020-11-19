@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
-
+import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
 import { API, graphqlOperation } from "aws-amplify";
 import { listSplitItems } from '../../../graphql/queries';
-
 import TableHeader from '../../Tables/TableHeader';
 import { formatDate, stableSort, getComparator } from '../../Tables/TableFunctions';
 import '../../Tables/Table.css';
 import '../../Graphs/Graphs.css';
-
-
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center" },
@@ -19,7 +15,6 @@ const columnTitles = [
   { id: "total", label: "Subtotal", align: "center", numeric: true },
   { id: "split", label: "Total", align: "center", numeric: true },
 ];
-
 
 function AccountEvenTable() {
   const [order, setOrder] = useState('desc');

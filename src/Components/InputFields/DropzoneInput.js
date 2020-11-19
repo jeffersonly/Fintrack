@@ -116,16 +116,13 @@ function DropzoneInput(props) {
                 file: {
                   bucket: awsExports.aws_user_files_s3_bucket,
                   region: awsExports.aws_user_files_s3_bucket_region,
-                  key: 'public/' + `picture-taken-from-camera-${randomStr}.jpg`
+                  key: `public/picture-taken-from-camera-${randomStr}.jpg`
                 }
-              }
-
-              //console.log(data, selectedDate.toLocaleDateString());
+              } 
               const formattedDate = splitDate(data.date.toLocaleDateString());
               const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
                             data.payment, data.value, data.category, data.repeat, data.note, image.file];
-              submitNewSpending(array);
-              //resetDate();
+              submitNewSpending(array); 
               resetForm();
             })
           } else {
@@ -141,12 +138,10 @@ function DropzoneInput(props) {
                 }
               }
 
-              //console.log(data, selectedDate.toLocaleDateString());
               const formattedDate = splitDate(data.date.toLocaleDateString());
               const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
                             data.payment, data.value, data.category, data.repeat, data.note, image.file];
               submitNewSpending(array);
-              //resetDate();
               resetForm();
             })
           }
