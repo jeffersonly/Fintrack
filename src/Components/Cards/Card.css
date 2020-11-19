@@ -25,6 +25,13 @@
   width: 100%;
 }
 
+.card-savings {
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
 .card-spendings {
   padding-bottom: 10px;
   padding-left: 15px;
@@ -38,11 +45,23 @@
   padding-bottom: 5px;
 }
 
+.morespending-img {
+  width: 100%;
+  height: auto;
+  padding-bottom: 20px;
+}
+
 @media only screen and (max-width: 840px) {
   .card-savings {
     padding-bottom: 10px;
     padding-top: 10px;
     padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .card-spendings {
     padding-right: 15px;
   }
 }

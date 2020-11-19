@@ -43,12 +43,11 @@ function QuickTransactionTable () {
       //console.log("new test", test);
       const spendingList = spendingData.data.listSpendings.items;
       console.log('spending data', spendingList);
-      /* */
       if (spendingList.length < 6){
         setRecent(spendingList);
       } 
       else {
-      const sorted = stableSort(spendingList, getComparator(order, orderBy))
+      const sorted = stableSort(spendingList, getComparator(order, orderBy));
       const mostRecent = [sorted[0], sorted[1], sorted[2], sorted[3], sorted[4], sorted[5]];
       setRecent(mostRecent);
       }

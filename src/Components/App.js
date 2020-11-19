@@ -6,6 +6,7 @@ import HomeNav from './NavBar/HomeNav';
 import Summary from '../Pages/Summary';
 import Savings from '../Pages/Savings';
 import Spendings from '../Pages/Spendings';
+import Split from '../Pages/Split';
 import Account from '../Pages/Account';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
@@ -60,6 +61,7 @@ function App() {
                     <AuthenticatedRoute exact path="/summary" component={Summary} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/spendings" component={Spendings} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/savings" component={Savings} appProps={{userAuthenticated, setUserAuthenticated}} />
+                    <AuthenticatedRoute exact path="/split" component={Split} appProps={{userAuthenticated, setUserAuthenticated}} />
                     <AuthenticatedRoute exact path="/account" component={Account} appProps={{userAuthenticated, setUserAuthenticated}} />
                 </Switch>
             </Router>

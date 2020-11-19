@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
+import { Auth } from 'aws-amplify';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import NotificationCenter from '../Components/Cards/Notifications/NotificationCenter';
 import './Summary.css';
-import { Row, Col } from 'react-bootstrap';
-import { Auth } from 'aws-amplify';
 
 function Summary () {
 
@@ -45,14 +45,6 @@ function Summary () {
           <NotificationCenter />
         </Col>
       </Row>
-      {/*<Row>
-        <Col xs md={3}>
-          <QuickTransaction />
-        </Col>
-        <Col xs md={{span: 8, offset: 1}} className="homepage-table">
-          <QuickTransactionTable />
-        </Col>
-      </Row>*/}
     </div>
   );
 }
