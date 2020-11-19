@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
   Button, Card, Checkbox, FormControl, FormControlLabel, FormGroup,
-  FormLabel, IconButton, InputAdornment, Link, Table, TableBody, 
+  FormLabel, IconButton, InputAdornment, Table, TableBody, 
   TableCell, TableContainer, TableRow, TextField, Typography
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, FilterList, Info, Search } from '@material-ui/icons';
-import { Row, Col, Modal } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { listSpendings} from '../../graphql/queries';
@@ -253,66 +253,6 @@ function SpendingTable() {
       }
     }
   };
-
-  /*function handleShowWebcam() {
-    setWebcamPic(true);
-    setDropzonePic(false);
-  }
-
-  function handleShowDropzone() {
-    setWebcamPic(false);
-    setDropzonePic(true);
-  }
-
-  function showImageModal(url, imageName, pic) {
-    return (
-      <Modal
-        show={pic === "webcam" ? webcamPic : dropzonePic}
-        onHide={() => (pic === "webcam" ? setWebcamPic(false) : setDropzonePic(false))}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            {imageName}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body align="center">
-          <img src={url} alt="receipt"/>
-        </Modal.Body>
-      </Modal>
-    )
-  }
-
-  function uploadReceiptColumn (url, imageName) {
-    if (imageName !== undefined) {
-      if (imageName.startsWith("picture-taken-from-camera-")) {
-        //console.log("webcam", url);
-        return (
-          <>
-            <Link className="spending-link" color="secondary" onClick={() => handleShowWebcam()}>
-              {imageName}
-            </Link>
-            {webcamPic && showImageModal(url, imageName, "webcam")}
-          </>
-        );
-      }
-      else if (imageName !== "") {
-        return (
-          <a href={url} target="_blank">{imageName}</a>
-          /*<>
-            <Link className="spending-link" color="secondary" onClick={() => handleShowDropzone()}>
-              {imageName}
-            </Link>
-            {dropzonePic && showImageModal(url, imageName, "dropzone")}
-          </>
-        );
-      }
-    }
-    else {
-      return;
-    }
-  }*/
 
   const handleClick = (event) => {
     event.preventDefault();
