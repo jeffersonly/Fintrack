@@ -30,7 +30,6 @@ const useStyles = makeStyles({
 });
 
 function DropzoneInput(props) {
-  console.log(props);
   const classes = useStyles();
   const [loaderState, setLoaderState] = useState(false);
   const [createdState, setCreatedState] = useState(false);

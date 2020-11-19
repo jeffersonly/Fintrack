@@ -69,8 +69,6 @@ function ItemTableCard (props) {
                   fullWidth
                   onClick={() => {
                     props.itemize(taxInput.current.value, tipInput.current.value);
-                    //console.log("tax", taxInput.current.value);
-                    //console.log("tip", tipInput.current.value);
                     taxInput.current.value = "";
                     tipInput.current.value = "";
                   }}

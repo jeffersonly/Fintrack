@@ -24,8 +24,6 @@ async function submitEvenSplit(data) {
         }
       }
     })
-    console.log('Even split saved');
-    //window.location.reload();
   } catch (err) {
     console.log({ err });
   }

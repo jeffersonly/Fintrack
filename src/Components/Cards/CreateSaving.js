@@ -7,16 +7,13 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
 import Loader from 'react-loader-spinner';
-
 import { API } from 'aws-amplify';
 import { createSaving } from '../../graphql/mutations';
-
 import TableField from '../InputFields/TableField';
 import { repeats } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 import CardTitle from './CardTitle';
 import '../Cards/Card.css';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const theme = createMuiTheme({
@@ -43,21 +40,9 @@ const useStyles = makeStyles({
 });
 
 function CreateSaving(props) {
-
   const classes = useStyles();
-
   const [loaderState, setLoaderState] = useState(false);
-  const [createdState, setCreatedState] = useState(false);
-
-  /*const [selectedDate, setSelectedDate] = useState(new Date());
-  
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const resetDate = () => {
-    setSelectedDate(new Date());
-  };*/
+  const [createdState, setCreatedState] = useState(false); 
 
   async function submitNewSaving(data) {
     try {
@@ -77,7 +62,6 @@ function CreateSaving(props) {
       })
       setLoaderState(false);
       setCreatedState(true);
-      console.log('New saving created!');
       window.location.reload();
     } catch (err) {
       console.log({ err });
@@ -86,8 +70,6 @@ function CreateSaving(props) {
   
   return (
     <div className="card-container card-savings">
-      {/*<Card className="card-fintrack" variant="outlined">
-        <CardContent>*/}
           {props.title && <CardTitle title="Create New Savings" />}
           <ThemeProvider theme={theme}>
             <Formik
@@ -115,12 +97,10 @@ function CreateSaving(props) {
                 return errors;
               }}
               onSubmit={(data, { resetForm }) => {
-                setLoaderState(true);
-                //console.log(data, selectedDate.toLocaleDateString());
+                setLoaderState(true); 
                 const formattedDate = splitDate(data.date.toLocaleDateString());
                 const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name, data.value, data.repeat, data.note];
-                submitNewSaving(array);
-                //resetDate();
+                submitNewSaving(array); 
                 resetForm();
               }}
             >
@@ -188,8 +168,6 @@ function CreateSaving(props) {
               )}
             </Formik>
           </ThemeProvider>
-        {/*</CardContent>
-      </Card>*/}
     </div>
   );
 }

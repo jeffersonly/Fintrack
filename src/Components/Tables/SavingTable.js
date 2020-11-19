@@ -26,7 +26,6 @@ const columnTitles = [
 ];
 
 function SavingTable() {
-
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
@@ -180,9 +179,7 @@ function SavingTable() {
         id: event
       }
       await API.graphql(graphqlOperation(deleteSaving, { input: id }));
-      console.log('Deleted saving');
       updateSavingResult();
-      //window.location.reload();
     }
     catch (error) {
       console.log('Error on delete saving', error);

@@ -7,7 +7,6 @@ import { onKeyDown } from '../../Cards/Split/SplitFunctions';
 import '../../Cards/Profile.css';
 
 function EditProfile(props) {
-
   const [show, setShow] = useState(props.openEdit);
 
   //used in email validation - RFC 2822 standard
@@ -56,7 +55,6 @@ function EditProfile(props) {
                 return errors;
               }}
               onSubmit={(data) => {
-                console.log(data);
                 props.updateEmail(data.email);
               }}
             >

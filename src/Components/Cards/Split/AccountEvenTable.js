@@ -35,7 +35,6 @@ function AccountEvenTable() {
     try {
       const splitEvenData = await API.graphql(graphqlOperation(listSplitEvens));
       const list = splitEvenData.data.listSplitEvens.items;
-      console.log(list);
       setItems(list);
     } catch (error) {
       console.log(error);

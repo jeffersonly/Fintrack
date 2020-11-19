@@ -6,10 +6,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
 import Modal from 'react-bootstrap/Modal';
 import Loader from 'react-loader-spinner';
-
 import { API } from 'aws-amplify';
 import { createSpending } from '../../../graphql/mutations';
-
 import TableField from '../../InputFields/TableField';
 import { payments } from '../../InputFields/TableFieldSelects';
 import { splitDate } from '../../Tables/TableFunctions';
@@ -17,7 +15,6 @@ import Dropzone from '../../Dropzone/Dropzone';
 import WebcamCapture from '../../Webcam/Webcam';
 import '../../Cards/Card.css';
 import '../../Cards/Profile.css';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const useStyles = makeStyles({
@@ -51,16 +48,6 @@ function QuickTransaction (props) {
     setShow(props.openQuick);
   }, [props.openQuick]);
 
-  //const [selectedDate, setSelectedDate] = useState(new Date());
-
-  /*const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const resetDate = () => {
-    setSelectedDate(new Date());
-  };*/
-
   async function submitNewSpending(data) {
     try {
       await API.graphql({
@@ -81,7 +68,6 @@ function QuickTransaction (props) {
       })
       setLoaderState(false);
       setCreatedState(true);
-      console.log('New spending created!');
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -103,24 +89,6 @@ function QuickTransaction (props) {
         </Modal.Header>
         <Modal.Body>
           <div className="editprofile-textfield">
-            {/*<DayPickerInput
-              formatDate={formatDate}
-              parseDate={parseDate}
-              placeholder={`${formatDate(new Date())}`}
-              dayPickerProps={{todayButton: 'Go to Today'}}
-              style={{ 
-              }}
-            />
-              <TextField
-                className={classes.textfield}
-                id="date"
-                variant="outlined"
-                label="Date"
-                type="date"
-                fullWidth
-                defaultValue={new Date()}
-                InputLabelProps={{shrink: true}}
-              />*/}
             <Formik
               initialValues={{
                 date: new Date(),
@@ -130,8 +98,6 @@ function QuickTransaction (props) {
               }}
               validate={values => {
                 const errors = {};
-          
-                //doesn't print
                 if (!values.date) {
                   errors.date = "Required";
                 }
@@ -146,8 +112,6 @@ function QuickTransaction (props) {
               }}
               onSubmit={(data, { resetForm }) => {
                 setLoaderState(true);
-                //console.log(data.date.toLocaleDateString())
-                //console.log(data, selectedDate.toLocaleDateString());
                 const formattedDate = splitDate(data.date.toLocaleDateString());
                 const array = [formattedDate[0], formattedDate[1], formattedDate[2], data.name,
                 data.payment, data.value, "", "Never", ""];

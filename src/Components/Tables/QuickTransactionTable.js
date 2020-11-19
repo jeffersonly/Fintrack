@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
-
 import { API, graphqlOperation } from "aws-amplify";
 import { listSpendings } from '../../graphql/queries';
-
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import QuickTransaction from '../Modals/Spending/QuickTransaction';
@@ -18,7 +16,6 @@ const columnTitles = [
 ];
 
 function QuickTransactionTable () {
-  
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 

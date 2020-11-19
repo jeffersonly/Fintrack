@@ -4,10 +4,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Carousel from 'react-bootstrap/Carousel';
 import { Row, Col } from 'react-bootstrap';
-
 import { API, graphqlOperation } from "aws-amplify";
 import { listGoals } from '../../../graphql/queries';
-
 import MonthlyExpenses from '../../Tables/MonthlyExpenses';
 import SavingsGraph from '../../Graphs/SavingsGraph';
 import TransactionsGraph from '../../Graphs/TransactionsGraph';
@@ -37,8 +35,7 @@ function NotificationCenter () {
   async function getGoalInformation () {
     try {
       const goalData = await API.graphql(graphqlOperation(listGoals));
-      const goalList = goalData.data.listGoals.items;
-      console.log(goalList);
+      const goalList = goalData.data.listGoals.items; 
       if (goalList.length === 0) {
         setSpendingGoal(0);
         setSavingGoal(0);
@@ -54,9 +51,6 @@ function NotificationCenter () {
 
   return (
     <div className="notifcenter-container">
-      {/*<Typography className="notifcenter-table-title" align="center">
-          Overview
-      </Typography>*/}
       <ThemeProvider theme={theme}>
         <Carousel className="d-none d-sm-block">
           <Carousel.Item as={Card}>
@@ -79,7 +73,6 @@ function NotificationCenter () {
               </CardContent>
             </Card>
           </Carousel.Item>
-          {/** */}
           <Carousel.Item as={Card}>
             <Card className="notifcenter-card" variant="outlined">
               <CardContent>
@@ -120,9 +113,7 @@ function NotificationCenter () {
             <SavingNotification saving={savingGoal}/>
           </div>
           <div className="overview">
-            {/** */}
             <QuickTransactionTable />
-            
             <br />
             <br />
             <TransactionsGraph />

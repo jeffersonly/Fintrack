@@ -27,7 +27,6 @@ export async function calculateSavingsMonthTotal () {
     
     const savingsData = await API.graphql(graphqlOperation(listSavings, {filter: filter}));
     const savingsList = savingsData.data.listSavings.items;
-    //console.log(savingsList[0].value);
     for (var i = 0; i < savingsList.length; i++) {
       switch (savingsList[i].month) {
         case "01":
@@ -94,7 +93,6 @@ export async function calculateSpendingsMonthTotal () {
     
     const spendingsData = await API.graphql(graphqlOperation(listSpendings, {filter: filter}));
     const spendingsList = spendingsData.data.listSpendings.items;
-    //console.log(savingsList[0].value);
     for (var i = 0; i < spendingsList.length; i++) {
       switch (spendingsList[i].month) {
         case "01":

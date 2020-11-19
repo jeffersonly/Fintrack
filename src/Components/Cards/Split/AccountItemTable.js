@@ -35,13 +35,11 @@ function AccountEvenTable() {
     try {
       const splitItemData = await API.graphql(graphqlOperation(listSplitItems));
       const list = splitItemData.data.listSplitItems.items;
-      /**/
       for (var i = 0; i < list.length; i++){
         list[i].names = (list[i].names).split(" ").join("\n")
         list[i].total = (list[i].total).split(" ").join("\n")
         list[i].split = (list[i].split).split(" ").join("\n")
       }
-      console.log(list);
       setItems(list);
     } catch (error) {
       console.log(error);

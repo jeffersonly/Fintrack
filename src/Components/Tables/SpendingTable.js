@@ -27,7 +27,6 @@ const columnTitles = [
 ];
 
 function SpendingTable() {
-
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
@@ -129,24 +128,13 @@ function SpendingTable() {
       let webcamLink = await Storage.get(key, {
         contentType: "text/html",
       });
-      console.log(webcamLink);
       await getImageSrc(webcamLink)
         .then(function (result) {
-          //console.log(result);
           imageURL = result;
         })
         .catch(function (err) {
           console.log(err);
         })
-      /*getImageSrc(webcamLink, (err, data) => {
-        if (err !== null) {
-          console.log(err);
-        }
-        else {
-          console.log(data);
-          return data;
-        }
-      });*/
     }
     else {
       imageURL = await Storage.get(key);
@@ -193,7 +181,6 @@ function SpendingTable() {
         }
       }
       list[i].url = url;
-      //list[i].imageName = imageName;
     }
   } 
 
@@ -204,7 +191,6 @@ function SpendingTable() {
         const spendingList = spendingData.data.listSpendings.items;
         await fetchImageLink(spendingList);
         fetchFilteredPayment(spendingList);
-        console.log(spendingList);
       } catch (error) {
         console.log('Error on fetching spending', error);
       }
@@ -223,8 +209,6 @@ function SpendingTable() {
           }
         ]
       };
-      //const test = capitalizeSearch(search);
-      //console.log(test);
       const spendingData = await API.graphql(graphqlOperation(listSpendings, { filter: filter }));
       const spendingList = spendingData.data.listSpendings.items;
       if (spendingList.length > 0) {
@@ -271,7 +255,6 @@ function SpendingTable() {
         id: event
       }
       await API.graphql(graphqlOperation(deleteSpending, { input: id }));
-      console.log('Deleted spending');
       updateSpendingsResult();
     }
     catch (error) {
@@ -281,7 +264,6 @@ function SpendingTable() {
 
   const handleFilter = (event) => {
     setFilter({ ...filter, [event.target.name]: event.target.checked });
-    console.log(filter);
   };
 
   function renderFilter() {
@@ -385,7 +367,6 @@ function SpendingTable() {
                           <TableCell className="d-none d-md-table-cell" align="center">{spending.payment}</TableCell>
                           <TableCell align="center">${spending.value}</TableCell>
                           <TableCell className="d-none d-md-table-cell" align="center">{spending.category}</TableCell>
-                          {/*<TableCell className="d-none d-md-table-cell" align="center">{uploadReceiptColumn(spending.url, spending.imageName)}</TableCell>*/}
                           <TableCell align="center">
                             <IconButton
                               className="table-icon"
@@ -402,7 +383,6 @@ function SpendingTable() {
                                   repeat: spending.repeat,
                                   note: spending.note,
                                   url: spending.url,
-                                  //imageName: spending.imageName
                                 })
                                 setShowMore(true);
                               }}>
