@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {
   Button, Card, Checkbox, FormControl, FormControlLabel, FormGroup,
-  FormLabel, IconButton, InputAdornment, Table, TableBody, TableCell,
-  TableContainer, TableRow, TextField, Typography
+  FormLabel, IconButton, InputAdornment, Link, Table, TableBody, 
+  TableCell, TableContainer, TableRow, TextField, Typography
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, FilterList, Info, Search } from '@material-ui/icons';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Modal } from 'react-bootstrap';
 
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { listSpendings} from '../../graphql/queries';
 import { deleteSpending } from '../../graphql/mutations';
 
@@ -25,6 +25,7 @@ const columnTitles = [
   { id: "payment", label: "Form of Payment", align: "center", style: "d-none d-md-table-cell" },
   { id: "value", label: "Value", align: "center", numeric: true },
   { id: "category", label: "Category", align: "center", style: "d-none d-md-table-cell" },
+  //{ id: "receipt", label: "Uploaded Receipt", align: "center", style: "d-none d-md-table-cell" },
   { id: "info", label: "More Information", align: "center" },
 ];
 
@@ -34,10 +35,13 @@ function SpendingTable() {
   const [orderBy, setOrderBy] = useState('date');
 
   const [spendings, setSpending] = useState([]);
+  const [imageError, setImageError] = useState("");
 
   const [search, setSearch] = useState("");
   const [status, setStatusBase] = useState("");
   const [btnFilter, setBtnFilter] = useState(false);
+  //const [webcamPic, setWebcamPic] = useState(false);
+  //const [dropzonePic, setDropzonePic] = useState(false);
 
   const [openAlert, setOpenAlert] = useState(true);
 
@@ -62,6 +66,7 @@ function SpendingTable() {
   async function updateSpendingsResult() {
     const spendingData = await API.graphql(graphqlOperation(listSpendings));
     const spendingList = spendingData.data.listSpendings.items;
+    await fetchImageLink(spendingList);
     setSpending(spendingList);
   }
 
@@ -122,12 +127,92 @@ function SpendingTable() {
     }
   }
 
-  const fetchSpending = async () => {
-    const spendingData = await API.graphql(graphqlOperation(listSpendings));
-    const spendingList = spendingData.data.listSpendings.items;
+  //fetchSpending -> fetchImageLink (adds to List) -> getImageName / getImage -> getImageSrc 
+  async function getImage(key) {
+    let imageURL = "";
+    if (key.startsWith("picture-taken-from-camera-")) {
+      let webcamLink = await Storage.get(key, {
+        contentType: "text/html",
+      });
+      console.log(webcamLink);
+      await getImageSrc(webcamLink)
+        .then(function (result) {
+          //console.log(result);
+          imageURL = result;
+        })
+        .catch(function (err) {
+          console.log(err);
+        })
+      /*getImageSrc(webcamLink, (err, data) => {
+        if (err !== null) {
+          console.log(err);
+        }
+        else {
+          console.log(data);
+          return data;
+        }
+      });*/
+    }
+    else {
+      imageURL = await Storage.get(key);
+    }
+    return imageURL;
+  }
 
+  function getImageSrc(imageURL) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', imageURL);
+      xhr.responseType = 'text';
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          resolve(xhr.response);
+        } 
+        else {
+          reject(xhr.statusText);
+        }
+      };
+      xhr.onerror = () => {
+        reject("Something went wrong!");
+      }
+      xhr.send();
+    });
+  }
+
+  function getImageName(key) {
+    const name = key.split("/");
+    return name[1];
+  }
+
+  const fetchImageLink = async (list) => {
+    //get imageName + url for receipts -> add to spendingList
+    for (var i = 0; i < list.length; i++) {
+      let url = "";
+      let imageName = "";
+      if (list[i].file !== null) {
+        imageName = getImageName(list[i].file.key);
+        try {
+          url = await getImage(imageName);
+        } catch (err) {
+          setImageError(err);
+        }
+      }
+      list[i].url = url;
+      //list[i].imageName = imageName;
+    }
+  } 
+
+  const fetchSpending = async () => {
     if (search === "") {
-      fetchFilteredPayment(spendingList);
+      try {
+        const spendingData = await API.graphql(graphqlOperation(listSpendings));
+        const spendingList = spendingData.data.listSpendings.items;
+        await fetchImageLink(spendingList);
+        fetchFilteredPayment(spendingList);
+        console.log(spendingList);
+      } catch (error) {
+        console.log('Error on fetching spending', error);
+      }
     }
     else {
       /*
@@ -159,6 +244,7 @@ function SpendingTable() {
       const spendingData = await API.graphql(graphqlOperation(listSpendings, { filter: filter }));
       const spendingList = spendingData.data.listSpendings.items;
       if (spendingList.length > 0) {
+        await fetchImageLink(spendingList);
         fetchFilteredPayment(spendingList);
       }
       else {
@@ -167,6 +253,66 @@ function SpendingTable() {
       }
     }
   };
+
+  /*function handleShowWebcam() {
+    setWebcamPic(true);
+    setDropzonePic(false);
+  }
+
+  function handleShowDropzone() {
+    setWebcamPic(false);
+    setDropzonePic(true);
+  }
+
+  function showImageModal(url, imageName, pic) {
+    return (
+      <Modal
+        show={pic === "webcam" ? webcamPic : dropzonePic}
+        onHide={() => (pic === "webcam" ? setWebcamPic(false) : setDropzonePic(false))}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            {imageName}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body align="center">
+          <img src={url} alt="receipt"/>
+        </Modal.Body>
+      </Modal>
+    )
+  }
+
+  function uploadReceiptColumn (url, imageName) {
+    if (imageName !== undefined) {
+      if (imageName.startsWith("picture-taken-from-camera-")) {
+        //console.log("webcam", url);
+        return (
+          <>
+            <Link className="spending-link" color="secondary" onClick={() => handleShowWebcam()}>
+              {imageName}
+            </Link>
+            {webcamPic && showImageModal(url, imageName, "webcam")}
+          </>
+        );
+      }
+      else if (imageName !== "") {
+        return (
+          <a href={url} target="_blank">{imageName}</a>
+          /*<>
+            <Link className="spending-link" color="secondary" onClick={() => handleShowDropzone()}>
+              {imageName}
+            </Link>
+            {dropzonePic && showImageModal(url, imageName, "dropzone")}
+          </>
+        );
+      }
+    }
+    else {
+      return;
+    }
+  }*/
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -181,6 +327,21 @@ function SpendingTable() {
   };
 
   async function handleDelete(event) {
+    //delete s3 image
+    const spending = await API.graphql(graphqlOperation(listSpendings, {
+      filter: {
+        id: {
+          eq: itemID
+        }
+      }
+    }));
+    if (spending.data.listSpendings.items[0].file !== null) {
+      const img = getImageName(spending.data.listSpendings.items[0].file.key);
+      Storage.remove(img)
+        .then(result => console.log(result))
+        .catch(err => console.log(err));
+    }
+    //delete spending entry
     try {
       const id = {
         id: event
@@ -197,7 +358,7 @@ function SpendingTable() {
 
   const handleFilter = (event) => {
     setFilter({ ...filter, [event.target.name]: event.target.checked });
-    console.log(filter)
+    console.log(filter);
   };
 
   function renderFilter() {
@@ -282,6 +443,7 @@ function SpendingTable() {
             </Col>
           </Row>
           <Row>
+            {imageError && <p className="table-imageError">{imageError}</p>}
             <TableContainer className="table-container">
               <Table stickyHeader>
                 <TableHeader
@@ -300,6 +462,7 @@ function SpendingTable() {
                           <TableCell className="d-none d-md-table-cell" align="center">{spending.payment}</TableCell>
                           <TableCell align="center">${spending.value}</TableCell>
                           <TableCell className="d-none d-md-table-cell" align="center">{spending.category}</TableCell>
+                          {/*<TableCell className="d-none d-md-table-cell" align="center">{uploadReceiptColumn(spending.url, spending.imageName)}</TableCell>*/}
                           <TableCell align="center">
                             <IconButton
                               className="table-icon"
@@ -314,7 +477,9 @@ function SpendingTable() {
                                   value: spending.value,
                                   category: spending.category,
                                   repeat: spending.repeat,
-                                  note: spending.note
+                                  note: spending.note,
+                                  url: spending.url,
+                                  //imageName: spending.imageName
                                 })
                                 setShowMore(true);
                               }}>

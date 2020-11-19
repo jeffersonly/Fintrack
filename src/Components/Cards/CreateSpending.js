@@ -12,6 +12,8 @@ import { createSpending } from '../../graphql/mutations';
 import TableField from '../InputFields/TableField';
 import { repeats, payments, categories } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
+import Dropzone from '../Dropzone/Dropzone';
+import WebcamCapture from '../Webcam/Webcam';
 import '../Cards/Card.css';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -38,8 +40,7 @@ function CreateSpending () {
   const [loaderState, setLoaderState] = useState(false);
   const [createdState, setCreatedState] = useState(false);
   
-  /*
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  /*const [selectedDate, setSelectedDate] = useState(new Date());
   
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -47,8 +48,7 @@ function CreateSpending () {
 
   const resetDate = () => {
     setSelectedDate(new Date());
-  };
-  */
+  };*/
 
  async function submitNewSpending(data) {
   try {
@@ -178,6 +178,10 @@ function CreateSpending () {
               required={false}
               rowsMax={3}
             />
+            <div className="d-md-none">
+              <Dropzone />
+              <WebcamCapture />
+            </div>
             <Button
               className={classes.createbutton}
               disableElevation
