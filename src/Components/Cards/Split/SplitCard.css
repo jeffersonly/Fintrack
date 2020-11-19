@@ -130,6 +130,10 @@
   top: 300px;
 }
 
+.splititem-save {
+  margin-right: 5px !important;
+}
+
 .splititem-textfield {
   padding-left: 0px !important;
 }

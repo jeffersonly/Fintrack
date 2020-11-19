@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
+
 import { API, graphqlOperation } from "aws-amplify";
 import { listSplitEvens } from '../../../graphql/queries';
 import TableHeader from '../../Tables/TableHeader';
 import { formatDate, stableSort, getComparator } from '../../Tables/TableFunctions';
-import '../../Tables/Table.css';
-import '../../Graphs/Graphs.css';
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center" },
@@ -43,8 +42,8 @@ function AccountEvenTable() {
 
   return (
     <div>
-      <TableContainer className="table-quicktransaction">
-        <Table stickyHeader size="small">
+      <TableContainer className="table-splititem">
+        <Table stickyHeader>
           <TableHeader
             headCells={columnTitles}
             order={order}
