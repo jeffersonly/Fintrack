@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import Webcam from "react-webcam";
 import Predictions from '@aws-amplify/predictions';
 import DropzoneModal from '../Modals/DropzoneModal';
+import Loader from 'react-loader-spinner';
 
 function WebcamCapture(props) {
     const webcamRef = React.useRef(null);
     const [showWebcam, setShowWebcam] = useState(false); //state of whether to show webcam or not
     const [imageWithCost, setImageWithCost] = useState({}); 
     const [showModal, setShowModal] = useState(false); //state of whether to show modal or not w/ images
-
+    const [loaderState, setLoaderState] = useState(false);
 
     function convertToImg(imageSrc) {
         const b64 = imageSrc.split(",")[1];
@@ -20,6 +21,7 @@ function WebcamCapture(props) {
 
     //function to capture image from webcam
     const capture = React.useCallback(async () => {
+        setLoaderState(true);
         const imageSrc = webcamRef.current.getScreenshot();
         
         const file = convertToImg(imageSrc); 
@@ -48,6 +50,7 @@ function WebcamCapture(props) {
         .catch(err => console.log(err));
 
         setImageWithCost(costAndImgObj);
+        setLoaderState(false);
         setShowModal(true);
     }, [webcamRef]);
 
@@ -99,7 +102,7 @@ function WebcamCapture(props) {
     return (
         <>
             <div className="webcam-item-container">
-                {displayWebcam()}
+                {loaderState ? <Loader type="Bars" color="rgb(1, 114, 71)" height={"50%"} width={"100%"} /> : displayWebcam()}
             </div>
             <DropzoneModal 
                 show={showModal} 
@@ -107,6 +110,7 @@ function WebcamCapture(props) {
                 data={imageWithCost} 
                 from="webcam"
             />
+            
         </>
     );
 }

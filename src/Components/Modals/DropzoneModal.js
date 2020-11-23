@@ -64,7 +64,7 @@ export default function DropzoneModal(props) {
         <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="lg">
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Create New Transactions
+                    Create New Spendings
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className="show-grid">
