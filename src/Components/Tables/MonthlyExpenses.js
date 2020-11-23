@@ -51,7 +51,7 @@ function MonthlyExpenses() {
     }
 
     fetchMonthlyExpenses();
-  }, [today])
+  }, [])
 
   return (
     <div>
