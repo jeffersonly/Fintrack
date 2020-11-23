@@ -18,7 +18,7 @@ function LandingPage(props) {
                         <Col sm={6}>
                             <div className="landing-page-text-container">
                                 <h1 className="landing-header-text">FinTrack</h1>
-                                <h2 className="landing-text">Track Your Expenses</h2>
+                                <h2 className="landing-text">To Track Your Expenses</h2>
                                 <a className="landing-btn" href="#landing-page-2">Get Started</a>
                             </div>
                             
