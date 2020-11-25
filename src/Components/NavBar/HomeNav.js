@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import './HomeNav.css';
 
-function HomeNav () {
+function HomeNav() {
 
   const [color, setColor] = useState({sum: "rgb(1, 114, 71)", spend: "black", save: "black", split: "black", acc: "black"});
 
@@ -19,7 +19,6 @@ function HomeNav () {
     sessionStorage.setItem("current-page", JSON.stringify(color));
   });
 
-  //doesn't work when you use browser to navigate back and forth
   const handleClick = (pg) => {
     var obj = {
       "sum": "black",
@@ -34,7 +33,7 @@ function HomeNav () {
       }
     }
     setColor(obj);
-  }
+  };
   
   return (
     <div>

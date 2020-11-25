@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { calculateSpendingsMonthTotal, calculateSavingsMonthTotal, spendingsCategory } from './GetGraphData';
 import ChartistGraph from 'react-chartist';
 import Legend from 'chartist-plugin-legend';
-import ctAxisTitle from "chartist-plugin-axistitle";
+import ctAxisTitle from 'chartist-plugin-axistitle';
 import './Graphs.css';
 
 var Chartist = require("chartist");
@@ -10,7 +10,7 @@ var Chartist = require("chartist");
 var delays = 16,
   durations = 100;
 
-function Graphs (props) {
+function Graphs(props) {
   
   const [spendingsData, setSpendingsData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);

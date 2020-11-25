@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Button, Divider, InputAdornment } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form } from 'formik';
-import { API } from "aws-amplify";
+import { API } from 'aws-amplify';
 import { createGoal, updateGoal } from '../../../graphql/mutations';
 import TableField from '../../InputFields/TableField';
 import { onKeyDown } from '../../Cards/Split/SplitFunctions';
 import '../../Cards/Profile.css';
 
 function EditGoals(props) {
+
   const [show, setShow] = useState(props.openEdit);
 
   useEffect(() => {
@@ -52,86 +53,84 @@ function EditGoals(props) {
   }
 
   return (
-    <div>
-      <Modal
-        className="profile"
-        show={show}
-        onHide={props.closeEdit}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Edit Goals
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="editprofile-textfield">
-            <Formik
-              initialValues={{
-                spendings: props.spendings,
-                savings: props.savings
-              }}
-              validate={values => {
+    <Modal
+      className="profile"
+      show={show}
+      onHide={props.closeEdit}
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Edit Goals
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="editprofile-textfield">
+          <Formik
+            initialValues={{
+              spendings: props.spendings,
+              savings: props.savings
+            }}
+            validate={values => {
 
-                const errors = {};
+              const errors = {};
 
-                if (!values.spendings && values.spendings !== 0) {
-                  errors.spendings = "Required";
-                }
-                if (!values.savings && values.savings !== 0) {
-                  errors.savings = "Required";
-                }
+              if (!values.spendings && values.spendings !== 0) {
+                errors.spendings = "Required";
+              }
+              if (!values.savings && values.savings !== 0) {
+                errors.savings = "Required";
+              }
 
-                return errors;
-              }}
-              onSubmit={(data) => {
-                editGoals(data.spendings, data.savings);
-                props.updateGoals(data.spendings, data.savings);
-                props.closeEdit();
-              }}
-            >
-              {({ values, errors }) => (
-                <Form onKeyDown={onKeyDown}>
-                  <TableField
-                    InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
-                    label="Spending per Month"
-                    name="spendings"
-                    type="number"
-                  />
-                  <TableField
-                    InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
-                    label="Savings per Month"
-                    name="savings"
-                    type="number"
-                  />
-                  <Divider className="editprofile-divider"/>
-                  <div align="right">
-                    <Button
-                      className="editprofile-cancelbutton"
-                      disableElevation
-                      onClick={props.closeEdit}
-                      variant="contained"
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      className="profile-button"
-                      disableElevation
-                      disabled={(!values.spendings && values.spendings !== 0) || (!values.spendings && values.spendings !== 0) || (values.spendings === 0 && values.savings === 0)}
-                      type="submit"
-                      variant="contained"
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </Modal.Body>
-      </Modal>
-    </div>
+              return errors;
+            }}
+            onSubmit={(data) => {
+              editGoals(data.spendings, data.savings);
+              props.updateGoals(data.spendings, data.savings);
+              props.closeEdit();
+            }}
+          >
+            {({ values, errors }) => (
+              <Form onKeyDown={onKeyDown}>
+                <TableField
+                  InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
+                  label="Spending per Month"
+                  name="spendings"
+                  type="number"
+                />
+                <TableField
+                  InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>}}
+                  label="Savings per Month"
+                  name="savings"
+                  type="number"
+                />
+                <Divider className="editprofile-divider"/>
+                <div align="right">
+                  <Button
+                    className="editprofile-cancelbutton"
+                    disableElevation
+                    onClick={props.closeEdit}
+                    variant="contained"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    className="profile-button"
+                    disableElevation
+                    disabled={(!values.spendings && values.spendings !== 0) || (!values.spendings && values.spendings !== 0) || (values.spendings === 0 && values.savings === 0)}
+                    type="submit"
+                    variant="contained"
+                  >
+                    Save
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 }
 

@@ -9,8 +9,11 @@ const useStyles = makeStyles({
 });
 
 function TableField(props) {
+
   const classes = useStyles();
+
   const [field, meta] = useField(props);
+  
   const errorText = meta.error && meta.touched ? meta.error : "";
   const customText = props.helperText && meta.touched;
 

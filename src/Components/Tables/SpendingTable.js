@@ -6,9 +6,11 @@ import {
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, FilterList, Info, Search } from '@material-ui/icons';
 import { Row, Col } from 'react-bootstrap';
+
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { listSpendings} from '../../graphql/queries';
 import { deleteSpending } from '../../graphql/mutations';
+
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
@@ -19,7 +21,7 @@ import './Table.css';
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center" },
-  { id: "name", label: "Spendings Name", align: "center" },
+  { id: "name", label: "Spending Name", align: "center" },
   { id: "payment", label: "Form of Payment", align: "center", style: "d-none d-md-table-cell" },
   { id: "value", label: "Value", align: "center", numeric: true },
   { id: "category", label: "Category", align: "center", style: "d-none d-md-table-cell" },
@@ -27,6 +29,7 @@ const columnTitles = [
 ];
 
 function SpendingTable() {
+  
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
@@ -329,7 +332,7 @@ function SpendingTable() {
               <TextField
                 className="table-search"
                 fullWidth
-                helperText="by Spendings Name (case-sensitive) and Category"
+                helperText="by Spending Name (case-sensitive) and Category"
                 InputLabelProps={{ shrink: true, }}
                 InputProps={{
                   endAdornment: (

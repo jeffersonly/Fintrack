@@ -5,7 +5,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { Row, Col } from 'react-bootstrap';
 import EditGoals from '../Modals/Account/EditGoals';
 import GoalSVG from '../../Images/goals.svg';
-import { API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from 'aws-amplify';
 import { listGoals } from '../../graphql/queries';
 import './Profile.css';
 
@@ -15,9 +15,9 @@ const theme = createMuiTheme ({
       main: "rgb(1, 114, 71)",
     },
   }
-})
+});
 
-function Goals () {
+function Goals() {
 
   const [spendingGoal, setSpendingGoal] = useState();
   const [savingGoal, setSavingGoal] = useState();
@@ -29,7 +29,7 @@ function Goals () {
     getGoalInformation();
   }, [])
 
-  async function getGoalInformation () {
+  async function getGoalInformation() {
     try {
       const goalData = await API.graphql(graphqlOperation(listGoals));
       const goalList = goalData.data.listGoals.items;
@@ -47,7 +47,7 @@ function Goals () {
     }
   }
 
-  function update (spending, saving) {
+  function update(spending, saving) {
     setSpendingGoal(spending);
     setSavingGoal(saving);
   }

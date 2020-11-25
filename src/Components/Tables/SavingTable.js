@@ -6,9 +6,11 @@ import {
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, FilterList, Info, Search } from '@material-ui/icons';
 import { Row, Col } from 'react-bootstrap';
+
 import { API, graphqlOperation } from 'aws-amplify';
 import { listSavings} from '../../graphql/queries';
 import { deleteSaving } from '../../graphql/mutations';
+
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
@@ -26,6 +28,7 @@ const columnTitles = [
 ];
 
 function SavingTable() {
+  
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 

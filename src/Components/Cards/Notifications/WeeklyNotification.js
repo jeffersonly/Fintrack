@@ -5,7 +5,7 @@ import { splitDate } from '../../Tables/TableFunctions';
 import WeeklySVG from '../../../Images/weekly.svg';
 import './Notification.css';
 
-function WeeklyNotification () {
+function WeeklyNotification() {
 
   const [weeklySavings, setWeeklySavings] = useState();
   const [weeklySpendings, setWeeklySpendings] = useState();

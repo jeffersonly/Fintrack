@@ -20,6 +20,7 @@ const theme = createMuiTheme ({
 })
 
 function Profile() {
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [showEditProfile, setEditProfile] = useState(false);
@@ -44,7 +45,7 @@ function Profile() {
       .catch(err => setError(err));
   };
 
-  async function update (em) {
+  async function update(em) {
     try {
       const user = await Auth.currentAuthenticatedUser();
       await Auth.updateUserAttributes(user, { 'email': em });
@@ -98,7 +99,6 @@ function Profile() {
     if (reason === 'clickaway') {
       return;
     }
-
     setProfileAlert(false);
     setPasswordAlert(false);
   };
@@ -126,7 +126,8 @@ function Profile() {
                       onClick={() => handleShowConfirmProfile()}
                     >
                       **Click to verify email
-                    </Link>}
+                    </Link>
+                  }
                 </div>
                 <div align="right">
                   <Button 

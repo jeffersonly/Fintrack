@@ -1,49 +1,49 @@
  .inputfield-box {
-    width: 100%;
-    height: 40px;
-    position: relative;
-    background: transparent;
-    margin-top: 10px;
-    margin-bottom: 30px;
+  width: 100%;
+  height: 40px;
+  position: relative;
+  background: transparent;
+  margin-top: 10px;
+  margin-bottom: 30px;
 }
 
 .inputfield {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border: 2px solid rgb(1, 114, 71, 0.65);
-    color: rgb(1, 114, 71);
-    padding: 15px;
-    border-radius: 10px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgb(1, 114, 71, 0.65);
+  color: rgb(1, 114, 71);
+  padding: 15px;
+  border-radius: 10px;
 }
 
 .inputfield-name {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    transition: all 0.5s ease;
-    font-size: 18px;
-    pointer-events: none;
-    color: rgb(1, 114, 71, 0.65);
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  transition: all 0.5s ease;
+  font-size: 18px;
+  pointer-events: none;
+  color: rgb(1, 114, 71, 0.65);
 }
 
 .inputfield-box input:focus + span, .inputfield-box input:valid + span {
-    top: -2px;
-    left: 10px;
-    font-size: 14px;
-    color: rgb(1, 114, 71);
-    padding: 1px 4px;
-    background: white;
-    font-weight: bold;
+  top: -2px;
+  left: 10px;
+  font-size: 14px;
+  color: rgb(1, 114, 71);
+  padding: 1px 4px;
+  background: white;
+  font-weight: bold;
 }
 
 .inputfield-box input:focus {
-    border: 2px solid rgb(1, 114, 71);
+  border: 2px solid rgb(1, 114, 71);
 }
 
 .input-error-msg {
-    color: red;
-    font-size: 12px;
-    padding-left: 10px;
+  color: red;
+  font-size: 12px;
+  padding-left: 10px;
 }

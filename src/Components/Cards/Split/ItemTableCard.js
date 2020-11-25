@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Button, Card, CardContent, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Row, Col } from 'react-bootstrap';
-
 import SplitItemTable from '../../Tables/SplitItemTable';
 import './SplitCard.css';
 
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function ItemTableCard (props) {
+function ItemTableCard(props) {
 
   const classes = useStyles();
 

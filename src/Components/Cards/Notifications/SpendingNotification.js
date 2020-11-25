@@ -4,7 +4,7 @@ import { getMonthSpendingsTotal, getMonthYear } from './NotificationData';
 import SpendingsSVG from '../../../Images/spendings.svg';
 import './Notification.css';
 
-function SpendingNotification (props) {
+function SpendingNotification(props) {
 
   const [spendings, setSpendings] = useState();
 

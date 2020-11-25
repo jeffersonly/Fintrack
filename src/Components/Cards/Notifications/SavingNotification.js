@@ -4,7 +4,7 @@ import { getMonthSavingsTotal, getMonthYear } from './NotificationData';
 import SavingsSVG from '../../../Images/savings.svg';
 import './Notification.css';
 
-function SavingNotification (props) {
+function SavingNotification(props) {
 
   const [savings, setSavings] = useState();
 

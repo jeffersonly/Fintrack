@@ -10,12 +10,13 @@ import '../Graphs/Graphs.css';
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center" },
-  { id: "name", label: "Spendings Name", align: "center" },
+  { id: "name", label: "Spending Name", align: "center" },
   { id: "payment", label: "Form of Payment", align: "center", style: "d-none d-md-block" },
   { id: "value", label: "Value", align: "center", numeric: true },
 ];
 
 function QuickTransactionTable () {
+
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
@@ -31,9 +32,9 @@ function QuickTransactionTable () {
           setRecent(spendingList);
         } 
         else {
-        const sorted = stableSort(spendingList, getComparator(order, orderBy));
-        const mostRecent = [sorted[0], sorted[1], sorted[2], sorted[3], sorted[4], sorted[5]];
-        setRecent(mostRecent);
+          const sorted = stableSort(spendingList, getComparator(order, orderBy));
+          const mostRecent = [sorted[0], sorted[1], sorted[2], sorted[3], sorted[4], sorted[5]];
+          setRecent(mostRecent);
         }
       } catch (error) {
         console.log('Error on fetching spending', error);

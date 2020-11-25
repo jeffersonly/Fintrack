@@ -3,7 +3,9 @@ import { TableCell, TableHead, TableRow, TableSortLabel } from '@material-ui/cor
 import './Table.css';
 
 function TableHeader(props) {
+
   const { headCells, order, orderBy, onRequestSort } = props;
+  
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
