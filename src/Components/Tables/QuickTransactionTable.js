@@ -24,24 +24,32 @@ function QuickTransactionTable () {
   const [add, setAdd] = useState(false);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     const getMostRecent = async () => {
       try {
         const spendingData = await API.graphql(graphqlOperation(listSpendings));
         const spendingList = spendingData.data.listSpendings.items;
         if (spendingList.length < 6){
-          setRecent(spendingList);
+          return spendingList;
         } 
         else {
           const sorted = stableSort(spendingList, getComparator(order, orderBy));
           const mostRecent = [sorted[0], sorted[1], sorted[2], sorted[3], sorted[4], sorted[5]];
-          setRecent(mostRecent);
+          return mostRecent;
         }
       } catch (error) {
         console.log('Error on fetching spending', error);
       }
     };
 
-    getMostRecent();
+    getMostRecent().then(list => {
+      if (isSubscribed) {
+        setRecent(list);
+      }
+    })
+
+    return() => isSubscribed = false;
   }, [order, orderBy]);
 
   const handleRequestSort = (event, property) => {

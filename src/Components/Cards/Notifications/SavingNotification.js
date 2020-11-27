@@ -9,13 +9,16 @@ function SavingNotification(props) {
   const [savings, setSavings] = useState();
 
   useEffect(() => {
-    savingTotal();
-  }, []);
+    let isSubscribed = true;
 
-  async function savingTotal() {
-    const result = await getMonthSavingsTotal();
-    setSavings(result.toFixed(2));
-  }
+    getMonthSavingsTotal().then(result => {
+      if (isSubscribed) {
+        setSavings(result.toFixed(2));
+      }
+    })
+
+    return () => isSubscribed = false;
+  }, []);
 
   return (
     <Card variant="outlined" className="notification-card notification-saving">

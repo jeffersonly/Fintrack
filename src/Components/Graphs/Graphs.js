@@ -17,25 +17,28 @@ function Graphs(props) {
   const [savingsData, setSavingsData] = useState([]);
 
   useEffect(() => {
-    getSpendingTotal();
-    getCategory();
-    getSavingTotal();
+    let isSubscribed = true;
+
+    calculateSpendingsMonthTotal().then(result => {
+      if (isSubscribed) {
+        setSpendingsData(result);
+      }
+    })
+
+    spendingsCategory().then(result => {
+      if (isSubscribed) {
+        setCategoryData(result);
+      }
+    })
+
+    calculateSavingsMonthTotal().then(result => {
+      if (isSubscribed) {
+        setSavingsData(result);
+      }
+    })
+
+    return () => isSubscribed = false;
   }, []);
-
-  async function getSpendingTotal() {
-    const result = await calculateSpendingsMonthTotal();
-    setSpendingsData(result);
-  }
-
-  async function getCategory() {
-    const result = await spendingsCategory();
-    setCategoryData(result);
-  }
-
-  async function getSavingTotal() {
-    const result = await calculateSavingsMonthTotal();
-    setSavingsData(result);
-  }
 
   function transInformation() {
     if (props.data === "trans") {

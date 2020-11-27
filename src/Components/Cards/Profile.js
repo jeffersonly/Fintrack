@@ -17,7 +17,7 @@ const theme = createMuiTheme ({
       main: "rgb(1, 114, 71)",
     },
   }
-})
+});
 
 function Profile() {
 
@@ -32,18 +32,20 @@ function Profile() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getUser();
-  }, [])
+    let isSubscribed = true;
 
-  const getUser = () => {
     Auth.currentUserInfo()
-      .then(data => {
+    .then(data => {
+      if (isSubscribed) {
         setUsername(data.username);
         setEmail(data.attributes.email);
         setConfirmed(data.attributes.email_verified);
-      })
-      .catch(err => setError(err));
-  };
+      }
+    })
+    .catch(err => setError(err));
+    
+    return () => isSubscribed = false;
+  }, []);
 
   async function update(em) {
     try {

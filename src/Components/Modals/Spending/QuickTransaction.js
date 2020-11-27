@@ -141,7 +141,7 @@ function QuickTransaction(props) {
                   />
                 </MuiPickersUtilsProvider>
                 <TableField
-                  label="Spendings Name"
+                  label="Spending Name"
                   name="name"
                   placeholder="Bob's Birthday Gift"
                 />

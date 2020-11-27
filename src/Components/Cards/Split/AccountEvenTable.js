@@ -21,23 +21,31 @@ function AccountEvenTable() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    getSplitEven();
+    let isSubscribed = true;
+
+    async function getSplitEven() {
+      try {
+        const splitEvenData = await API.graphql(graphqlOperation(listSplitEvens));
+        const list = splitEvenData.data.listSplitEvens.items;
+        return list;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getSplitEven().then(list => {
+      if (isSubscribed) {
+        setItems(list);
+      }
+    })
+    
+    return () => isSubscribed = false;
   }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
-
-  const getSplitEven = async () => {
-    try {
-      const splitEvenData = await API.graphql(graphqlOperation(listSplitEvens));
-      const list = splitEvenData.data.listSplitEvens.items;
-      setItems(list);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (

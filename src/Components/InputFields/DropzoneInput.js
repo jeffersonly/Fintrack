@@ -174,7 +174,7 @@ function DropzoneInput(props) {
               />
             </MuiPickersUtilsProvider>
             <TableField
-              label="Spendings Name"
+              label="Spending Name"
               name="name"
               placeholder="Costco"
             />

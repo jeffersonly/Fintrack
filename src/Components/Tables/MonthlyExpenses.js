@@ -1,8 +1,9 @@
 import React, { useState, useEffect }  from 'react';
-import { makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { makeStyles, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listSpendings } from '../../graphql/queries';
-import { formatDate } from './TableFunctions';
+import { formatDate, stableSort, getComparator } from './TableFunctions';
+import TableHeader from './TableHeader';
 
 const useStyles = makeStyles({
   container: {
@@ -22,12 +23,16 @@ const columnTitles = [
 function MonthlyExpenses() {
 
   const classes = useStyles();
-  const today = new Date();
 
-  const [expense, setExpense] = useState([])
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('date');
+  const [expense, setExpense] = useState([]);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     async function fetchMonthlyExpenses() {
+      const today = new Date();
       try {
         let filter = {
           or: [
@@ -43,14 +48,26 @@ function MonthlyExpenses() {
             spendingList.splice(i, 1);
           }
         }
-        setExpense([...spendingList]);
+        return spendingList;
       } catch (error) {
         return "Error getting monthly expenses";
       }
     }
 
-    fetchMonthlyExpenses();
+    fetchMonthlyExpenses().then(list => {
+      if (isSubscribed) {
+        setExpense(list);
+      }
+    })
+    
+    return () => isSubscribed = false;
   }, []);
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
   return (
     <div>
@@ -59,23 +76,24 @@ function MonthlyExpenses() {
       </Typography>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              {columnTitles.map((title) => (
-                <TableCell key={title.id} align={title.align} size={title.size}>
-                  {title.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <TableHeader
+            headCells={columnTitles}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
           <TableBody>
-            {expense.map(row => (
-              <TableRow key={row.id}>
-                <TableCell align="center">{formatDate(row.month, row.day, row.year)}</TableCell>
-                <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">${row.value}</TableCell>
-              </TableRow>
-            ))}
+            {stableSort(expense, getComparator(order, orderBy))
+              .map((row) => {
+                return (
+                  <TableRow hover key={row.id}>
+                    <TableCell align="center">{formatDate(row.month, row.day, row.year)}</TableCell>
+                    <TableCell align="center">{row.name}</TableCell>
+                    <TableCell align="center">${row.value}</TableCell>
+                  </TableRow>
+                );
+              })
+            }
           </TableBody>
           <TableBody>
           </TableBody>

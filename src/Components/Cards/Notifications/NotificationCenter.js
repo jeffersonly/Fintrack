@@ -30,25 +30,33 @@ function NotificationCenter() {
   const [savingGoal, setSavingGoal] = useState();
 
   useEffect(() => {
-    getGoalInformation();
-  })
+    let isSubscribed = true;
 
-  async function getGoalInformation() {
-    try {
-      const goalData = await API.graphql(graphqlOperation(listGoals));
-      const goalList = goalData.data.listGoals.items; 
-      if (goalList.length === 0) {
-        setSpendingGoal(0);
-        setSavingGoal(0);
+    async function getGoalInformation() {
+      try {
+        const goalData = await API.graphql(graphqlOperation(listGoals));
+        const goalList = goalData.data.listGoals.items;
+        return goalList;
+      } catch (error) {
+        console.log(error);
       }
-      else {
-        setSpendingGoal(goalList[0].spendingsGoal);
-        setSavingGoal(goalList[0].savingsGoal);
-      }
-    } catch (error) {
-      console.log(error);
     }
-  }
+
+    getGoalInformation().then(list => {
+      if (isSubscribed) {
+        if (list.length === 0) {
+          setSpendingGoal(0);
+          setSavingGoal(0);
+        }
+        else {
+          setSpendingGoal(list[0].spendingsGoal);
+          setSavingGoal(list[0].savingsGoal);
+        }
+      }
+    })
+    
+    return () => isSubscribed = false;
+  }, []);
 
   return (
     <div className="notifcenter-container">

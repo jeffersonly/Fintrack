@@ -22,28 +22,36 @@ function AccountEvenTable() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    getSplitItem();
+    let isSubscribed = true;
+
+    async function getSplitItem() {
+      try {
+        const splitItemData = await API.graphql(graphqlOperation(listSplitItems));
+        const list = splitItemData.data.listSplitItems.items;
+        for (var i = 0; i < list.length; i++){
+          list[i].names = (list[i].names).split(" ").join("\n");
+          list[i].total = (list[i].total).split(" ").join("\n");
+          list[i].split = (list[i].split).split(" ").join("\n");
+        }
+        return list;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getSplitItem().then(list => {
+      if (isSubscribed) {
+        setItems(list);
+      }
+    })
+    
+    return () => isSubscribed = false;
   }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
-
-  const getSplitItem = async () => {
-    try {
-      const splitItemData = await API.graphql(graphqlOperation(listSplitItems));
-      const list = splitItemData.data.listSplitItems.items;
-      for (var i = 0; i < list.length; i++){
-        list[i].names = (list[i].names).split(" ").join("\n");
-        list[i].total = (list[i].total).split(" ").join("\n");
-        list[i].split = (list[i].split).split(" ").join("\n");
-      }
-      setItems(list);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (

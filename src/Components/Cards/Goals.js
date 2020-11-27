@@ -26,26 +26,34 @@ function Goals() {
   const [showEditGoal, setEditGoal] = useState(false);
 
   useEffect(() => {
-    getGoalInformation();
-  }, [])
+    let isSubscribed = true;
 
-  async function getGoalInformation() {
-    try {
-      const goalData = await API.graphql(graphqlOperation(listGoals));
-      const goalList = goalData.data.listGoals.items;
-      if (goalList.length === 0) {
-        setSpendingGoal(0);
-        setSavingGoal(0);
+    async function getGoalInformation() {
+      try {
+        const goalData = await API.graphql(graphqlOperation(listGoals));
+        const goalList = goalData.data.listGoals.items;
+        return goalList;
+      } catch (error) {
+        setError(error);
       }
-      else {
-        setSpendingGoal(goalList[0].spendingsGoal);
-        setSavingGoal(goalList[0].savingsGoal);
-        setGoalID(goalList[0].id);
-      }
-    } catch (error) {
-      setError(error);
     }
-  }
+
+    getGoalInformation().then(list => {
+      if (isSubscribed) {
+        if (list.length === 0) {
+          setSpendingGoal(0);
+          setSavingGoal(0);
+        }
+        else {
+          setSpendingGoal(list[0].spendingsGoal);
+          setSavingGoal(list[0].savingsGoal);
+          setGoalID(list[0].id);
+        }
+      }
+    })
+    
+    return () => isSubscribed = false;
+  }, []);
 
   function update(spending, saving) {
     setSpendingGoal(spending);
