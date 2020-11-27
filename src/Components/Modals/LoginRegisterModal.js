@@ -117,7 +117,10 @@ function LoginRegisterModal(props) {
           setLoaderState(false);
           window.location = "/summary";
       })
-      .catch(err => setAuthError(err.message));
+      .catch(err => {
+          setAuthError(err.message);
+          setLoaderState(false);
+      });
     }
 
     if (registerTabSelected) {
