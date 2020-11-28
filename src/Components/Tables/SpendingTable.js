@@ -4,11 +4,14 @@ import {
   FormLabel, IconButton, InputAdornment, Table, TableBody, 
   TableCell, TableContainer, TableRow, TextField, Typography
 } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { ExpandLess, ExpandMore, FilterList, Info, Search } from '@material-ui/icons';
 import { Row, Col } from 'react-bootstrap';
+
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { listSpendings} from '../../graphql/queries';
 import { deleteSpending } from '../../graphql/mutations';
+
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
@@ -19,7 +22,7 @@ import './Table.css';
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center" },
-  { id: "name", label: "Spendings Name", align: "center" },
+  { id: "name", label: "Spending Name", align: "center" },
   { id: "payment", label: "Form of Payment", align: "center", style: "d-none d-md-table-cell" },
   { id: "value", label: "Value", align: "center", numeric: true },
   { id: "category", label: "Category", align: "center", style: "d-none d-md-table-cell" },
@@ -27,10 +30,12 @@ const columnTitles = [
 ];
 
 function SpendingTable() {
+  
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
   const [spendings, setSpending] = useState([]);
+  const [load, setLoad] = useState(false);
   const [imageError, setImageError] = useState("");
 
   const [search, setSearch] = useState("");
@@ -50,24 +55,39 @@ function SpendingTable() {
   });
 
   useEffect(() => {
-    fetchSpending();
+    let isSubscribed = true;
+
+    fetchSpending().then(result => {
+      if (isSubscribed) {
+        setSpending(result);
+      }
+    })
+
+    return () => isSubscribed = false;
   }, [filter]);
 
   useEffect(() => {
-    async function getSpendingsRepeat() {
-      await getSpendingRepeat();
-      updateSpendingsResult();
-    }
+    let isSubscribed = true;
+    setLoad(true);
 
-    getSpendingsRepeat();
+    getSpendingRepeat().then(function() {
+      if (isSubscribed) {
+        API.graphql(graphqlOperation(listSpendings)).then(result => {
+          if (isSubscribed) {
+            const spendingList = result.data.listSpendings.items;
+            fetchImageLink(spendingList).then(function () {
+              if (isSubscribed) {
+                setSpending(spendingList);
+                setLoad(false);
+              }
+            })
+          }
+        })
+      }
+    })
+
+    return () => isSubscribed = false;
   }, []);
-
-  async function updateSpendingsResult() {
-    const spendingData = await API.graphql(graphqlOperation(listSpendings));
-    const spendingList = spendingData.data.listSpendings.items;
-    await fetchImageLink(spendingList);
-    setSpending(spendingList);
-  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -89,25 +109,25 @@ function SpendingTable() {
 
   function fetchFilteredPayment(spendingList) {
     if (!Cash && Credit && Debit) {
-      setSpending(filteringPayment(spendingList, ["Cash"]));
+      return filteringPayment(spendingList, ["Cash"]);
     }
     else if (Cash && Credit && !Debit) {
-      setSpending(filteringPayment(spendingList, ["Debit"]));
+      return filteringPayment(spendingList, ["Debit"]);
     }
     else if (Cash && !Credit && Debit) {
-      setSpending(filteringPayment(spendingList, ["Credit"]));
+      return filteringPayment(spendingList, ["Credit"]);
     }
     else if (Cash && !Credit && !Debit) {
-      setSpending(filteringPayment(spendingList, ["Debit", "Credit"]));
+      return filteringPayment(spendingList, ["Debit", "Credit"]);
     }
     else if (!Cash && !Credit && Debit) {
-      setSpending(filteringPayment(spendingList, ["Cash", "Credit"]));
+      return filteringPayment(spendingList, ["Cash", "Credit"]);
     }
     else if (!Cash &&Credit && !Debit) {
-      setSpending(filteringPayment(spendingList, ["Cash", "Debit"]));
+      return filteringPayment(spendingList, ["Cash", "Debit"]);
     }
     else {
-      setSpending(spendingList);
+      return spendingList;
     }
   }
 
@@ -190,7 +210,7 @@ function SpendingTable() {
         const spendingData = await API.graphql(graphqlOperation(listSpendings));
         const spendingList = spendingData.data.listSpendings.items;
         await fetchImageLink(spendingList);
-        fetchFilteredPayment(spendingList);
+        return fetchFilteredPayment(spendingList);
       } catch (error) {
         console.log('Error on fetching spending', error);
       }
@@ -213,18 +233,23 @@ function SpendingTable() {
       const spendingList = spendingData.data.listSpendings.items;
       if (spendingList.length > 0) {
         await fetchImageLink(spendingList);
-        fetchFilteredPayment(spendingList);
+        return fetchFilteredPayment(spendingList);
       }
       else {
         setOpenAlert(true);
         setStatusBase("No match found.");
+        return spendingList;
       }
     }
   };
 
   const handleClick = (event) => {
     event.preventDefault();
-    fetchSpending();
+    fetchSpending().then(result => {
+      if (result.length > 0) {
+        setSpending(result);
+      }
+    })
   };
 
   const handleCloseAlert = (event, reason) => {
@@ -255,7 +280,9 @@ function SpendingTable() {
         id: event
       }
       await API.graphql(graphqlOperation(deleteSpending, { input: id }));
-      updateSpendingsResult();
+      fetchSpending().then(result => {
+        setSpending(result);
+      })
     }
     catch (error) {
       console.log('Error on delete spending', error);
@@ -329,7 +356,7 @@ function SpendingTable() {
               <TextField
                 className="table-search"
                 fullWidth
-                helperText="by Spendings Name (case-sensitive) and Category"
+                helperText="by Spending Name (case-sensitive) and Category"
                 InputLabelProps={{ shrink: true, }}
                 InputProps={{
                   endAdornment: (
@@ -358,40 +385,62 @@ function SpendingTable() {
                   onRequestSort={handleRequestSort}
                 />
                 <TableBody>
-                  {stableSort(spendings, getComparator(order, orderBy))
-                    .map((spending) => {
-                      return (
-                        <TableRow hover key={spending.id}>
-                          <TableCell align="center">{formatDate(spending.month, spending.day, spending.year)}</TableCell>
-                          <TableCell align="center">{spending.name}</TableCell>
-                          <TableCell className="d-none d-md-table-cell" align="center">{spending.payment}</TableCell>
-                          <TableCell align="center">${spending.value}</TableCell>
-                          <TableCell className="d-none d-md-table-cell" align="center">{spending.category}</TableCell>
-                          <TableCell align="center">
-                            <IconButton
-                              className="table-icon"
-                              onClick={() => {
-                                setItemID(spending.id);
-                                setData({
-                                  month: spending.month,
-                                  day: spending.day,
-                                  year: spending.year,
-                                  name: spending.name,
-                                  payment: spending.payment,
-                                  value: spending.value,
-                                  category: spending.category,
-                                  repeat: spending.repeat,
-                                  note: spending.note,
-                                  url: spending.url,
-                                })
-                                setShowMore(true);
-                              }}>
-                              <Info />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })
+                  {load ? 
+                    <TableRow>
+                      <TableCell>
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell className="d-none d-md-table-cell">
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell className="d-none d-md-table-cell">
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                    </TableRow>
+                    :
+                      stableSort(spendings, getComparator(order, orderBy))
+                        .map((spending) => {
+                          return (
+                            <TableRow hover key={spending.id}>
+                              <TableCell align="center">{formatDate(spending.month, spending.day, spending.year)}</TableCell>
+                              <TableCell align="center">{spending.name}</TableCell>
+                              <TableCell className="d-none d-md-table-cell" align="center">{spending.payment}</TableCell>
+                              <TableCell align="center">${spending.value}</TableCell>
+                              <TableCell className="d-none d-md-table-cell" align="center">{spending.category}</TableCell>
+                              <TableCell align="center">
+                                <IconButton
+                                  className="table-icon"
+                                  onClick={() => {
+                                    setItemID(spending.id);
+                                    setData({
+                                      month: spending.month,
+                                      day: spending.day,
+                                      year: spending.year,
+                                      name: spending.name,
+                                      payment: spending.payment,
+                                      value: spending.value,
+                                      category: spending.category,
+                                      repeat: spending.repeat,
+                                      note: spending.note,
+                                      url: spending.url,
+                                    })
+                                    setShowMore(true);
+                                  }}>
+                                  <Info />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
                   }
                 </TableBody>
               </Table>
@@ -414,7 +463,9 @@ function SpendingTable() {
             itemData={data}
             itemID={itemID}
             openMore={showMore}
-            update={() => updateSpendingsResult()}
+            update={() => fetchSpending().then(result => {
+              setSpending(result);
+            })}
           />
           <ConfirmDelete
             closeConfirmDelete={() => {

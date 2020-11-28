@@ -4,11 +4,9 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { withRouter } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap'; 
 import CreateSavingModal from '../Components/Modals/Saving/CreateSavingModal';
 import SavingTable from '../Components/Tables/SavingTable';
-import './Savings.css';
-//import '../Components/Cards/Card.css';
+import './SpendingsSavings.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -40,25 +38,21 @@ function Savings() {
   const [showCreateSaving, setCreateSaving] = useState(false);
 
   return (
-    <div className="savings">
+    <div>
       <ThemeProvider theme={theme}>
-        <Row>
-          <Col className="savings-table">
-            <SavingTable />
-          </Col> 
-        </Row>
+        <div className="spendingssavings spendingssavings-table">
+          <SavingTable />
+        </div>
         <CreateSavingModal
           closeCreateSaving={() => setCreateSaving(!showCreateSaving)}
           openCreateSaving={showCreateSaving}
         />
-        <div className="savings-add">
-          <Fab 
-            className={classes.fab}
-            onClick={() => setCreateSaving(true)}
-          >
-            <AddIcon />
-          </Fab>
-        </div>
+        <Fab 
+          className={classes.fab}
+          onClick={() => setCreateSaving(true)}
+        >
+          <AddIcon />
+        </Fab>
       </ThemeProvider>
     </div>
   );

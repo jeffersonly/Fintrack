@@ -45,7 +45,7 @@ const validationSchema = yup.object().shape({
   name: yup.string().required('Required')
 });
 
-function ItemSplit () {
+function ItemSplit() {
 
   const classes = useStyles();
 
@@ -57,7 +57,7 @@ function ItemSplit () {
   const [result, setResult] = useState(false);
 
   //dataItems = array of objects
-  function submitTableForm (dataName, dataItems) {
+  function submitTableForm(dataName, dataItems) {
     for (let i = 0; i < dataItems.length; i++) {
       setTableRows(currentRows => [
         {
@@ -72,7 +72,7 @@ function ItemSplit () {
     setSubmitted(true);
   }
 
-  function createData (dataName, dataItems) {
+  function createData(dataName, dataItems) {
     const exists = data.some(function(obj) {
       return obj.name === dataName; 
     })
@@ -96,13 +96,13 @@ function ItemSplit () {
     }
   }
 
-  function handleItemize (partyTax, partyTip) {
+  function handleItemize(partyTax, partyTip) {
     setTax(partyTax);
     setTip(partyTip);
     setResult(true);
   }
 
-  function clearTable () {
+  function clearTable() {
     setTableRows([]);
     setData([]);
     setSubmitted(false);

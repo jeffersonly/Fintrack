@@ -3,7 +3,6 @@ import { MenuItem, TextField } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { withRouter } from 'react-router-dom';
-
 import EvenSplit from '../Components/Cards/Split/EvenSplit';
 import ItemSplit from '../Components/Cards/Split/ItemSplit';
 import './Split.css';
@@ -19,7 +18,7 @@ const theme = createMuiTheme ({
   },
 });
 
-function Split () {
+function Split() {
 
   const [split, setSplit] = useState("Evenly");
 
@@ -34,7 +33,7 @@ function Split () {
     }
   ]
 
-  function showSplitForm () {
+  function showSplitForm() {
     if (split === "Evenly") {
       return (
         <div>
@@ -76,7 +75,7 @@ function Split () {
         {showSplitForm()}
       </ThemeProvider>
     </div>
-  )
+  );
 }
 
 export default withRouter(Split);

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
-
 import TableHeader from './TableHeader';
 import { stableSort, getComparator } from './TableFunctions';
 import './Table.css';
@@ -12,6 +11,7 @@ const columnTitles = [
 ];
 
 function SplitItemTable ({entries}) {
+
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
 
@@ -45,7 +45,7 @@ function SplitItemTable ({entries}) {
         </TableBody>
       </Table>
     </TableContainer>
-  )
+  );
 }
 
 export default SplitItemTable;

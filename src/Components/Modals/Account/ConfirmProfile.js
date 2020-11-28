@@ -33,89 +33,87 @@ function ConfirmProfile(props) {
   }*/
 
   return (
-    <div>
-      <Modal
-        className="profile"
-        show={show}
-        onHide={() => {
-          props.closeConfirm(); 
-          props.verified(false);
-        }}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Verify New Email
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="editprofile-textfield">
-            <Formik
-              initialValues={{
-                code: "",
-              }}
-              validate={values => {
+    <Modal
+      className="profile"
+      show={show}
+      onHide={() => {
+        props.closeConfirm(); 
+        props.verified(false);
+      }}
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Verify New Email
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="editprofile-textfield">
+          <Formik
+            initialValues={{
+              code: "",
+            }}
+            validate={values => {
 
-                const errors = {};
+              const errors = {};
 
-                if (!values.code) {
-                  errors.code = "Required";
-                }
-                if (values.code.length !== 6) {
-                  errors.code = "The code is 6 digits."
-                }
+              if (!values.code) {
+                errors.code = "Required";
+              }
+              if (values.code.length !== 6) {
+                errors.code = "The code is 6 digits."
+              }
 
-                return errors;
-              }}
-              onSubmit={(data) => {
-                handleConfirm(data.code);
-              }}
-            >
-              {({ values, errors }) => (
-                <Form>
-                  <TableField
-                    helperText={error ? error : null}
-                    label="Confirmation Code"
-                    name="code"
-                  />
-                  <p className="profile-informative-text">
-                    A confirmation code has been sent to your new email.
-                    <br/>
-                    Please use the code to confirm your account within 24 hours.
-                    <br />
-                    This is necessary for future possible password resets.
-                  </p>
-                  <Divider className="editprofile-divider"/>
-                  <div align="right">
-                    <Button
-                      className="editprofile-cancelbutton"
-                      disableElevation
-                      onClick={() => {
-                        props.closeConfirm();
-                        props.verified(false);
-                      }}
-                      variant="contained"
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      className="profile-button"
-                      disableElevation
-                      disabled={!values.code || errors.code !== undefined}
-                      type="submit"
-                      variant="contained"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </Modal.Body>
-      </Modal>
-    </div>
+              return errors;
+            }}
+            onSubmit={(data) => {
+              handleConfirm(data.code);
+            }}
+          >
+            {({ values, errors }) => (
+              <Form>
+                <TableField
+                  helperText={error ? error : null}
+                  label="Confirmation Code"
+                  name="code"
+                />
+                <p className="profile-informative-text">
+                  A confirmation code has been sent to your new email.
+                  <br/>
+                  Please use the code to confirm your account within 24 hours.
+                  <br />
+                  This is necessary for future possible password resets.
+                </p>
+                <Divider className="editprofile-divider"/>
+                <div align="right">
+                  <Button
+                    className="editprofile-cancelbutton"
+                    disableElevation
+                    onClick={() => {
+                      props.closeConfirm();
+                      props.verified(false);
+                    }}
+                    variant="contained"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    className="profile-button"
+                    disableElevation
+                    disabled={!values.code || errors.code !== undefined}
+                    type="submit"
+                    variant="contained"
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 }
 

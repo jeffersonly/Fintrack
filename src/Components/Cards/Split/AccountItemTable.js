@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
-
-import { API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from 'aws-amplify';
 import { listSplitItems } from '../../../graphql/queries';
 import TableHeader from '../../Tables/TableHeader';
 import { formatDate, stableSort, getComparator } from '../../Tables/TableFunctions';
-
 import '../../Tables/Table.css';
 
 const columnTitles = [
@@ -18,12 +16,36 @@ const columnTitles = [
 ];
 
 function AccountEvenTable() {
+
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    getSplitItem();
+    let isSubscribed = true;
+
+    async function getSplitItem() {
+      try {
+        const splitItemData = await API.graphql(graphqlOperation(listSplitItems));
+        const list = splitItemData.data.listSplitItems.items;
+        for (var i = 0; i < list.length; i++){
+          list[i].names = (list[i].names).split(" ").join("\n");
+          list[i].total = (list[i].total).split(" ").join("\n");
+          list[i].split = (list[i].split).split(" ").join("\n");
+        }
+        return list;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getSplitItem().then(list => {
+      if (isSubscribed) {
+        setItems(list);
+      }
+    })
+    
+    return () => isSubscribed = false;
   }, []);
 
   const handleRequestSort = (event, property) => {
@@ -32,50 +54,33 @@ function AccountEvenTable() {
     setOrderBy(property);
   };
 
-  const getSplitItem = async () => {
-    try {
-      const splitItemData = await API.graphql(graphqlOperation(listSplitItems));
-      const list = splitItemData.data.listSplitItems.items;
-      for (var i = 0; i < list.length; i++){
-        list[i].names = (list[i].names).split(" ").join("\n");
-        list[i].total = (list[i].total).split(" ").join("\n");
-        list[i].split = (list[i].split).split(" ").join("\n");
-      }
-      setItems(list);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
-    <div>
-      <TableContainer className="table-splititem">
-        <Table stickyHeader>
-          <TableHeader
-            headCells={columnTitles}
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody className="withpre">
-            {stableSort(items, getComparator(order, orderBy))
-              .map((split) => {
-                return (
-                  <TableRow hover key={split.id}>
-                    <TableCell align="center">{formatDate(split.month, split.day, split.year)}</TableCell>
-                    <TableCell align="center">{split.tax}%</TableCell>
-                    <TableCell align="center">{split.tip}%</TableCell>
-                    <TableCell align="center">{split.names}</TableCell>
-                    <TableCell align="center">{split.total}</TableCell>
-                    <TableCell align="center">{split.split}</TableCell>
-                  </TableRow>
-                );
-              })
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+    <TableContainer className="table-splititem">
+      <Table stickyHeader>
+        <TableHeader
+          headCells={columnTitles}
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={handleRequestSort}
+        />
+        <TableBody className="withpre">
+          {stableSort(items, getComparator(order, orderBy))
+            .map((split) => {
+              return (
+                <TableRow hover key={split.id}>
+                  <TableCell align="center">{formatDate(split.month, split.day, split.year)}</TableCell>
+                  <TableCell align="center">{split.tax}%</TableCell>
+                  <TableCell align="center">{split.tip}%</TableCell>
+                  <TableCell align="center">{split.names}</TableCell>
+                  <TableCell align="center">{split.total}</TableCell>
+                  <TableCell align="center">{split.split}</TableCell>
+                </TableRow>
+              );
+            })
+          }
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 

@@ -5,16 +5,17 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
 import Loader from 'react-loader-spinner';
+
 import { API } from 'aws-amplify';
 import { createSpending } from '../../graphql/mutations';
+
 import TableField from '../InputFields/TableField';
 import { repeats, payments, categories } from '../InputFields/TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 import Dropzone from '../Dropzone/Dropzone';
 import WebcamCapture from '../Webcam/Webcam';
 import '../Cards/Card.css';
-
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const useStyles = makeStyles({
   createbutton: {
@@ -31,36 +32,38 @@ const useStyles = makeStyles({
   }
 });
 
-function CreateSpending () {
+function CreateSpending() {
+
   const classes = useStyles();
+
   const [loaderState, setLoaderState] = useState(false);
   const [createdState, setCreatedState] = useState(false); 
 
- async function submitNewSpending(data) {
-  try {
-    await API.graphql({
-      query: createSpending,
-      variables: {
-        input: {
-          month: data[0],
-          day: data[1],
-          year: data[2],
-          name: data[3],
-          value: data[5],
-          category: data[6],
-          repeat: data[7],
-          note: data[8],
-          payment: data[4]
+  async function submitNewSpending(data) {
+    try {
+      await API.graphql({
+        query: createSpending,
+        variables: {
+          input: {
+            month: data[0],
+            day: data[1],
+            year: data[2],
+            name: data[3],
+            value: data[5],
+            category: data[6],
+            repeat: data[7],
+            note: data[8],
+            payment: data[4]
+          }
         }
-      }
-    })
-    setLoaderState(false);
-    setCreatedState(true);
-    window.location.reload();
-  } catch (err) {
-    console.log(err);
+      })
+      setLoaderState(false);
+      setCreatedState(true);
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   }
-}
 
   return (
     <div className="card-container card-spendings">
@@ -122,7 +125,7 @@ function CreateSpending () {
               />
             </MuiPickersUtilsProvider>
             <TableField
-              label="Spendings Name"
+              label="Spending Name"
               name="name"
               placeholder="Costco"
             />

@@ -3,6 +3,7 @@ import { listSavings, listSpendings } from '../../graphql/queries';
 import { createSaving, updateSaving, createSpending, updateSpending } from '../../graphql/mutations';
 
 export async function getSavingRepeat() {
+
   const today = new Date();
 
   const monthly = "Repeating monthly";
@@ -27,7 +28,7 @@ export async function getSavingRepeat() {
     var diff, diffDays, diffMonths;
     var i, j
 
-    for ( i = 0; i < savingsList.length; i++) {
+    for (i = 0; i < savingsList.length; i++) {
       switch (savingsList[i].repeat) {
         case "Weekly":
           dataDate.setMonth(savingsList[i].month - 1);
@@ -35,7 +36,7 @@ export async function getSavingRepeat() {
           dataDate.setFullYear(savingsList[i].year);
           if (today.getTime() > dataDate.getTime()) {
             if (!savingsList[i].repeated) {
-              diff = Math.round((today.getTime() - dataDate.getTime()) / (1000 * 60 * 60 * 24 * 7))
+              diff = Math.round((today.getTime() - dataDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
               try {
                 await API.graphql({
                   query: updateSaving,
@@ -49,7 +50,7 @@ export async function getSavingRepeat() {
               } catch (err) {
                 console.log('Saving repeated could not update', err);
               }
-              for ( j = 0; j < diff; j++) {
+              for (j = 0; j < diff; j++) {
                 dataDate.setDate(dataDate.getDate() + ((j + 1) * 7));
                 try {
                   await API.graphql({
@@ -100,7 +101,7 @@ export async function getSavingRepeat() {
               } catch (err) {
                 console.log('Saving repeated could not update', err);
               }
-              for ( j = 0; j < diff; j++) {
+              for (j = 0; j < diff; j++) {
                 dataDate.setMonth(dataDate.getMonth() + (j + 1));
                 try {
                   await API.graphql({
@@ -121,7 +122,7 @@ export async function getSavingRepeat() {
                 } catch (err) {
                   console.log({ err });
                 }
-                dataDate.setMonth(dataDate.getMonth() - (j + 1))
+                dataDate.setMonth(dataDate.getMonth() - (j + 1));
               }
             }
           }
@@ -157,7 +158,7 @@ export async function getSavingRepeat() {
               } catch (err) {
                 console.log('Saving repeated could not update', err);
               }
-              for ( j = 0; j < diff; j++) {
+              for (j = 0; j < diff; j++) {
                 dataDate.setFullYear(dataDate.getFullYear() + (j + 1));
                 try {
                   await API.graphql({
@@ -178,7 +179,7 @@ export async function getSavingRepeat() {
                 } catch (err) {
                   console.log({ err });
                 }
-                dataDate.setFullYear(dataDate.getFullYear() - (j + 1))
+                dataDate.setFullYear(dataDate.getFullYear() - (j + 1));
               }
             }
           }
@@ -190,11 +191,9 @@ export async function getSavingRepeat() {
           dataDate.setFullYear(savingsList[i].year);
           if (today.getTime() > dataDate.getTime()) {
             diff = Math.round((today.getTime() - dataDate.getTime()) / (1000 * 60 * 60 * 24 * 7))
-            if (((savingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-            }
-            else {
+            if ((savingsList[i].month !== ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day !== ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year !== ('' + dataDate.getFullYear()).slice(0))) {
               if (diff > 0) {
-                for ( j = 0; j < diff; j++) {
+                for (j = 0; j < diff; j++) {
                   dataDate.setDate(dataDate.getDate() + ((j + 1) * 7));
                   try {
                     await API.graphql({
@@ -219,7 +218,6 @@ export async function getSavingRepeat() {
                 }
               }
             }
-
           }
           break;
 
@@ -233,11 +231,9 @@ export async function getSavingRepeat() {
             if (diffDays < 0) {
               diff--;
             }
-            if (((savingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-            }
-            else {
+            if ((savingsList[i].month !== ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day !== ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year !== ('' + dataDate.getFullYear()).slice(0))) {
               if (diff > 0) {
-                for ( j = 0; j < diff; j++) {
+                for (j = 0; j < diff; j++) {
                   dataDate.setMonth(dataDate.getMonth() + (j + 1));
                   try {
                     await API.graphql({
@@ -258,11 +254,10 @@ export async function getSavingRepeat() {
                   } catch (err) {
                     console.log({ err });
                   }
-                  dataDate.setMonth(dataDate.getMonth() - (j + 1))
+                  dataDate.setMonth(dataDate.getMonth() - (j + 1));
                 }
               }
             }
-
           }
           break;
 
@@ -282,11 +277,9 @@ export async function getSavingRepeat() {
                 diff--;
               }
             }
-            if (((savingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-            }
-            else {
+            if ((savingsList[i].month !== ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (savingsList[i].day !== ('0' + dataDate.getDate()).slice(-2)) && (savingsList[i].year !== ('' + dataDate.getFullYear()).slice(0))) {
               if (diff > 0) {
-                for ( j = 0; j < diff; j++) {
+                for (j = 0; j < diff; j++) {
                   dataDate.setFullYear(dataDate.getFullYear() + (j + 1));
                   try {
                     await API.graphql({
@@ -307,11 +300,10 @@ export async function getSavingRepeat() {
                   } catch (err) {
                     console.log({ err });
                   }
-                  dataDate.setFullYear(dataDate.getFullYear() - (j + 1))
+                  dataDate.setFullYear(dataDate.getFullYear() - (j + 1));
                 }
               }
             }
-
           }
           break;
 
@@ -319,13 +311,13 @@ export async function getSavingRepeat() {
           console.log('Not repeating');
       }
     }
-
   } catch (error) {
     return "Error getting saving repeat";
   }
 }
 
 export async function getSpendingRepeat() {
+
   const today = new Date();
 
   const monthly = "Repeating monthly";
@@ -343,7 +335,6 @@ export async function getSpendingRepeat() {
         { repeat: { eq: "Repeating monthly" } },
         { repeat: { eq: "Repeating yearly" } },
       ]
-
     };
 
     const spendingsData = await API.graphql(graphqlOperation(listSpendings, { filter: filter }));
@@ -351,8 +342,7 @@ export async function getSpendingRepeat() {
     var dataDate = new Date();
     var diff, diffDays, diffMonths;
 
-
-    for ( i = 0; i < spendingsList.length; i++) {
+    for (i = 0; i < spendingsList.length; i++) {
       switch (spendingsList[i].repeat) {
         case "Weekly":
           dataDate.setMonth(spendingsList[i].month - 1);
@@ -374,7 +364,7 @@ export async function getSpendingRepeat() {
               } catch (err) {
                 console.log('spending repeated could not update', err);
               }
-              for ( j = 0; j < diff; j++) {
+              for (j = 0; j < diff; j++) {
                 dataDate.setDate(dataDate.getDate() + ((j + 1) * 7));
                 try {
                   await API.graphql({
@@ -427,7 +417,7 @@ export async function getSpendingRepeat() {
               } catch (err) {
                 console.log('spending repeated could not update', err);
               }
-              for ( j = 0; j < diff; j++) {
+              for (j = 0; j < diff; j++) {
                 dataDate.setMonth(dataDate.getMonth() + (j + 1));
                 try {
                   await API.graphql({
@@ -450,7 +440,7 @@ export async function getSpendingRepeat() {
                 } catch (err) {
                   console.log({ err });
                 }
-                dataDate.setMonth(dataDate.getMonth() - (j + 1))
+                dataDate.setMonth(dataDate.getMonth() - (j + 1));
               }
             }
           }
@@ -473,7 +463,6 @@ export async function getSpendingRepeat() {
                   diff--;
                 }
               }
-              console.log(diff)
               try {
                 await API.graphql({
                   query: updateSpending,
@@ -487,7 +476,7 @@ export async function getSpendingRepeat() {
               } catch (err) {
                 console.log('Spending repeated could not update', err);
               }
-              for ( j = 0; j < diff; j++) {
+              for (j = 0; j < diff; j++) {
                 dataDate.setFullYear(dataDate.getFullYear() + (j + 1));
                 try {
                   await API.graphql({
@@ -510,7 +499,7 @@ export async function getSpendingRepeat() {
                 } catch (err) {
                   console.log({ err });
                 }
-                dataDate.setFullYear(dataDate.getFullYear() - (j + 1))
+                dataDate.setFullYear(dataDate.getFullYear() - (j + 1));
               }
             }
           }
@@ -522,11 +511,9 @@ export async function getSpendingRepeat() {
           dataDate.setFullYear(spendingsList[i].year);
           if (today.getTime() > dataDate.getTime()) {
             diff = Math.round((today.getTime() - dataDate.getTime()) / (1000 * 60 * 60 * 24 * 7))
-            if (((spendingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-            }
-            else {
+            if ((spendingsList[i].month !== ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day !== ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year !== ('' + dataDate.getFullYear()).slice(0))) {
               if (diff > 0) {
-                for ( j = 0; j < diff; j++) {
+                for (j = 0; j < diff; j++) {
                   dataDate.setDate(dataDate.getDate() + ((j + 1) * 7));
                   try {
                     await API.graphql({
@@ -554,7 +541,6 @@ export async function getSpendingRepeat() {
                 }
               }
             }
-
           }
           break;
 
@@ -568,11 +554,9 @@ export async function getSpendingRepeat() {
             if (diffDays < 0) {
               diff--;
             }
-            if (((spendingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-            }
-            else {
+            if ((spendingsList[i].month !== ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day !== ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year !== ('' + dataDate.getFullYear()).slice(0))) {
               if (diff > 0) {
-                for ( j = 0; j < diff; j++) {
+                for (j = 0; j < diff; j++) {
                   dataDate.setMonth(dataDate.getMonth() + (j + 1));
                   try {
                     await API.graphql({
@@ -596,11 +580,10 @@ export async function getSpendingRepeat() {
                   } catch (err) {
                     console.log({ err });
                   }
-                  dataDate.setMonth(dataDate.getMonth() - (j + 1))
+                  dataDate.setMonth(dataDate.getMonth() - (j + 1));
                 }
               }
             }
-
           }
           break;
 
@@ -620,9 +603,7 @@ export async function getSpendingRepeat() {
                 diff--;
               }
             }
-            if (((spendingsList[i].month) === ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day === ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year === ('' + dataDate.getFullYear()).slice(0))) {
-            }
-            else {
+            if ((spendingsList[i].month !== ('0' + (dataDate.getMonth() + 1)).slice(-2)) && (spendingsList[i].day !== ('0' + dataDate.getDate()).slice(-2)) && (spendingsList[i].year !== ('' + dataDate.getFullYear()).slice(0))) {
               if (diff > 0) {
                 for ( j = 0; j < diff; j++) {
                   dataDate.setFullYear(dataDate.getFullYear() + (j + 1));

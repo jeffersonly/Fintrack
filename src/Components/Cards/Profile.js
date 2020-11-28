@@ -17,9 +17,10 @@ const theme = createMuiTheme ({
       main: "rgb(1, 114, 71)",
     },
   }
-})
+});
 
 function Profile() {
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [showEditProfile, setEditProfile] = useState(false);
@@ -31,20 +32,22 @@ function Profile() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getUser();
-  }, [])
+    let isSubscribed = true;
 
-  const getUser = () => {
     Auth.currentUserInfo()
-      .then(data => {
+    .then(data => {
+      if (isSubscribed) {
         setUsername(data.username);
         setEmail(data.attributes.email);
         setConfirmed(data.attributes.email_verified);
-      })
-      .catch(err => setError(err));
-  };
+      }
+    })
+    .catch(err => setError(err));
+    
+    return () => isSubscribed = false;
+  }, []);
 
-  async function update (em) {
+  async function update(em) {
     try {
       const user = await Auth.currentAuthenticatedUser();
       await Auth.updateUserAttributes(user, { 'email': em });
@@ -98,7 +101,6 @@ function Profile() {
     if (reason === 'clickaway') {
       return;
     }
-
     setProfileAlert(false);
     setPasswordAlert(false);
   };
@@ -126,7 +128,8 @@ function Profile() {
                       onClick={() => handleShowConfirmProfile()}
                     >
                       **Click to verify email
-                    </Link>}
+                    </Link>
+                  }
                 </div>
                 <div align="right">
                   <Button 

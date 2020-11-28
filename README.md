@@ -34,6 +34,11 @@ To run the front end of the application locally, follow these steps:
 2. Type the following command into your terminal ```git clone https://github.com/jeffersonly/Fintrack.git``` 
 3. Navigate into the file directory after the cloning is finished
 4. Run ```npm install``` to install project dependencies
-5. ...
+5. After installing the dependencies, an aws-exports.js file is needed, this file needs to be either requested from the developers -- or backend configurations need to be made by the user themself. To set up the backend resources, a guide can be found [here](https://docs.amplify.aws/lib/q/platform/js). The backend resources that need to be set up are as follows: Auth, Storage, API (GraphQL), and Predictions. 
+6. Once the backend resources are set up, and a aws-exports.js file is within the project, run ```npm start``` and the project should run locally at localhost:3000.
 
 ## Technologies Used
+1. AWS (Amplify, DynamoDB, Textract, S3)
+2. Git
+3. React
+4. VSCode

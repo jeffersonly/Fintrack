@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Button, makeStyles, InputAdornment } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import DoneIcon from '@material-ui/icons/Done';
 import DateFnsUtils from '@date-io/date-fns';
 import { Formik, Form } from 'formik';
+import Loader from 'react-loader-spinner';
+
 import { API, Storage } from 'aws-amplify';
 import { createSpending } from '../../graphql/mutations';
 import awsExports from '../../aws-exports';
+
 import TableField from './TableField';
 import { repeats, payments, categories } from './TableFieldSelects';
 import { splitDate } from '../Tables/TableFunctions';
 import '../Cards/Card.css';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from 'react-loader-spinner';
-import DoneIcon from '@material-ui/icons/Done';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const useStyles = makeStyles({
   createbutton: {
@@ -30,7 +32,9 @@ const useStyles = makeStyles({
 });
 
 function DropzoneInput(props) {
+
   const classes = useStyles();
+
   const [loaderState, setLoaderState] = useState(false);
   const [createdState, setCreatedState] = useState(false);
 
@@ -56,11 +60,11 @@ function DropzoneInput(props) {
       setLoaderState(false);
       setCreatedState(true);
 
-      if(props.from === 'camera') {
+      if (props.from === 'camera') {
         window.location.reload();
       } else {
         props.onCreateTransaction();
-        if(props.numberOfItems === (props.counter+1)) {
+        if (props.numberOfItems === (props.counter+1)) {
           window.location.reload();
         }
       }
@@ -104,7 +108,7 @@ function DropzoneInput(props) {
         onSubmit={(data, { resetForm }) => {
           setLoaderState(true);
 
-          if(props.from === "camera") {
+          if (props.from === "camera") {
             let randomStr = generateRandomizedString();
             Storage.put(`picture-taken-from-camera-${randomStr}.jpg`, props.data.image, {
               contentType: "image/jpeg",
@@ -170,7 +174,7 @@ function DropzoneInput(props) {
               />
             </MuiPickersUtilsProvider>
             <TableField
-              label="Spendings Name"
+              label="Spending Name"
               name="name"
               placeholder="Costco"
             />

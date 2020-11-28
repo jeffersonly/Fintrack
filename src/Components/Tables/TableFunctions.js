@@ -1,6 +1,6 @@
 const formatDate = (month, day, year) => {
   return month + "/" + day + "/" + year;
-}
+};
 
 // Table Sort
 
@@ -65,7 +65,7 @@ const splitDate = (date) => {
     day = "0" + day;
   }
   return [month, day, year];
-}
+};
 
 module.exports = {
   formatDate,

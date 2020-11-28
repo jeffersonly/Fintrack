@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
-import { Auth } from 'aws-amplify';
 import DayPicker from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
+import { Auth } from 'aws-amplify';
 import NotificationCenter from '../Components/Cards/Notifications/NotificationCenter';
+import 'react-day-picker/lib/style.css';
 import './Summary.css';
 
-function Summary () {
+function Summary() {
 
   const getTodayDate = () => {
     const today = new Date();
@@ -15,7 +15,7 @@ function Summary () {
       "July", "August", "September", "October", "November", "December"];
     const date = monthNames[(today.getMonth())] + " " + today.getDate() + ", " + today.getFullYear();
     return date;
-  }
+  };
 
   const [user, setUser] = useState("");
   const [authError, setAuthError] = useState("");

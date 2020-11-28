@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { Button, Divider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Nav, Navbar, Row } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
-import './Account.css';
 import Profile from '../Components/Cards/Profile';
 import Goals from '../Components/Cards/Goals';
 import BillSplits from '../Components/Cards/BillSplits';
-import { Navbar, Nav } from 'react-bootstrap';
+import './Account.css';
 
 const theme = createMuiTheme ({
   palette: {
@@ -16,7 +15,7 @@ const theme = createMuiTheme ({
       main: "#ff0000",
     }
   }
-})
+});
 
 function Account() {
 
@@ -43,7 +42,7 @@ function Account() {
     }
     setBackground(back);
     setPage(page);
-  }
+  };
 
   function signOut() {
     Auth.signOut()
@@ -57,17 +56,17 @@ function Account() {
     if (page["prof"] === true) {
       return (
         <Profile />
-      )
+      );
     }
     if (page["goal"] === true) {
       return (
         <Goals />
-      )
+      );
     }
     if (page["split"] === true) {
       return (
         <BillSplits />
-      )
+      );
     }
   }
   

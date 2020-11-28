@@ -4,11 +4,14 @@ import {
   FormLabel, IconButton, InputAdornment, Table, TableBody, TableCell,
   TableContainer, TableRow, TextField, Typography
 } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { ExpandLess, ExpandMore, FilterList, Info, Search } from '@material-ui/icons';
 import { Row, Col } from 'react-bootstrap';
+
 import { API, graphqlOperation } from 'aws-amplify';
 import { listSavings} from '../../graphql/queries';
 import { deleteSaving } from '../../graphql/mutations';
+
 import TableHeader from './TableHeader';
 import { formatDate, stableSort, getComparator } from './TableFunctions';
 import SnackbarNotification from '../Modals/SnackbarNotification';
@@ -26,10 +29,12 @@ const columnTitles = [
 ];
 
 function SavingTable() {
+  
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
   const [savings, setSaving] = useState([]);
+  const [load, setLoad] = useState(false);
 
   const [search, setSearch] = useState("");
   const [status, setStatusBase] = useState("");
@@ -49,23 +54,34 @@ function SavingTable() {
   });
 
   useEffect(() => {
-    fetchSaving();
+    let isSubscribed = true;
+
+    fetchSaving().then(result => {
+      if (isSubscribed) {
+        setSaving(result);
+      }
+    })
+
+    return () => isSubscribed = false;
   }, [filter]);
 
   useEffect(() => {
-    async function getSavingsRepeat() {
-      await getSavingRepeat();
-      updateSavingResult();
-    }
+    let isSubscribed = true;
+    setLoad(true);
+    
+    getSavingRepeat().then(function() {
+      if (isSubscribed) {
+        API.graphql(graphqlOperation(listSavings)).then(result => {
+          if (isSubscribed) {
+            setSaving(result.data.listSavings.items);
+            setLoad(false);
+          }
+        })
+      }
+    })
 
-    getSavingsRepeat();
+    return () => isSubscribed = false;
   }, []);
-
-  async function updateSavingResult() {
-    const savingData = await API.graphql(graphqlOperation(listSavings));
-    const savingList = savingData.data.listSavings.items;
-    setSaving(savingList);
-  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -87,49 +103,49 @@ function SavingTable() {
 
   function fetchFiltered(savingList) {
     if (Never && Weekly && !Monthly && Yearly) {
-      setSaving(filtering(savingList, ["Monthly", "Repeating monthly"]));
+      return filtering(savingList, ["Monthly", "Repeating monthly"]);
     }
     else if (Never && !Weekly && Monthly && Yearly) {
-      setSaving(filtering(savingList, ["Weekly", "Repeating weekly"]));
+      return filtering(savingList, ["Weekly", "Repeating weekly"]);
     }
     else if (!Never && Weekly && Monthly && Yearly) {
-      setSaving(filtering(savingList, ["Never"]));
+      return filtering(savingList, ["Never"]);
     }
     else if (Never && Weekly && Monthly && !Yearly) {
-      setSaving(filtering(savingList, ["Yearly", "Repeating yearly"]));
+      return filtering(savingList, ["Yearly", "Repeating yearly"]);
     }
     else if (!Never && Weekly && Monthly && !Yearly) {
-      setSaving(filtering(savingList, ["Never", "Yearly", "Repeating yearly"]));
+      return filtering(savingList, ["Never", "Yearly", "Repeating yearly"]);
     }
     else if (Never && !Weekly && Monthly && !Yearly) {
-      setSaving(filtering(savingList, ["Weekly", "Repeating weekly", "Yearly", "Repeating yearly"]));
+      return filtering(savingList, ["Weekly", "Repeating weekly", "Yearly", "Repeating yearly"]);
     }
     else if (Never && !Weekly && !Monthly && Yearly) {
-      setSaving(filtering(savingList, ["Weekly", "Repeating weekly", "Monthly", "Repeating monthly"]));
+      return filtering(savingList, ["Weekly", "Repeating weekly", "Monthly", "Repeating monthly"]);
     }
     else if (!Never && Weekly && !Monthly && Yearly) {
-      setSaving(filtering(savingList, ["Never", "Monthly", "Repeating monthly"]));
+      return filtering(savingList, ["Never", "Monthly", "Repeating monthly"]);
     }
     else if (!Never && !Weekly && Monthly && Yearly) {
-      setSaving(filtering(savingList, ["Never", "Weekly", "Repeating weekly"]));
+      return filtering(savingList, ["Never", "Weekly", "Repeating weekly"]);
     }
     else if (Never && Weekly && !Monthly && !Yearly) {
-      setSaving(filtering(savingList, ["Monthly", "Repeating monthly", "Yearly", "Repeating yearly"]));
+      return filtering(savingList, ["Monthly", "Repeating monthly", "Yearly", "Repeating yearly"]);
     }
     else if (Never && !Weekly && !Monthly && !Yearly) {
-      setSaving(filtering(savingList, ["Weekly", "Repeating weekly", "Monthly", "Repeating monthly", "Yearly", "Repeating yearly"]));
+      return filtering(savingList, ["Weekly", "Repeating weekly", "Monthly", "Repeating monthly", "Yearly", "Repeating yearly"]);
     }
     else if (!Never && Weekly && !Monthly && !Yearly) {
-      setSaving(filtering(savingList, ["Never", "Monthly", "Repeating monthly", "Yearly", "Repeating yearly"]));
+      return filtering(savingList, ["Never", "Monthly", "Repeating monthly", "Yearly", "Repeating yearly"]);
     }
     else if (!Never && !Weekly && Monthly && !Yearly) {
-      setSaving(filtering(savingList, ["Never", "Weekly", "Repeating weekly", "Yearly", "Repeating yearly"]));
+      return filtering(savingList, ["Never", "Weekly", "Repeating weekly", "Yearly", "Repeating yearly"]);
     }
     else if (!Never && !Weekly && !Monthly && Yearly) {
-      setSaving(filtering(savingList, ["Never", "Weekly", "Repeating weekly", "Monthly", "Repeating monthly"]));
+      return filtering(savingList, ["Never", "Weekly", "Repeating weekly", "Monthly", "Repeating monthly"]);
     }
     else {
-      setSaving(savingList);
+      return savingList;
     }
   }
 
@@ -138,7 +154,7 @@ function SavingTable() {
     const savingList = savingData.data.listSavings.items;
 
     if (search === "") {
-      fetchFiltered(savingList);
+      return fetchFiltered(savingList);
     }
     else {
       let filter = {
@@ -152,18 +168,23 @@ function SavingTable() {
       const savingsData = await API.graphql(graphqlOperation(listSavings, { filter: filter }));
       const savingList = savingsData.data.listSavings.items;
       if (savingList.length > 0) {
-        fetchFiltered(savingList);
+        return fetchFiltered(savingList);
       }
       else {
         setOpenAlert(true);
         setStatusBase("No match found.");
+        return savingList;
       }
     }
   };
 
   const handleClick = (event) => {
     event.preventDefault();
-    fetchSaving();
+    fetchSaving().then(result => {
+      if (result.length > 0) {
+        setSaving(result);
+      }
+    })
   };
 
   const handleCloseAlert = (event, reason) => {
@@ -179,7 +200,9 @@ function SavingTable() {
         id: event
       }
       await API.graphql(graphqlOperation(deleteSaving, { input: id }));
-      updateSavingResult();
+      fetchSaving().then(result => {
+        setSaving(result);
+      })
     }
     catch (error) {
       console.log('Error on delete saving', error);
@@ -285,36 +308,55 @@ function SavingTable() {
                   onRequestSort={handleRequestSort}
                 />
                 <TableBody>
-                  {stableSort(savings, getComparator(order, orderBy))
-                    .map((saving) => {
-                      return (
-                        <TableRow hover key={saving.id}>
-                          <TableCell align="center">{formatDate(saving.month, saving.day, saving.year)}</TableCell>
-                          <TableCell align="center">{saving.name}</TableCell>
-                          <TableCell align="center">${saving.value}</TableCell>
-                          <TableCell className="d-none d-md-table-cell" align="center">{saving.repeat}</TableCell>
-                          <TableCell align="center">
-                            <IconButton
-                              className="table-icon"
-                              onClick={() => {
-                                setItemID(saving.id);
-                                setData({
-                                  month: saving.month,
-                                  day: saving.day,
-                                  year: saving.year,
-                                  name: saving.name,
-                                  value: saving.value,
-                                  repeat: saving.repeat,
-                                  note: saving.note
-                                })
-                                setShowMore(true);
-                              }}>
-                              <Info />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })
+                  {load ?
+                    <TableRow>
+                      <TableCell>
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell className="d-none d-md-table-cell">
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton animation="wave" variant="rect" height={60}/>
+                      </TableCell>
+                    </TableRow>
+                    :
+                      stableSort(savings, getComparator(order, orderBy))
+                        .map((saving) => {
+                          return (
+                            <TableRow hover key={saving.id}>
+                              <TableCell align="center">{formatDate(saving.month, saving.day, saving.year)}</TableCell>
+                              <TableCell align="center">{saving.name}</TableCell>
+                              <TableCell align="center">${saving.value}</TableCell>
+                              <TableCell className="d-none d-md-table-cell" align="center">{saving.repeat}</TableCell>
+                              <TableCell align="center">
+                                <IconButton
+                                  className="table-icon"
+                                  onClick={() => {
+                                    setItemID(saving.id);
+                                    setData({
+                                      month: saving.month,
+                                      day: saving.day,
+                                      year: saving.year,
+                                      name: saving.name,
+                                      value: saving.value,
+                                      repeat: saving.repeat,
+                                      note: saving.note
+                                    })
+                                    setShowMore(true);
+                                  }}>
+                                  <Info />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
                   }
                 </TableBody>
               </Table>
@@ -337,7 +379,9 @@ function SavingTable() {
             itemData={data}
             itemID={itemID}
             openMore={showMore}
-            update={() => updateSavingResult()}
+            update={() => fetchSaving().then(result => {
+              setSaving(result);
+            })}
           />
           <ConfirmDelete
             closeConfirmDelete={() => {

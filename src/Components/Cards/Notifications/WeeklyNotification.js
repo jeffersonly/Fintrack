@@ -5,7 +5,7 @@ import { splitDate } from '../../Tables/TableFunctions';
 import WeeklySVG from '../../../Images/weekly.svg';
 import './Notification.css';
 
-function WeeklyNotification () {
+function WeeklyNotification() {
 
   const [weeklySavings, setWeeklySavings] = useState();
   const [weeklySpendings, setWeeklySpendings] = useState();
@@ -13,24 +13,31 @@ function WeeklyNotification () {
   const [endDate, setEndDate] = useState();
 
   useEffect(() => {
-    weeklySaving();
-    weeklySpending();
+    let isSubscribed = true;
+
     const days = weekPeriod();
     const start = splitDate(days[0]);
     const end = splitDate(days[1]);
-    setStartDate(start[0] + "/" + start[1]);
-    setEndDate(end[0] + "/" + end[1]);
+
+    getWeekSaving().then(result => {
+      if (isSubscribed) {
+        setWeeklySavings(result);
+      }
+    })
+
+    getWeekSpending().then(result => {
+      if (isSubscribed) {
+        setWeeklySpendings(result);
+      }
+    })
+
+    if (isSubscribed) {
+      setStartDate(start[0] + "/" + start[1]);
+      setEndDate(end[0] + "/" + end[1]);
+    }
+
+    return () => isSubscribed = false;
   }, []);
-
-  async function weeklySaving() {
-    const result = await getWeekSaving();
-    setWeeklySavings(result);
-  }
-
-  async function weeklySpending() {
-    const result = await getWeekSpending();
-    setWeeklySpendings(result);
-  }
 
   return (
     <Card variant="outlined" className="notification-card notification-weekly">

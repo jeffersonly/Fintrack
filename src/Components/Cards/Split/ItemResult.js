@@ -1,39 +1,37 @@
 import React from 'react';
 import { Button, Card, CardContent, Divider, Typography } from '@material-ui/core';
 import { Row, Col } from 'react-bootstrap';
-
 import { API } from 'aws-amplify';
 import { createSplitItem } from '../../../graphql/mutations';
-
 import { calculateTaxTip, calculateTotal } from './SplitFunctions';
 import './SplitCard.css';
 import '../Profile.css';
 
-async function submitSplitItem(data) {
-  try {
-    await API.graphql({
-      query: createSplitItem,
-      variables: {
-        input: {
-          month: data[0],
-          day: data[1],
-          year: data[2],
-          total: data[3],
-          tax: data[4],
-          tip: data[5],
-          names: data[6],
-          split: data[7]
-        }
-      }
-    })
-  } catch (err) {
-    console.log(err);
-  }
-}
+function ItemResult(props) {
 
-function ItemResult (props) {
+  async function submitSplitItem(data) {
+    try {
+      await API.graphql({
+        query: createSplitItem,
+        variables: {
+          input: {
+            month: data[0],
+            day: data[1],
+            year: data[2],
+            total: data[3],
+            tax: data[4],
+            tip: data[5],
+            names: data[6],
+            split: data[7]
+          }
+        }
+      })
+    } catch (err) {
+      console.log(err);
+    }
+  }
   
-  function getNamesTotal () {
+  function getNamesTotal() {
     let names = [];
     let total = [];
     for (var i = 0; i < props.rows.length; i++) {
@@ -57,7 +55,7 @@ function ItemResult (props) {
   const tip = props.tip ? props.tip : 0;
   let partyResult = [];
 
-  function printCalculations () {
+  function printCalculations() {
     let result = [];
     let last = false;
     for (var i = 0; i < names.length; i++) {
@@ -100,11 +98,11 @@ function ItemResult (props) {
     return result;
   }
 
-  function printResults () {
+  function printResults() {
     return partyResult;
   }
 
-  function saveResults () {
+  function saveResults() {
     let ppl = "";
     let byPerson = "";
     prices = prices.map(p => '$' + p);

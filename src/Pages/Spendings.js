@@ -4,10 +4,9 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { withRouter } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap'; 
 import SpendingTable from '../Components/Tables/SpendingTable'; 
 import CreateSpendingModal from '../Components/Modals/Spending/CreateSpendingModal';
-import './Spendings.css'; 
+import './SpendingsSavings.css'; 
 
 const theme = createMuiTheme({
   palette: {
@@ -38,17 +37,14 @@ const useStyles = makeStyles((theme) => ({
 function Spendings() {
   
   const classes = useStyles(); 
+
   const [showCreateSpending, setCreateSpending] = useState(false);
   
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <div className="spendings spendings-table">
-          <Row> 
-            <Col md={12}>
-              <SpendingTable />
-            </Col>
-          </Row> 
+        <div className="spendingssavings spendingssavings-table">
+          <SpendingTable />
         </div>
         <CreateSpendingModal
           closeCreateSpending={() => setCreateSpending(!showCreateSpending)} 

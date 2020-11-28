@@ -1,81 +1,82 @@
-import './DropzoneModal.css';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@material-ui/core';
-import { Modal, Col, Row, Container } from 'react-bootstrap';
+import { Container, Col, Modal, Row } from 'react-bootstrap';
 import ReceiptImg from '../../Images/receipt.svg';
 import DropzoneInput from '../InputFields/DropzoneInput';
+import './DropzoneModal.css';
 
 export default function DropzoneModal(props) {
-    const [numberOfItems, setNumberOfItems] = useState(props.data.length);
-    const [counter, setCounter] = useState(0);
+
+  const [numberOfItems, setNumberOfItems] = useState(props.data.length);
+  const [counter, setCounter] = useState(0);
      
-    useEffect(() => {
-        setNumberOfItems(props.data.length);
-    }, [props.data.length, counter]);
+  useEffect(() => {
+    setNumberOfItems(props.data.length);
+  }, [props.data.length, counter]);
 
-    function generateItems() {
-        if(props.from === "webcam") {
-            return generateItemsFromWebcam()
-        } else {
-            return generateItemsFromDropzone()
-        }
+  function generateItems() {
+    if (props.from === "webcam") {
+      return generateItemsFromWebcam()
+    } else {
+      return generateItemsFromDropzone()
     }
+  }
 
-    function generateItemsFromWebcam() {
-        return (
-            <Row className="itemRow">
-                <Col xs={9} md={6}>
-                    <img 
-                        src={props.data.image}
-                        className="itemReceiptImg"
-                        alt="receipt" 
-                    />
-                </Col>
-                <Col xs={9} md={6}>
-                    <DropzoneInput data={props.data} from="camera" />
-                </Col>
-            </Row>
-        );
-    }
-
-    function generateItemsFromDropzone() {
-        let arrayOfItems = [];
-        for(var i = 0; i < props.data.length; i++) {
-            let item = (
-                <Row key={i} className="itemRow">
-                    <Col xs={9} md={6}>
-                        <img 
-                            src={props.data[i] ? props.data[i].image.preview:ReceiptImg}
-                            className="itemReceiptImg"
-                            alt="receipt" 
-                        />
-                    </Col>
-                    <Col xs={9} md={6}>
-                        <DropzoneInput data={props.data[i]} from="dropzone" numberOfItems={numberOfItems} counter={counter} onCreateTransaction={() => setCounter(counter+1)} />
-                    </Col>
-                </Row>
-            );
-            arrayOfItems.push(item);
-        }
-        return arrayOfItems;
-    }
-
+  function generateItemsFromWebcam() {
     return (
-        <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="lg">
-            <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Create New Spendings
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="show-grid">
-                <Container>
-                    {generateItems()}
-                </Container>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={props.onHide}>Close</Button>
-            </Modal.Footer>
-        </Modal>
+      <Row className="itemRow">
+        <Col xs={9} md={6}>
+          <img 
+            src={props.data.image}
+            className="itemReceiptImg"
+            alt="receipt" 
+          />
+        </Col>
+        <Col xs={9} md={6}>
+          <DropzoneInput data={props.data} from="camera" />
+        </Col>
+      </Row>
     );
+  }
+
+  function generateItemsFromDropzone() {
+    let arrayOfItems = [];
+    for (var i = 0; i < props.data.length; i++) {
+      let item = (
+        <Row key={i} className="itemRow">
+          <Col xs={9} md={6}>
+            <img 
+              src={props.data[i] ? props.data[i].image.preview:ReceiptImg}
+              className="itemReceiptImg"
+              alt="receipt" 
+            />
+          </Col>
+          <Col xs={9} md={6}>
+            <DropzoneInput data={props.data[i]} from="dropzone" numberOfItems={numberOfItems} counter={counter} onCreateTransaction={() => setCounter(counter+1)} />
+          </Col>
+        </Row>
+      );
+      arrayOfItems.push(item);
+    }
+    return arrayOfItems;
+  }
+
+  return (
+    <Modal {...props} className="dropzonemodal" aria-labelledby="contained-modal-title-vcenter" size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Create New Spendings
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="show-grid">
+        <Container>
+          {generateItems()}
+        </Container>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
 }
   

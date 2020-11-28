@@ -1,16 +1,16 @@
-.spendings {
-  font-family: Roboto;
+.spendingssavings {
   margin-left: 35px;
   margin-right: 35px;
   margin-top: 80px;
+  font-family: Roboto;
 }
 
 @media only screen and (max-width: 600px) {
-  .spendings {
+  .spendingssavings {
     margin-top: 125px;
   }
 
-  .spendings-table {
+  .spendingssavings-table {
     padding-bottom: 25px;
   }
 }

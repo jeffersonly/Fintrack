@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Graphs from './Graphs';
 import './Graphs.css';
 
-function SavingsGraph () {
+function SavingsGraph() {
 
   const today = new Date();
 

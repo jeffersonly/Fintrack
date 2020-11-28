@@ -3,10 +3,9 @@ import { Button, ButtonGroup, Typography } from '@material-ui/core';
 import Graphs from './Graphs';
 import './Graphs.css';
 
-function TransactionsGraph () {
+function TransactionsGraph() {
 
   const [background, setBackground] = useState({trans: "#E8F7E2", savings: ""})
-  //const [graph, setGraph] = useState({trans: true, savings: false});
   const [transGraph, setTransGraph] = useState(true);
   const [categoryGraph, setCategoryGraph] = useState(false);
 
@@ -33,20 +32,7 @@ function TransactionsGraph () {
       }
     }
     setBackground(option);
-  }
-
-  /*const handleClick = (gr) => {
-    var option = {
-      "trans": false,
-      "savings": false
-    }
-    for (var btn in option) {
-      if (gr === btn) {
-        option[gr] = true;
-      }
-    }
-    setGraph(option);
-  }*/
+  };
 
   function showTransGraph() {
     if (transGraph) {

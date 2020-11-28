@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { calculateSpendingsMonthTotal, calculateSavingsMonthTotal, spendingsCategory } from './GetGraphData';
 import ChartistGraph from 'react-chartist';
 import Legend from 'chartist-plugin-legend';
-import ctAxisTitle from "chartist-plugin-axistitle";
+import ctAxisTitle from 'chartist-plugin-axistitle';
 import './Graphs.css';
 
 var Chartist = require("chartist");
@@ -10,32 +10,35 @@ var Chartist = require("chartist");
 var delays = 16,
   durations = 100;
 
-function Graphs (props) {
+function Graphs(props) {
   
   const [spendingsData, setSpendingsData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [savingsData, setSavingsData] = useState([]);
 
   useEffect(() => {
-    getSpendingTotal();
-    getCategory();
-    getSavingTotal();
+    let isSubscribed = true;
+
+    calculateSpendingsMonthTotal().then(result => {
+      if (isSubscribed) {
+        setSpendingsData(result);
+      }
+    })
+
+    spendingsCategory().then(result => {
+      if (isSubscribed) {
+        setCategoryData(result);
+      }
+    })
+
+    calculateSavingsMonthTotal().then(result => {
+      if (isSubscribed) {
+        setSavingsData(result);
+      }
+    })
+
+    return () => isSubscribed = false;
   }, []);
-
-  async function getSpendingTotal() {
-    const result = await calculateSpendingsMonthTotal();
-    setSpendingsData(result);
-  }
-
-  async function getCategory() {
-    const result = await spendingsCategory();
-    setCategoryData(result);
-  }
-
-  async function getSavingTotal() {
-    const result = await calculateSavingsMonthTotal();
-    setSavingsData(result);
-  }
 
   function transInformation() {
     if (props.data === "trans") {

@@ -1,4 +1,4 @@
-import { API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from 'aws-amplify';
 import { listSavings, listSpendings } from '../../../graphql/queries';
 import { startOfWeek, lastDayOfWeek } from 'date-fns';
 
@@ -13,7 +13,7 @@ let monthFilter = {
   }
 }
 
-export async function getMonthSavingsTotal () {
+export async function getMonthSavingsTotal() {
   try {
     let monthTotal = 0;
 
@@ -28,7 +28,7 @@ export async function getMonthSavingsTotal () {
   }
 }
 
-export async function getMonthSpendingsTotal () {
+export async function getMonthSpendingsTotal() {
   try {
     let monthTotal = 0;
 
@@ -43,19 +43,19 @@ export async function getMonthSpendingsTotal () {
   }
 }
 
-export function getMonthYear () {
+export function getMonthYear() {
   const monthNames = ["Jan", "Feb", "Mar", "April", "May", "June",
       "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
   return monthNames[today.getMonth()] + " " + today.getFullYear();
 }
 
-export function weekPeriod () {
+export function weekPeriod() {
   var start = startOfWeek(today).toLocaleDateString();
   var end = lastDayOfWeek(today).toLocaleDateString();
   return [start, end];
 }
 
-function getDaysOfWeek () {
+function getDaysOfWeek() {
   var start = startOfWeek(today).getDate();
   var end = lastDayOfWeek(today).getDate();
 
@@ -78,14 +78,14 @@ function getDaysOfWeek () {
   return weekFilter;
 }
 
-function formatDate (day) {
+function formatDate(day) {
   if (day < 10) {
     day = "0" + day;
   }
   return day;
 }
 
-export async function getWeekSaving () {
+export async function getWeekSaving() {
   try {
     let weekSavingTotal = 0;
 
@@ -101,7 +101,7 @@ export async function getWeekSaving () {
   }
 }
 
-export async function getWeekSpending () {
+export async function getWeekSpending() {
   try {
     let weekSpendingTotal = 0;
 

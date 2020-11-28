@@ -4,18 +4,21 @@ import { getMonthSpendingsTotal, getMonthYear } from './NotificationData';
 import SpendingsSVG from '../../../Images/spendings.svg';
 import './Notification.css';
 
-function SpendingNotification (props) {
+function SpendingNotification(props) {
 
   const [spendings, setSpendings] = useState();
 
   useEffect(() => {
-    spendingTotal();
-  }, []);
+    let isSubscribed = true;
+    
+    getMonthSpendingsTotal().then(result => {
+      if (isSubscribed) {
+        setSpendings(result.toFixed(2));
+      }
+    })
 
-  async function spendingTotal() {
-    const result = await getMonthSpendingsTotal();
-    setSpendings(result.toFixed(2));
-  }
+    return () => isSubscribed = false;
+  }, []);
 
   const color = spendings > props.spending ? "#ff0000" : "rgb(1, 114, 71)";
 

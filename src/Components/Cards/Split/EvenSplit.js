@@ -25,7 +25,9 @@ const useStyles = makeStyles({
 });
 
 function EvenSplit() {
+
   const classes = useStyles();
+  
   const [partySize, setPartySize] = useState();
   const [billTotal, setBillTotal] = useState();
   const [tax, setTax] = useState();
@@ -33,7 +35,7 @@ function EvenSplit() {
   const [submitted, setSubmitted] = useState(false);
   const [show, setShow] = useState(false);
   
-  function submitForm (data) {
+  function submitForm(data) {
     setPartySize(data[0]);
     setBillTotal(data[1]);
     setTax(data[2]);

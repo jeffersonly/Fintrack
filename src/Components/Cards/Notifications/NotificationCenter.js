@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import Carousel from 'react-bootstrap/Carousel';
-import { Row, Col } from 'react-bootstrap';
-import { API, graphqlOperation } from "aws-amplify";
+import { Carousel, Row, Col } from 'react-bootstrap';
+
+import { API, graphqlOperation } from 'aws-amplify';
 import { listGoals } from '../../../graphql/queries';
+
 import MonthlyExpenses from '../../Tables/MonthlyExpenses';
 import SavingsGraph from '../../Graphs/SavingsGraph';
 import TransactionsGraph from '../../Graphs/TransactionsGraph';
@@ -23,31 +24,39 @@ const theme = createMuiTheme ({
   },
 });
 
-function NotificationCenter () {
+function NotificationCenter() {
   
   const [spendingGoal, setSpendingGoal] = useState();
   const [savingGoal, setSavingGoal] = useState();
 
   useEffect(() => {
-    getGoalInformation();
-  })
+    let isSubscribed = true;
 
-  async function getGoalInformation () {
-    try {
-      const goalData = await API.graphql(graphqlOperation(listGoals));
-      const goalList = goalData.data.listGoals.items; 
-      if (goalList.length === 0) {
-        setSpendingGoal(0);
-        setSavingGoal(0);
+    async function getGoalInformation() {
+      try {
+        const goalData = await API.graphql(graphqlOperation(listGoals));
+        const goalList = goalData.data.listGoals.items;
+        return goalList;
+      } catch (error) {
+        console.log(error);
       }
-      else {
-        setSpendingGoal(goalList[0].spendingsGoal);
-        setSavingGoal(goalList[0].savingsGoal);
-      }
-    } catch (error) {
-      console.log(error);
     }
-  }
+
+    getGoalInformation().then(list => {
+      if (isSubscribed) {
+        if (list.length === 0) {
+          setSpendingGoal(0);
+          setSavingGoal(0);
+        }
+        else {
+          setSpendingGoal(list[0].spendingsGoal);
+          setSavingGoal(list[0].savingsGoal);
+        }
+      }
+    })
+    
+    return () => isSubscribed = false;
+  }, []);
 
   return (
     <div className="notifcenter-container">
@@ -80,7 +89,6 @@ function NotificationCenter () {
               </CardContent>
             </Card>
           </Carousel.Item>
-           
           <Carousel.Item as={Card}>
             <Card className="notifcenter-card" variant="outlined">
               <CardContent>
@@ -104,7 +112,7 @@ function NotificationCenter () {
           </Carousel.Item>
         </Carousel>
         <div className="d-block d-sm-none">
-          <Typography align="center" style={{fontWeight: "bold", fontSize: "16px"}}>
+          <Typography align="center" style={{ fontWeight: "bold", fontSize: "16px" }}>
             Notifications
           </Typography>
           <div className="notification-card">

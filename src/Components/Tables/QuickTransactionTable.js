@@ -10,12 +10,13 @@ import '../Graphs/Graphs.css';
 
 const columnTitles = [
   { id: "date", label: "Date", align: "center" },
-  { id: "name", label: "Spendings Name", align: "center" },
+  { id: "name", label: "Spending Name", align: "center" },
   { id: "payment", label: "Form of Payment", align: "center", style: "d-none d-md-block" },
   { id: "value", label: "Value", align: "center", numeric: true },
 ];
 
 function QuickTransactionTable () {
+
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('date');
 
@@ -23,24 +24,32 @@ function QuickTransactionTable () {
   const [add, setAdd] = useState(false);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     const getMostRecent = async () => {
       try {
         const spendingData = await API.graphql(graphqlOperation(listSpendings));
         const spendingList = spendingData.data.listSpendings.items;
         if (spendingList.length < 6){
-          setRecent(spendingList);
+          return spendingList;
         } 
         else {
-        const sorted = stableSort(spendingList, getComparator(order, orderBy));
-        const mostRecent = [sorted[0], sorted[1], sorted[2], sorted[3], sorted[4], sorted[5]];
-        setRecent(mostRecent);
+          const sorted = stableSort(spendingList, getComparator(order, orderBy));
+          const mostRecent = [sorted[0], sorted[1], sorted[2], sorted[3], sorted[4], sorted[5]];
+          return mostRecent;
         }
       } catch (error) {
         console.log('Error on fetching spending', error);
       }
     };
 
-    getMostRecent();
+    getMostRecent().then(list => {
+      if (isSubscribed) {
+        setRecent(list);
+      }
+    })
+
+    return() => isSubscribed = false;
   }, [order, orderBy]);
 
   const handleRequestSort = (event, property) => {

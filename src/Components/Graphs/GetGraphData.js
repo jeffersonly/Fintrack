@@ -9,7 +9,7 @@ let filter = {
   }
 };
 
-export async function calculateSavingsMonthTotal () {
+export async function calculateSavingsMonthTotal() {
 
   try {
     let janTotal = 0;
@@ -75,7 +75,7 @@ export async function calculateSavingsMonthTotal () {
   }
 }
 
-export async function calculateSpendingsMonthTotal () {
+export async function calculateSpendingsMonthTotal() {
 
   try {
     let janTotal = 0;
@@ -141,7 +141,7 @@ export async function calculateSpendingsMonthTotal () {
   }
 }
 
-export async function spendingsCategory () {
+export async function spendingsCategory() {
 
   try {
     let bank = 0;
