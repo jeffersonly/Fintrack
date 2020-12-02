@@ -62,6 +62,8 @@ function getDaysOfWeek() {
   start = formatDate(start);
   end = formatDate(end);
 
+  var endOfMonth = start > end;
+
   let weekFilter = {
     year: {
       eq: today.getFullYear()
@@ -73,9 +75,38 @@ function getDaysOfWeek() {
       ge: start,
       le: end
     }
-  }
+  };
 
-  return weekFilter;
+  let endMonthFilter = {
+    year: {
+      eq: today.getFullYear()
+    },
+    month: {
+      eq: today.getMonth() + 1
+    },
+    day: {
+      ge: start
+    }
+  };
+
+  let begMonthFilter = {
+    year: {
+      eq: today.getFullYear()
+    },
+    month: {
+      eq: today.getMonth() + 2
+    },
+    day: {
+      le: end
+    }
+  };
+
+  if (endOfMonth) {
+    return [endMonthFilter, begMonthFilter];
+  }
+  else {
+    return [weekFilter];
+  }
 }
 
 function formatDate(day) {
@@ -88,13 +119,27 @@ function formatDate(day) {
 export async function getWeekSaving() {
   try {
     let weekSavingTotal = 0;
+    const filter = getDaysOfWeek();
 
-    const weeklySavings = await API.graphql(graphqlOperation(listSavings, {filter: getDaysOfWeek()}));
-    const weeklySavingsList = weeklySavings.data.listSavings.items;
+    if (filter.length === 2) {
+      const weeklyEndOfMonth = await API.graphql(graphqlOperation(listSavings, {filter: filter[0]}));
+      const weekEndSavingsList = weeklyEndOfMonth.data.listSavings.items;
+      const weeklyBegOfMonth = await API.graphql(graphqlOperation(listSavings, {filter: filter[1]}));
+      const weekBegSavingsList = weeklyBegOfMonth.data.listSavings.items;
 
-    for (var i = 0; i < weeklySavingsList.length; i++) {
-      weekSavingTotal = weekSavingTotal + weeklySavingsList[i].value;
+      const combinedWeekSavingsList = weekEndSavingsList.concat(weekBegSavingsList);
+      for (var i = 0; i < combinedWeekSavingsList.length; i++) {
+        weekSavingTotal = weekSavingTotal + combinedWeekSavingsList[i].value;
+      }
     }
+    else if (filter.length === 1) {
+      const weeklySavings = await API.graphql(graphqlOperation(listSavings, {filter: filter[0]}));
+      const weeklySavingsList = weeklySavings.data.listSavings.items;
+      for (var i = 0; i < weeklySavingsList.length; i++) {
+        weekSavingTotal = weekSavingTotal + weeklySavingsList[i].value;
+      }
+    }
+    
     return weekSavingTotal;
   } catch (error) {
     return "There was an error.";
@@ -104,13 +149,27 @@ export async function getWeekSaving() {
 export async function getWeekSpending() {
   try {
     let weekSpendingTotal = 0;
+    const filter = getDaysOfWeek();
 
-    const weeklySpendings = await API.graphql(graphqlOperation(listSpendings, {filter: getDaysOfWeek()}));
-    const weeklySpendingsList = weeklySpendings.data.listSpendings.items;
+    if (filter.length === 2) {
+      const weeklyEndOfMonth = await API.graphql(graphqlOperation(listSpendings, {filter: filter[0]}));
+      const weekEndSpendingsList = weeklyEndOfMonth.data.listSpendings.items;
+      const weeklyBegOfMonth = await API.graphql(graphqlOperation(listSpendings, {filter: filter[1]}));
+      const weekBegSpendingsList = weeklyBegOfMonth.data.listSpendings.items;
 
-    for (var i = 0; i < weeklySpendingsList.length; i++) {
-      weekSpendingTotal = weekSpendingTotal + weeklySpendingsList[i].value;
+      const combinedWeekSpendingsList = weekEndSpendingsList.concat(weekBegSpendingsList);
+      for (var i = 0; i < combinedWeekSpendingsList.length; i++) {
+        weekSpendingTotal = weekSpendingTotal + combinedWeekSpendingsList[i].value;
+      }
     }
+    else if (filter.length === 1) {
+      const weeklySpendings = await API.graphql(graphqlOperation(listSpendings, {filter: filter[0]}));
+      const weeklySpendingsList = weeklySpendings.data.listSpendings.items;
+      for (var i = 0; i < weeklySpendingsList.length; i++) {
+        weekSpendingTotal = weekSpendingTotal + weeklySpendingsList[i].value;
+      }
+    }
+
     return weekSpendingTotal;
   } catch (error) {
     return "There was an error.";
