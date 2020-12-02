@@ -27,6 +27,7 @@ FinTrack is an expense tracking website application. Its main functionalities ar
 - Code Editor - A code editor is required, we used VSCode (Visual Studio Code) to develop the project and recommend it. It can support a variety of languages and provides a means for soruce control, you can find the editor [here](https://code.visualstudio.com/).
 
 ## Demo 
+[![Demo Video](https://img.youtube.com/vi/RBch8YuKgwI/0.jpg)](https://www.youtube.com/watch?v=RBch8YuKgwI)
 
 ## How to Run the Project Locally
 To run the front end of the application locally, follow these steps:
