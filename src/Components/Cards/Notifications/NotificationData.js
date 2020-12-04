@@ -1,6 +1,7 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { listSavings, listSpendings } from '../../../graphql/queries';
 import { startOfWeek, lastDayOfWeek } from 'date-fns';
+import { splitDate } from '../../Tables/TableFunctions';
 
 const today = new Date();
 
@@ -53,19 +54,6 @@ export function weekPeriod() {
   var start = startOfWeek(today).toLocaleDateString();
   var end = lastDayOfWeek(today).toLocaleDateString();
   return [start, end];
-}
-
-function formatDate(day) {
-  if (day < 10) {
-    day = "0" + day;
-  }
-  return day;
-}
-
-function splitDate(date) {
-  const dateArray = date.split("/");
-  dateArray[1] = formatDate(dateArray[1]);
-  return [dateArray[0], dateArray[1], dateArray[2]];
 }
 
 function getDaysOfWeek() {
